@@ -1,0 +1,8 @@
+name: FoodSpoilage
+version: 0.1
+author: DanTheTechMan
+main: spoilagesystem.Main
+api-version: 1.13
+
+commands:
+  fs:
