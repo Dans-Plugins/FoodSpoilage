@@ -1,5 +1,6 @@
 package spoilagesystem;
 
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +24,7 @@ public final class Main extends JavaPlugin implements Listener {
 
     }
 
+    @EventHandler()
     public void onCraft(CraftItemEvent event) {
         CraftItemEventHandler handler = new CraftItemEventHandler(this);
         handler.handle(event);
