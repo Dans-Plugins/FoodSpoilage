@@ -13,6 +13,8 @@ public class CraftItemEventHandler {
 
     public void handle(CraftItemEvent event) {
 
+        main.timestamp.assignTimeStamp(event.getCurrentItem());
+
     }
 
 }
