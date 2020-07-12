@@ -1,11 +1,13 @@
 package spoilagesystem.Subsystems;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import spoilagesystem.Main;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,25 +16,40 @@ public class TimeStampSubsystem {
 
     Main main = null;
 
+    String pattern = "MM/dd/yyyy HH";
+
     public TimeStampSubsystem(Main plugin) {
         main = plugin;
     }
 
-    public void assignTimeStamp(ItemStack item) {
+    public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
 
-        List<String> lore = meta.getLore();
+        if (meta == null) {
+            System.out.println("meta is null! creating new meta from item factory");
+            meta = Bukkit.getItemFactory().getItemMeta(item.getType());
+        }
 
+        List<String> lore = new ArrayList<>();
+
+        lore.add("");
         lore.add("Expiry Date:");
-        lore.add(getDateString());
+        lore.add(getDateStringPlusTime(hoursUntilSpoilage));
+
+        if (lore == null) {
+            System.out.println("lore is null!");
+        }
+
+        if (meta == null) {
+            System.out.println("meta is still null");
+        }
 
         meta.setLore(lore);
         item.setItemMeta(meta);
+        return item;
     }
 
     private String getDateString() {
-        String pattern = "MM/dd/yyyy HH:mm:ss";
-
         DateFormat df = new SimpleDateFormat(pattern);
 
         Date now = getDate();
@@ -42,6 +59,20 @@ public class TimeStampSubsystem {
 
     private Date getDate() {
         return Calendar.getInstance().getTime();
+    }
+
+    private String getDateStringPlusTime(int hours) {
+        DateFormat df = new SimpleDateFormat(pattern);
+
+        Date now = getDatePlusTime(hours);
+
+        return df.format(now);
+    }
+
+    private Date getDatePlusTime(int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
     }
 
     public boolean timeStampAssigned(ItemStack item) {
@@ -61,8 +92,6 @@ public class TimeStampSubsystem {
         String timestamp = getTimeStamp(item);
 
         if (timestamp != null) {
-
-            String pattern = "MM/dd/yyyy HH:mm:ss";
 
             DateFormat df = new SimpleDateFormat(pattern);
 
