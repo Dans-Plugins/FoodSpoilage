@@ -5,4 +5,5 @@ main: spoilagesystem.Main
 api-version: 1.13
 
 commands:
+  foodspoilage:
   fs:
