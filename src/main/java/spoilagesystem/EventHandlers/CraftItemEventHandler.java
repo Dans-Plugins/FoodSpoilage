@@ -1,5 +1,6 @@
 package spoilagesystem.EventHandlers;
 
+import org.bukkit.Material;
 import org.bukkit.event.inventory.CraftItemEvent;
 import spoilagesystem.Main;
 
@@ -13,7 +14,9 @@ public class CraftItemEventHandler {
 
     public void handle(CraftItemEvent event) {
 
-        main.timestamp.assignTimeStamp(event.getCurrentItem());
+        if (event.getCurrentItem().getType() == Material.BREAD) {
+            main.timestamp.assignTimeStamp(event.getCurrentItem());
+        }
 
     }
 
