@@ -8,5 +8,6 @@ A minecraft plugin to make food go bad.
 
 # Versions
 -  0.1 Initial Build
--  0.2 TimeStamp Subsystem
--  0.3 Bread
+-  0.2 'Timestamps' update
+-  0.3 'Bread' update
+-  0.4 'Spoil On Move' update
