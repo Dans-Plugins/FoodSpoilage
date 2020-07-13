@@ -1,6 +1,7 @@
 package spoilagesystem.Subsystems;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import spoilagesystem.Main;
@@ -25,24 +26,14 @@ public class TimeStampSubsystem {
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
 
-        if (meta == null) {
-            System.out.println("meta is null! creating new meta from item factory");
-            meta = Bukkit.getItemFactory().getItemMeta(item.getType());
-        }
-
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add("Expiry Date:");
-        lore.add(getDateStringPlusTime(hoursUntilSpoilage));
-
-        if (lore == null) {
-            System.out.println("lore is null!");
-        }
-
-        if (meta == null) {
-            System.out.println("meta is still null");
-        }
+        lore.add(ChatColor.WHITE + "Created:");
+        lore.add(ChatColor.WHITE + "" + getDateString());
+        lore.add("");
+        lore.add(ChatColor.WHITE + "" + "Expiry Date:");
+        lore.add(ChatColor.WHITE + "" + getDateStringPlusTime(hoursUntilSpoilage));
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -81,7 +72,7 @@ public class TimeStampSubsystem {
         List<String> lore = meta.getLore();
 
         for (String string : lore) {
-            if (string.equalsIgnoreCase("Expiry Date:")) {
+            if (string.equalsIgnoreCase(ChatColor.WHITE + "" + "Expiry Date:")) {
                 return true;
             }
         }
@@ -119,7 +110,7 @@ public class TimeStampSubsystem {
             ItemMeta meta = item.getItemMeta();
 
             List<String> lore = meta.getLore();
-            return lore.get(1);
+            return lore.get(5);
         }
         return null;
     }

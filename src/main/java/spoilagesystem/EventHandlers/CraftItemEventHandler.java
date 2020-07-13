@@ -13,10 +13,8 @@ public class CraftItemEventHandler {
     }
 
     public void handle(CraftItemEvent event) {
-        System.out.println("Someone is crafting.");
 
         if (event.getCurrentItem().getType() == Material.BREAD) {
-            System.out.println("Someone is crafting bread.");
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 1));
         }
 
