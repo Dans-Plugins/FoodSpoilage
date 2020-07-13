@@ -4,9 +4,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.EventHandlers.CraftItemEventHandler;
-import spoilagesystem.EventHandlers.InventoryClickEventHandler;
+import spoilagesystem.EventHandlers.InventoryDragEventHandler;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
 
 public final class Main extends JavaPlugin implements Listener {
@@ -33,8 +34,8 @@ public final class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler()
-    public void onInventoryClick(InventoryClickEvent event) {
-        InventoryClickEventHandler handler = new InventoryClickEventHandler(this);
+    public void onInventoryClick(InventoryDragEvent event) {
+        InventoryDragEventHandler handler = new InventoryDragEventHandler(this);
         handler.handle(event);
     }
 }

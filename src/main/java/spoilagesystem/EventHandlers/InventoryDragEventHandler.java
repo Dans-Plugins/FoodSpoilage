@@ -1,19 +1,19 @@
 package spoilagesystem.EventHandlers;
 
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.Main;
 
-public class InventoryClickEventHandler {
+public class InventoryDragEventHandler {
 
     Main main = null;
 
-    public InventoryClickEventHandler(Main plugin) {
+    public InventoryDragEventHandler(Main plugin) {
         main = plugin;
     }
 
-    public void handle(InventoryClickEvent event) {
+    public void handle(InventoryDragEvent event) {
 
         // if time stamped
         if (main.timestamp.timeStampAssigned(event.getCursor())) {
