@@ -16,14 +16,14 @@ public class InventoryClickEventHandler {
     public void handle(InventoryClickEvent event) {
 
         // if time stamped
-        if (main.timestamp.timeStampAssigned(event.getCurrentItem())) {
+        if (main.timestamp.timeStampAssigned(event.getCursor())) {
 
             // if time stamp has been reached
-            if (main.timestamp.timeReached(event.getCurrentItem())) {
+            if (main.timestamp.timeReached(event.getCursor())) {
 
                 // turn it into rotten flesh
 
-                event.setCurrentItem(new ItemStack(Material.ROTTEN_FLESH));
+                event.setCursor(new ItemStack(Material.ROTTEN_FLESH));
 
             }
 
