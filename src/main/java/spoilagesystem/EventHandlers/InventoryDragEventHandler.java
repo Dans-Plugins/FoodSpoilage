@@ -22,8 +22,12 @@ public class InventoryDragEventHandler {
         // if time stamped
         if (main.timestamp.timeStampAssigned(event.getCursor())) {
 
+            System.out.println("Item has timestamp!");
+
             // if time stamp has been reached
             if (main.timestamp.timeReached(event.getCursor())) {
+
+                System.out.println("Time has been reached!");
 
                 // turn it into rotten flesh
 
@@ -36,6 +40,9 @@ public class InventoryDragEventHandler {
                 spoiledFood.setItemMeta(meta);
                 event.setCursor(spoiledFood);
 
+            }
+            else {
+                System.out.println("Time has not been reached!");
             }
 
         }
