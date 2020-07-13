@@ -3,7 +3,11 @@ package spoilagesystem.EventHandlers;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import spoilagesystem.Main;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryDragEventHandler {
 
@@ -23,7 +27,14 @@ public class InventoryDragEventHandler {
 
                 // turn it into rotten flesh
 
-                event.setCursor(new ItemStack(Material.ROTTEN_FLESH));
+                ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);
+                ItemMeta meta = spoiledFood.getItemMeta();
+                meta.setDisplayName("Spoiled Food");
+                List<String> lore = new ArrayList<>();
+                lore.add("This food has gone bad.");
+                meta.setLore(lore);
+                spoiledFood.setItemMeta(meta);
+                event.setCursor(spoiledFood);
 
             }
 
