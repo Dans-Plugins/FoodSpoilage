@@ -6,7 +6,7 @@
 
     <groupId>KingdomProgrammers</groupId>
     <artifactId>FoodSpoilage</artifactId>
-    <version>v0.8</version>
+    <version>v0.9</version>
     <packaging>jar</packaging>
 
     <name>FoodSpoilage</name>

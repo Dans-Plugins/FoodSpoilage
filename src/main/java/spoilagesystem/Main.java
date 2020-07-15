@@ -13,7 +13,7 @@ import spoilagesystem.Subsystems.TimeStampSubsystem;
 
 public final class Main extends JavaPlugin implements Listener {
 
-    public String version = "v0.8";
+    public String version = "v0.9";
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
