@@ -1,5 +1,6 @@
 package spoilagesystem.EventHandlers;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
@@ -34,7 +35,7 @@ public class InventoryDragEventHandler {
                 ItemMeta meta = spoiledFood.getItemMeta();
                 meta.setDisplayName("Spoiled Food");
                 List<String> lore = new ArrayList<>();
-                lore.add("This food has gone bad.");
+                lore.add(ChatColor.WHITE + "This food has gone bad.");
                 meta.setLore(lore);
                 spoiledFood.setItemMeta(meta);
                 event.setCursor(spoiledFood);
