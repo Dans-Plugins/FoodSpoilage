@@ -18,7 +18,14 @@ public class CraftItemEventHandler {
             if (event.isShiftClick()) {
                 event.setCancelled(true); //TODO: find better solution
             }
-            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
+        }
+
+        if (event.getCurrentItem().getType() == Material.POTATO) {
+            if (event.isShiftClick()) {
+                event.setCancelled(true); //TODO: find better solution
+            }
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
         }
 
     }
