@@ -84,13 +84,14 @@ public class TimeStampSubsystem {
 
         if (timestamp != null) {
 
-            DateFormat df = new SimpleDateFormat(pattern);
+            DateFormat df = new SimpleDateFormat(pattern + ":MM:SS");
 
             Date date = null;
             try {
+                timestamp = timestamp + ":00:00";
                 date = df.parse(timestamp);
             } catch (Exception e) {
-                System.out.println("Something went wrong parsing a date.");
+                System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":MM:SS");
             }
 
             if (date != null) {
@@ -110,7 +111,7 @@ public class TimeStampSubsystem {
             ItemMeta meta = item.getItemMeta();
 
             List<String> lore = meta.getLore();
-            return lore.get(5);
+            return lore.get(5).substring(2);
         }
         return null;
     }
