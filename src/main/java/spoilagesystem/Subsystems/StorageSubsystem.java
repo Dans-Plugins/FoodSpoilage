@@ -47,20 +47,20 @@ public class StorageSubsystem {
             FileWriter saveWriter = new FileWriter(saveFile);
 
             // actual saving takes place here
-            saveWriter.write("== Food Spoilage Times ==");
-            saveWriter.write("Bread: " + Bread + " hours");
-            saveWriter.write("Potato: " + Potato + " hours");
-            saveWriter.write("Carrot: " + Carrot + " hours");
-            saveWriter.write("Beetroot: " + Beetroot + " hours");
-            saveWriter.write("Beef: " + Beef + " hours");
-            saveWriter.write("Porkchop: " + Porkchop + " hours");
-            saveWriter.write("Chicken: " + Chicken + " hours");
-            saveWriter.write("Cod: " + Cod + " hours");
-            saveWriter.write("Salmon: " + Salmon + " hours");
-            saveWriter.write("Mutton: " + Mutton + " hours");
-            saveWriter.write("Rabbit: " + Rabbit + " hours");
-            saveWriter.write("Tropical_Fish: " + Tropical_Fish + " hours");
-            saveWriter.write("Pufferfish: " + Pufferfish + " hours");
+            saveWriter.write("== Food Spoilage Times ==\n");
+            saveWriter.write("Bread: " + Bread + " hours\n");
+            saveWriter.write("Potato: " + Potato + " hours\n");
+            saveWriter.write("Carrot: " + Carrot + " hours\n");
+            saveWriter.write("Beetroot: " + Beetroot + " hours\n");
+            saveWriter.write("Beef: " + Beef + " hours\n");
+            saveWriter.write("Porkchop: " + Porkchop + " hours\n");
+            saveWriter.write("Chicken: " + Chicken + " hours\n");
+            saveWriter.write("Cod: " + Cod + " hours\n");
+            saveWriter.write("Salmon: " + Salmon + " hours\n");
+            saveWriter.write("Mutton: " + Mutton + " hours\n");
+            saveWriter.write("Rabbit: " + Rabbit + " hours\n");
+            saveWriter.write("Tropical_Fish: " + Tropical_Fish + " hours\n");
+            saveWriter.write("Pufferfish: " + Pufferfish + " hours\n");
 
             saveWriter.close();
 
