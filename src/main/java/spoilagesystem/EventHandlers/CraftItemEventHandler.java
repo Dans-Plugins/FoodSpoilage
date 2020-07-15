@@ -16,7 +16,7 @@ public class CraftItemEventHandler {
 
         if (event.getCurrentItem().getType() == Material.BREAD) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Bread)); // spoils in 6 vanilla MC days
         }
 
     }

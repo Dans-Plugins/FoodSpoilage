@@ -11,6 +11,7 @@ import spoilagesystem.EventHandlers.CraftItemEventHandler;
 import spoilagesystem.EventHandlers.FurnaceBurnEventHandler;
 import spoilagesystem.EventHandlers.PlayerInteractEventHandler;
 import spoilagesystem.EventHandlers.ItemSpawnEventHandler;
+import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
 
 public final class Main extends JavaPlugin implements Listener {
@@ -19,15 +20,22 @@ public final class Main extends JavaPlugin implements Listener {
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
+    public StorageSubsystem storage = new StorageSubsystem(this);
 
     @Override
     public void onEnable() {
+        if (!storage.foodSpoilageTimesFileExists()) {
+            storage.saveValuesToConfig();
+        }
+        else {
+            storage.loadValuesFromConfig();
+        }
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
     public void onDisable() {
-
+        storage.saveValuesToConfig();
     }
 
     @EventHandler()
