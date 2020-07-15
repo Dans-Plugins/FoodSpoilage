@@ -18,7 +18,7 @@ public class CraftItemEventHandler {
             if (event.isShiftClick()) {
                 event.setCancelled(true); //TODO: find better solution
             }
-            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 1));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2));
         }
 
     }
