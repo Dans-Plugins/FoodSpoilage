@@ -67,13 +67,18 @@ public class TimeStampSubsystem {
     }
 
     public boolean timeStampAssigned(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
+        if (item.hasItemMeta()) {
 
-        List<String> lore = meta.getLore();
+            ItemMeta meta = item.getItemMeta();
 
-        for (String string : lore) {
-            if (string.equalsIgnoreCase(ChatColor.WHITE + "" + "Expiry Date:")) {
-                return true;
+            List<String> lore = meta.getLore();
+
+            if (lore != null) {
+                for (String string : lore) {
+                    if (string.equalsIgnoreCase(ChatColor.WHITE + "" + "Expiry Date:")) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -84,14 +89,15 @@ public class TimeStampSubsystem {
 
         if (timestamp != null) {
 
-            DateFormat df = new SimpleDateFormat(pattern + ":MM:SS");
+            DateFormat df = new SimpleDateFormat(pattern + ":mm:ss");
 
             Date date = null;
             try {
-                timestamp = timestamp + ":00:00";
+                timestamp = timestamp + ":01:01";
+                timestamp = timestamp.substring(2);
                 date = df.parse(timestamp);
             } catch (Exception e) {
-                System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":MM:SS");
+                System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":mm:ss");
             }
 
             if (date != null) {
@@ -111,7 +117,7 @@ public class TimeStampSubsystem {
             ItemMeta meta = item.getItemMeta();
 
             List<String> lore = meta.getLore();
-            return lore.get(5).substring(2);
+            return lore.get(5);
         }
         return null;
     }
