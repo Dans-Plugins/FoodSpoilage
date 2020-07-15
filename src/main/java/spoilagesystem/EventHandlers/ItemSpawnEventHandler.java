@@ -21,6 +21,10 @@ public class ItemSpawnEventHandler {
         if (event.getEntity().getItemStack().getType() == Material.CARROT) {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 4)); // spoils in 12 vanilla MC days
         }
+
+        if (event.getEntity().getItemStack().getType() == Material.BEETROOT) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
     }
 
 }
