@@ -66,6 +66,7 @@ public class ItemSpawnEventHandler {
         if (event.getEntity().getItemStack().getType() == Material.PUFFERFISH) {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
         }
+
     }
 
 }

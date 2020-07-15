@@ -4,9 +4,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.EventHandlers.CraftItemEventHandler;
+import spoilagesystem.EventHandlers.FurnaceBurnEventHandler;
 import spoilagesystem.EventHandlers.PlayerInteractEventHandler;
 import spoilagesystem.EventHandlers.ItemSpawnEventHandler;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
@@ -50,6 +52,12 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler()
     public void onDrop(ItemSpawnEvent event) {
         ItemSpawnEventHandler handler = new ItemSpawnEventHandler(this);
+        handler.handle(event);
+    }
+
+    @EventHandler()
+    public void onFurnaceBurn(FurnaceBurnEvent event) {
+        FurnaceBurnEventHandler handler = new FurnaceBurnEventHandler(this);
         handler.handle(event);
     }
 }
