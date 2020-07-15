@@ -29,6 +29,10 @@ public class ItemSpawnEventHandler {
         if (event.getEntity().getItemStack().getType() == Material.BEEF) {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
         }
+
+        if (event.getEntity().getItemStack().getType() == Material.PORKCHOP) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
     }
 
 }
