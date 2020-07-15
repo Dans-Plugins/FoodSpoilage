@@ -14,3 +14,4 @@ A minecraft plugin to make food go bad.
 -  0.5 'Spoil On Use' update
 -  0.6 'Potato' update
 -  0.7 'Carrot' update
+-  0.8 'Beetroot' update
