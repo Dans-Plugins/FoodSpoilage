@@ -34,12 +34,13 @@ public final class Main extends JavaPlugin implements Listener {
         handler.handle(event);
     }
 
+    /*
     @EventHandler()
     public void onInventoryClick(InventoryDragEvent event) {
         InventoryDragEventHandler handler = new InventoryDragEventHandler(this);
-        handler.handle(event);
+        handler.handle(event); // TODO: Fix null error associated with this method
     }
-
+*/
     @EventHandler()
     public void onRightClick(PlayerInteractEvent event) {
         PlayerInteractEventHandler handler = new PlayerInteractEventHandler(this);
