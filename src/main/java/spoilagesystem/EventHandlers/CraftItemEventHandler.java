@@ -15,19 +15,26 @@ public class CraftItemEventHandler {
     public void handle(CraftItemEvent event) {
 
         if (event.getCurrentItem().getType() == Material.BREAD) {
-            if (event.isShiftClick()) {
-                event.setCancelled(true); //TODO: find better solution
-            }
+            cancelIfShiftClick(event);
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
         }
 
         if (event.getCurrentItem().getType() == Material.POTATO) {
-            if (event.isShiftClick()) {
-                event.setCancelled(true); //TODO: find better solution
-            }
+            cancelIfShiftClick(event);
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
         }
 
+        if (event.getCurrentItem().getType() == Material.CARROT) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), 2)); // spoils in 6 vanilla MC days
+        }
+
+    }
+
+    public void cancelIfShiftClick(CraftItemEvent event) {
+        if (event.isShiftClick()) {
+            event.setCancelled(true); //TODO: find better solution
+        }
     }
 
 }
