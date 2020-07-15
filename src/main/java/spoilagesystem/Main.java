@@ -1,5 +1,7 @@
 package spoilagesystem;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
@@ -11,12 +13,13 @@ import spoilagesystem.EventHandlers.CraftItemEventHandler;
 import spoilagesystem.EventHandlers.FurnaceBurnEventHandler;
 import spoilagesystem.EventHandlers.PlayerInteractEventHandler;
 import spoilagesystem.EventHandlers.ItemSpawnEventHandler;
+import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
 
 public final class Main extends JavaPlugin implements Listener {
 
-    public String version = "v0.9";
+    public String version = "v1.0";
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
@@ -36,6 +39,11 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         storage.saveValuesToConfig();
+    }
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        CommandSubsystem commandInterpreter = new CommandSubsystem(this);
+        return commandInterpreter.interpretCommand(sender, label, args);
     }
 
     @EventHandler()
