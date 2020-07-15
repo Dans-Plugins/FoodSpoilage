@@ -30,7 +30,6 @@ public class InventoryDragEventHandler {
                 System.out.println("Time has been reached!");
 
                 // turn it into rotten flesh
-
                 ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);
                 ItemMeta meta = spoiledFood.getItemMeta();
                 meta.setDisplayName("Spoiled Food");
