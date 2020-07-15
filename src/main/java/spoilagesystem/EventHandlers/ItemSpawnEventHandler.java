@@ -18,53 +18,53 @@ public class ItemSpawnEventHandler {
         // crops
 
         if (event.getEntity().getItemStack().getType() == Material.POTATO) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Potato)); // spoils in 6 vanilla MC days
         }
 
         if (event.getEntity().getItemStack().getType() == Material.CARROT) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 4)); // spoils in 12 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Carrot)); // spoils in 12 vanilla MC days
         }
 
         if (event.getEntity().getItemStack().getType() == Material.BEETROOT) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Beetroot)); // spoils in 15 vanilla MC days
         }
 
         // raw meats
 
         if (event.getEntity().getItemStack().getType() == Material.BEEF) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Beef));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.PORKCHOP) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Porkchop));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.CHICKEN) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Chicken));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.COD) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Cod));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.SALMON) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Salmon));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.MUTTON) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Mutton));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.RABBIT) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Rabbit));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.TROPICAL_FISH) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Tropical_Fish));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.PUFFERFISH) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 2)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Pufferfish));
         }
 
     }

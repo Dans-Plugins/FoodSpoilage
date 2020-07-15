@@ -16,3 +16,4 @@ A minecraft plugin to make food go bad.
 -  0.7 'Carrot' update
 -  0.8 'Beetroot' update
 -  0.9 'Raw Meat' update
+-  1.0 'Food Configuration' update
