@@ -33,6 +33,38 @@ public class ItemSpawnEventHandler {
         if (event.getEntity().getItemStack().getType() == Material.PORKCHOP) {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
         }
+
+        if (event.getEntity().getItemStack().getType() == Material.BEEF) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.CHICKEN) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.COD) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.SALMON) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.MUTTON) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.RABBIT) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.TROPICAL_FISH) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.PUFFERFISH) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), 5)); // spoils in 15 vanilla MC days
+        }
     }
 
 }
