@@ -16,8 +16,9 @@ public class ReloadCommand {
     public void reload(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.hasPermission("fs.reload")) {
+            if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
                 main.storage.loadValuesFromConfig();
+                player.sendMessage(ChatColor.GREEN + "Values loaded!");
             }
             else {
                 player.sendMessage(ChatColor.RED + "Sorry! In order to use this command you need the following permission: 'fs.reload'");
@@ -25,6 +26,7 @@ public class ReloadCommand {
         }
         else {
             main.storage.loadValuesFromConfig();
+            System.out.println("Values loaded!");
         }
     }
 
