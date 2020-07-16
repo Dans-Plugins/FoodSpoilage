@@ -18,15 +18,15 @@ public class ItemSpawnEventHandler {
         // crops
 
         if (event.getEntity().getItemStack().getType() == Material.POTATO) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Potato)); // spoils in 6 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Potato));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.CARROT) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Carrot)); // spoils in 12 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Carrot));
         }
 
         if (event.getEntity().getItemStack().getType() == Material.BEETROOT) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Beetroot)); // spoils in 15 vanilla MC days
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Beetroot));
         }
 
         // raw meats

@@ -13,19 +13,19 @@ public class StorageSubsystem {
     Main main = null;
 
     // values
-    public int Bread = 2;
-    public int Potato = 3;
-    public int Carrot = 4;
-    public int Beetroot = 5;
-    public int Beef = 2;
-    public int Porkchop = 2;
-    public int Chicken = 2;
-    public int Cod = 2;
-    public int Salmon = 2;
-    public int Mutton = 2;
-    public int Rabbit = 2;
-    public int Tropical_Fish = 2;
-    public int Pufferfish = 2;
+    public int Bread = 24;
+    public int Potato = 48;
+    public int Carrot = 48;
+    public int Beetroot = 72;
+    public int Beef = 24;
+    public int Porkchop = 24;
+    public int Chicken = 24;
+    public int Cod = 24;
+    public int Salmon = 24;
+    public int Mutton = 24;
+    public int Rabbit = 24;
+    public int Tropical_Fish = 24;
+    public int Pufferfish = 24;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
