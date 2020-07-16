@@ -81,6 +81,7 @@ public class StorageSubsystem {
             saveWriter.write("Pufferfish: " + Pufferfish + " hours\n");
             saveWriter.write("Mushroom_Stew: " + Mushroom_Stew + " hours\n");
             saveWriter.write("Rabbit_Stew: " + Rabbit_Stew + " hours\n");
+            saveWriter.write("Beetroot_Soup: " + Beetroot_Soup + " hours\n");
             saveWriter.write("Cooked_Beef: " + Cooked_Beef + " hours\n");
             saveWriter.write("Cooked_Porkchop: " + Cooked_Porkchop + " hours\n");
             saveWriter.write("Cooked_Chicken: " + Cooked_Chicken + " hours\n");
