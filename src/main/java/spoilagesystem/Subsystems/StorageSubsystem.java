@@ -36,6 +36,13 @@ public class StorageSubsystem {
     public int Cooked_Mutton = 72;
     public int Cooked_Rabbit = 72;
     public int Cooked_Cod = 72;
+    public int Wheat = 48;
+    public int Melon = 48;
+    public int Pumpkin = 48;
+    public int Brown_Mushroom = 48;
+    public int Red_Mushroom = 48;
+    public int Nether_Wart = 168;
+    public int Melon_Slice = 24;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -81,6 +88,13 @@ public class StorageSubsystem {
             saveWriter.write("Cooked_Mutton: " + Cooked_Mutton + " hours\n");
             saveWriter.write("Cooked_Rabbit: " + Cooked_Rabbit + " hours\n");
             saveWriter.write("Cooked_Cod: " + Cooked_Cod + " hours\n");
+            saveWriter.write("Wheat: " + Wheat + " hours\n");
+            saveWriter.write("Melon: " + Melon + " hours\n");
+            saveWriter.write("Pumpkin: " + Pumpkin + " hours\n");
+            saveWriter.write("Brown_Mushroom: " + Brown_Mushroom + " hours\n");
+            saveWriter.write("Red_Mushroom: " + Red_Mushroom + " hours\n");
+            saveWriter.write("Nether_Wart: " + Nether_Wart + " hours\n");
+            saveWriter.write("Melon_Slice: " + Melon_Slice + " hours\n");
 
             saveWriter.close();
 
@@ -224,6 +238,41 @@ public class StorageSubsystem {
             value = getValueFromConfigLine(loadReader.nextLine());
             if (value != -1) {
                 Cooked_Cod = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Wheat = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Melon = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Pumpkin = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Brown_Mushroom = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Red_Mushroom = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Nether_Wart = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Melon_Slice = value;
             }
 
             loadReader.close();

@@ -67,6 +67,31 @@ public class ItemSpawnEventHandler {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Pufferfish));
         }
 
+        if (event.getEntity().getItemStack().getType() == Material.WHEAT) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Wheat));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.MELON) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Melon));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.PUMPKIN) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Pumpkin));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.BROWN_MUSHROOM) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Brown_Mushroom));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.RED_MUSHROOM) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Red_Mushroom));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.NETHER_WART) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Nether_Wart));
+        }
+
+
     }
 
 }
