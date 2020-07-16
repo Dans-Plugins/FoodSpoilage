@@ -50,7 +50,7 @@ public class StorageSubsystem {
             FileWriter saveWriter = new FileWriter(saveFile);
 
             // actual saving takes place here
-            saveWriter.write(main.version);
+            saveWriter.write(main.version + "\n");
             saveWriter.write("== Food Spoilage Times ==\n");
             saveWriter.write("Bread: " + Bread + " hours\n");
             saveWriter.write("Potato: " + Potato + " hours\n");
