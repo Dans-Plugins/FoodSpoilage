@@ -90,7 +90,7 @@ public class StorageSubsystem {
             if (!loadReader.nextLine().equalsIgnoreCase(main.version)) {
                 System.out.println("[ALERT] Mismatched version found in './plugins/Food-Spoilage/food-spoilage-times.txt'!");
                 System.out.println("[ALERT] Values will not be loaded. Defaults will be used.");
-                System.out.println("[ALERT] Please delete the file mentioned above and restart your server to fix this!");
+                System.out.println("[ALERT] To fix this, please delete the following folder: './plugins/Food-Spoilage/'");
                 return;
             }
 
