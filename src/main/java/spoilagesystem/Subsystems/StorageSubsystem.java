@@ -16,7 +16,7 @@ public class StorageSubsystem {
     public int Bread = 24;
     public int Potato = 48;
     public int Carrot = 48;
-    public int Beetroot = 72;
+    public int Beetroot = 48;
     public int Beef = 24;
     public int Porkchop = 24;
     public int Chicken = 24;
@@ -27,8 +27,8 @@ public class StorageSubsystem {
     public int Tropical_Fish = 24;
     public int Pufferfish = 24;
     public int Mushroom_Stew = 72;
-    public int Rabbit_Stew = 72;
-    public int Beetroot_Soup = 96;
+    public int Rabbit_Stew = 96;
+    public int Beetroot_Soup = 72;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
