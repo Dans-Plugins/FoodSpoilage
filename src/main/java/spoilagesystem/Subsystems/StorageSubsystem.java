@@ -170,17 +170,17 @@ public class StorageSubsystem {
             return -1;
         }
 
+//        System.out.println("Got value " + value + " from the config line!");
         return value;
     }
 
-    public boolean foodSpoilageTimesFileExists() {
+    public boolean foodSpoilageFolderExists() {
         File saveFolder = new File("./plugins/Food-Spoilage/");
-        if (!saveFolder.exists()) {
-            File saveFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt");
-            if (saveFile.exists()) {
-                return true;
-            }
+        if (saveFolder.exists()) {
+            System.out.println("food-spoilage folder found!");
+            return true;
         }
+        System.out.println("food-spoilage folder not found!");
         return false;
     }
 

@@ -27,8 +27,9 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        if (!storage.foodSpoilageTimesFileExists()) {
+        if (!storage.foodSpoilageFolderExists()) {
             storage.saveValuesToConfig();
+            System.out.println("Creating default food-spoilage-times.txt file");
         }
         else {
             storage.loadValuesFromConfig();
