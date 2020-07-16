@@ -6,12 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.EventHandlers.CraftItemEventHandler;
-import spoilagesystem.EventHandlers.FurnaceBurnEventHandler;
 import spoilagesystem.EventHandlers.PlayerInteractEventHandler;
+import spoilagesystem.EventHandlers.FurnaceSmeltEventHandler;
 import spoilagesystem.EventHandlers.ItemSpawnEventHandler;
 import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
@@ -19,7 +19,7 @@ import spoilagesystem.Subsystems.TimeStampSubsystem;
 
 public final class Main extends JavaPlugin implements Listener {
 
-    public String version = "v1.1";
+    public String version = "v1.2";
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
@@ -73,8 +73,8 @@ public final class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler()
-    public void onFurnaceBurn(FurnaceBurnEvent event) {
-        FurnaceBurnEventHandler handler = new FurnaceBurnEventHandler(this);
+    public void onFurnaceSmelt(FurnaceSmeltEvent event) {
+        FurnaceSmeltEventHandler handler = new FurnaceSmeltEventHandler(this);
         handler.handle(event);
     }
 }

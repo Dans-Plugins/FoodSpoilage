@@ -18,3 +18,4 @@ A minecraft plugin to make food go bad.
 -  0.9 'Raw Meat' update
 -  1.0 'Food Configuration' update
 -  1.1 'Stews & Soups' update
+-  1.2 'Cooked Meats' update

@@ -29,6 +29,12 @@ public class StorageSubsystem {
     public int Mushroom_Stew = 72;
     public int Rabbit_Stew = 96;
     public int Beetroot_Soup = 72;
+    public int Cooked_Beef = 72;
+    public int Cooked_Porkchop = 72;
+    public int Cooked_Chicken = 72;
+    public int Cooked_Salmon = 72;
+    public int Cooked_Mutton = 72;
+    public int Cooked_Rabbit = 72;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -67,7 +73,12 @@ public class StorageSubsystem {
             saveWriter.write("Pufferfish: " + Pufferfish + " hours\n");
             saveWriter.write("Mushroom_Stew: " + Mushroom_Stew + " hours\n");
             saveWriter.write("Rabbit_Stew: " + Rabbit_Stew + " hours\n");
-            saveWriter.write("Rabbit_Stew: " + Beetroot_Soup + " hours\n");
+            saveWriter.write("Cooked_Beef: " + Cooked_Beef + " hours\n");
+            saveWriter.write("Cooked_Porkchop: " + Cooked_Porkchop + " hours\n");
+            saveWriter.write("Cooked_Chicken: " + Cooked_Chicken + " hours\n");
+            saveWriter.write("Cooked_Salmon: " + Cooked_Salmon + " hours\n");
+            saveWriter.write("Cooked_Mutton: " + Cooked_Mutton + " hours\n");
+            saveWriter.write("Cooked_Rabbit: " + Cooked_Rabbit + " hours\n");
 
             saveWriter.close();
 
@@ -176,6 +187,36 @@ public class StorageSubsystem {
             value = getValueFromConfigLine(loadReader.nextLine());
             if (value != -1) {
                 Beetroot_Soup = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Beef = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Porkchop = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Chicken = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Salmon = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Mutton = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Rabbit = value;
             }
 
             loadReader.close();
