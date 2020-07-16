@@ -26,6 +26,9 @@ public class StorageSubsystem {
     public int Rabbit = 24;
     public int Tropical_Fish = 24;
     public int Pufferfish = 24;
+    public int Mushroom_Stew = 72;
+    public int Rabbit_Stew = 72;
+    public int Beetroot_Soup = 96;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -61,6 +64,9 @@ public class StorageSubsystem {
             saveWriter.write("Rabbit: " + Rabbit + " hours\n");
             saveWriter.write("Tropical_Fish: " + Tropical_Fish + " hours\n");
             saveWriter.write("Pufferfish: " + Pufferfish + " hours\n");
+            saveWriter.write("Mushroom_Stew: " + Mushroom_Stew + " hours\n");
+            saveWriter.write("Rabbit_Stew: " + Rabbit_Stew + " hours\n");
+            saveWriter.write("Rabbit_Stew: " + Beetroot_Soup + " hours\n");
 
             saveWriter.close();
 
@@ -146,6 +152,21 @@ public class StorageSubsystem {
             value = getValueFromConfigLine(loadReader.nextLine());
             if (value != -1) {
                 Pufferfish = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Mushroom_Stew = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Rabbit_Stew = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Beetroot_Soup = value;
             }
 
             loadReader.close();

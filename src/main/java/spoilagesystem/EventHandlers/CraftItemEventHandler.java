@@ -16,7 +16,22 @@ public class CraftItemEventHandler {
 
         if (event.getCurrentItem().getType() == Material.BREAD) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Bread)); // spoils in 6 vanilla MC days
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Bread));
+        }
+
+        if (event.getCurrentItem().getType() == Material.MUSHROOM_STEW) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Mushroom_Stew));
+        }
+
+        if (event.getCurrentItem().getType() == Material.RABBIT_STEW) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Rabbit_Stew));
+        }
+
+        if (event.getCurrentItem().getType() == Material.BEETROOT_SOUP) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Beetroot_Soup));
         }
 
     }
