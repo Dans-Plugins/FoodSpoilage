@@ -16,7 +16,7 @@ public class StorageSubsystem {
     public int Bread = 24;
     public int Potato = 48;
     public int Carrot = 48;
-    public int Beetroot = 72;
+    public int Beetroot = 48;
     public int Beef = 24;
     public int Porkchop = 24;
     public int Chicken = 24;
@@ -27,8 +27,8 @@ public class StorageSubsystem {
     public int Tropical_Fish = 24;
     public int Pufferfish = 24;
     public int Mushroom_Stew = 72;
-    public int Rabbit_Stew = 72;
-    public int Beetroot_Soup = 96;
+    public int Rabbit_Stew = 96;
+    public int Beetroot_Soup = 72;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -50,6 +50,7 @@ public class StorageSubsystem {
             FileWriter saveWriter = new FileWriter(saveFile);
 
             // actual saving takes place here
+            saveWriter.write(main.version);
             saveWriter.write("== Food Spoilage Times ==\n");
             saveWriter.write("Bread: " + Bread + " hours\n");
             saveWriter.write("Potato: " + Potato + " hours\n");
@@ -85,7 +86,15 @@ public class StorageSubsystem {
 
             // actual loading
 
-            // ignore first line
+            // check version
+            if (!loadReader.nextLine().equalsIgnoreCase(main.version)) {
+                System.out.println("[ALERT] Mismatched version found in './plugins/Food-Spoilage/food-spoilage-times.txt'!");
+                System.out.println("[ALERT] Values will not be loaded. Defaults will be used.");
+                System.out.println("[ALERT] To fix this, please delete the following folder: './plugins/Food-Spoilage/'");
+                return;
+            }
+
+            // ignore second line
             String temp = loadReader.nextLine();
 
             int value = -1;
