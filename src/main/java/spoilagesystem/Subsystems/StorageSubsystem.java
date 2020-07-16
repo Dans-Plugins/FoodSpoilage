@@ -35,6 +35,7 @@ public class StorageSubsystem {
     public int Cooked_Salmon = 72;
     public int Cooked_Mutton = 72;
     public int Cooked_Rabbit = 72;
+    public int Cooked_Cod = 72;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -79,6 +80,7 @@ public class StorageSubsystem {
             saveWriter.write("Cooked_Salmon: " + Cooked_Salmon + " hours\n");
             saveWriter.write("Cooked_Mutton: " + Cooked_Mutton + " hours\n");
             saveWriter.write("Cooked_Rabbit: " + Cooked_Rabbit + " hours\n");
+            saveWriter.write("Cooked_Cod: " + Cooked_Cod + " hours\n");
 
             saveWriter.close();
 
@@ -217,6 +219,11 @@ public class StorageSubsystem {
             value = getValueFromConfigLine(loadReader.nextLine());
             if (value != -1) {
                 Cooked_Rabbit = value;
+            }
+
+            value = getValueFromConfigLine(loadReader.nextLine());
+            if (value != -1) {
+                Cooked_Cod = value;
             }
 
             loadReader.close();

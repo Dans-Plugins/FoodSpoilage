@@ -38,6 +38,10 @@ public class FurnaceSmeltEventHandler {
             event.setResult(main.timestamp.assignTimeStamp(event.getResult(), main.storage.Cooked_Rabbit));
         }
 
+        if (event.getResult().getType() == Material.COOKED_COD) {
+            event.setResult(main.timestamp.assignTimeStamp(event.getResult(), main.storage.Cooked_Cod));
+        }
+
     }
 
 }
