@@ -24,6 +24,11 @@ public class CraftItemEventHandler {
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Mushroom_Stew)); // spoils in 6 vanilla MC days
         }
 
+        if (event.getCurrentItem().getType() == Material.RABBIT_STEW) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Rabbit_Stew)); // spoils in 6 vanilla MC days
+        }
+
     }
 
     public void cancelIfShiftClick(CraftItemEvent event) {
