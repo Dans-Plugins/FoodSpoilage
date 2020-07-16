@@ -125,154 +125,216 @@ public class StorageSubsystem {
             String temp = loadReader.nextLine();
 
             int value = -1;
-            // get value from each config line and set it to corresponding field
-            value = getValueFromConfigLine(loadReader.nextLine()); // line 2
-            if (value != -1) {
-                Bread = value;
+            if (loadReader.hasNextLine()) {
+                // get value from each config line and set it to corresponding field
+                value = getValueFromConfigLine(loadReader.nextLine()); // line 2
+                if (value != -1) {
+                    Bread = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine()); // line 3
-            if (value != -1) {
-                Potato = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine()); // line 3
+                if (value != -1) {
+                    Potato = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine()); // line 4
-            if (value != -1) {
-                Carrot = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine()); // line 4
+                if (value != -1) {
+                    Carrot = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine()); // line 5
-            if (value != -1) {
-                Beetroot = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine()); // line 5
+                if (value != -1) {
+                    Beetroot = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Beef = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Beef = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Porkchop = value;
-            }
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Chicken = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Porkchop = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cod = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Chicken = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Salmon = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cod = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Mutton = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Salmon = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Rabbit = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Mutton = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Tropical_Fish = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Rabbit = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Pufferfish = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Tropical_Fish = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Mushroom_Stew = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Pufferfish = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Rabbit_Stew = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Mushroom_Stew = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Beetroot_Soup = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Rabbit_Stew = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Beef = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Beetroot_Soup = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Porkchop = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Beef = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Chicken = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Porkchop = value;
+                }
+
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Salmon = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Chicken = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Mutton = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Salmon = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Rabbit = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Mutton = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Cooked_Cod = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Rabbit = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Wheat = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cooked_Cod = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Melon = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Wheat = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Pumpkin = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Melon = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Brown_Mushroom = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Pumpkin = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Red_Mushroom = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Brown_Mushroom = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Nether_Wart = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Red_Mushroom = value;
+                }
             }
 
-            value = getValueFromConfigLine(loadReader.nextLine());
-            if (value != -1) {
-                Melon_Slice = value;
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Nether_Wart = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Melon_Slice = value;
+                }
             }
 
             loadReader.close();
