@@ -91,6 +91,10 @@ public class ItemSpawnEventHandler {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Nether_Wart));
         }
 
+        if (event.getEntity().getItemStack().getType() == Material.MELON_SLICE) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Melon_Slice));
+        }
+
 
     }
 

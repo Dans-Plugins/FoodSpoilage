@@ -34,11 +34,6 @@ public class CraftItemEventHandler {
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Beetroot_Soup));
         }
 
-        if (event.getCurrentItem().getType() == Material.MELON_SLICE) {
-            cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Melon_Slice));
-        }
-
     }
 
     public void cancelIfShiftClick(CraftItemEvent event) {
