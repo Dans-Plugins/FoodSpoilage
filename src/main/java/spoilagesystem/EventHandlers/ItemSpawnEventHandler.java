@@ -103,6 +103,21 @@ public class ItemSpawnEventHandler {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Sugar_Cane));
         }
 
+        if (event.getEntity().getItemStack().getType() == Material.APPLE) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Apple));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.POISONOUS_POTATO) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Poisonous_Potato));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.CHORUS_FRUIT) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Chorus_Fruit));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.DRIED_KELP) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Dried_Kelp));
+        }
 
     }
 
