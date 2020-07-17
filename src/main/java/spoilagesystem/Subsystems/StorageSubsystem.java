@@ -43,12 +43,17 @@ public class StorageSubsystem {
     public int Red_Mushroom = 48;
     public int Nether_Wart = 168;
     public int Melon_Slice = 24;
-
     public int Cake = 24;
     public int Pumpkin_Pie = 24;
     public int Sugar = 72;
     public int Egg = 72;
     public int Sugar_Cane = 48;
+    public int Apple = 48;
+    public int Cookie = 94;
+    public int Poisonous_Potato = 24;
+    public int Chorus_Fruit = 94;
+    public int Dried_Kelp = 72;
+    public int Baked_Potato = 94;
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -107,6 +112,12 @@ public class StorageSubsystem {
             saveWriter.write("Sugar: " + Sugar + " hours\n");
             saveWriter.write("Egg: " + Egg + " hours\n");
             saveWriter.write("Sugar_Cane: " + Sugar_Cane + " hours\n");
+            saveWriter.write("Apple: " + Apple + " hours\n");
+            saveWriter.write("Cookie: " + Cookie + " hours\n");
+            saveWriter.write("Poisonous_Potato: " + Poisonous_Potato + " hours\n");
+            saveWriter.write("Chorus_Fruit: " + Chorus_Fruit + " hours\n");
+            saveWriter.write("Dried_Kelp: " + Dried_Kelp + " hours\n");
+            saveWriter.write("Baked_Potato: " + Baked_Potato + " hours\n");
 
             saveWriter.close();
 
@@ -381,6 +392,48 @@ public class StorageSubsystem {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
                     Sugar_Cane = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Apple = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cookie = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Poisonous_Potato = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Chorus_Fruit = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Dried_Kelp = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Baked_Potato = value;
                 }
             }
 

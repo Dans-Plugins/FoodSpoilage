@@ -20,3 +20,5 @@ A minecraft plugin to make food go bad.
 -  1.1 'Stews & Soups' update
 -  1.2 'Cooked Meats' update
 -  1.3 'More Crops' update
+-  1.4 'Desserts & Ingredients' update
+-  1.5 'More Food Items' update

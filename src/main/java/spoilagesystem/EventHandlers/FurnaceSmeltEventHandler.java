@@ -42,6 +42,14 @@ public class FurnaceSmeltEventHandler {
             event.setResult(main.timestamp.assignTimeStamp(event.getResult(), main.storage.Cooked_Cod));
         }
 
+        if (event.getResult().getType() == Material.BAKED_POTATO) {
+            event.setResult(main.timestamp.assignTimeStamp(event.getResult(), main.storage.Baked_Potato));
+        }
+
+        if (event.getResult().getType() == Material.DRIED_KELP) {
+            event.setResult(main.timestamp.assignTimeStamp(event.getResult(), main.storage.Dried_Kelp));
+        }
+
     }
 
 }

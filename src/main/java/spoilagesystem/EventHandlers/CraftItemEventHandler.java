@@ -49,6 +49,11 @@ public class CraftItemEventHandler {
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Sugar));
         }
 
+        if (event.getCurrentItem().getType() == Material.COOKIE) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Cookie));
+        }
+
     }
 
     public void cancelIfShiftClick(CraftItemEvent event) {
