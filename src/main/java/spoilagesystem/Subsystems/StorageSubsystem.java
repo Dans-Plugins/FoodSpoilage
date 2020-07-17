@@ -44,6 +44,12 @@ public class StorageSubsystem {
     public int Nether_Wart = 168;
     public int Melon_Slice = 24;
 
+    public int Cake = 24;
+    public int Pumpkin_Pie = 24;
+    public int Sugar = 72;
+    public int Egg = 72;
+    public int Sugar_Cane = 48;
+
     public StorageSubsystem(Main plugin) {
         main = plugin;
     }
@@ -96,6 +102,11 @@ public class StorageSubsystem {
             saveWriter.write("Red_Mushroom: " + Red_Mushroom + " hours\n");
             saveWriter.write("Nether_Wart: " + Nether_Wart + " hours\n");
             saveWriter.write("Melon_Slice: " + Melon_Slice + " hours\n");
+            saveWriter.write("Cake: " + Cake + " hours\n");
+            saveWriter.write("Pumpkin_Pie: " + Pumpkin_Pie + " hours\n");
+            saveWriter.write("Sugar: " + Sugar + " hours\n");
+            saveWriter.write("Egg: " + Egg + " hours\n");
+            saveWriter.write("Sugar_Cane: " + Sugar_Cane + " hours\n");
 
             saveWriter.close();
 
@@ -335,6 +346,41 @@ public class StorageSubsystem {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
                     Melon_Slice = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Cake = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Pumpkin_Pie = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Sugar = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Egg = value;
+                }
+            }
+
+            if (loadReader.hasNextLine()) {
+                value = getValueFromConfigLine(loadReader.nextLine());
+                if (value != -1) {
+                    Sugar_Cane = value;
                 }
             }
 
