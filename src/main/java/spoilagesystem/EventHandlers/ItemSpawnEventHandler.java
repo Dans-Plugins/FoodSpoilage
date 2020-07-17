@@ -115,10 +115,6 @@ public class ItemSpawnEventHandler {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Chorus_Fruit));
         }
 
-        if (event.getEntity().getItemStack().getType() == Material.DRIED_KELP) {
-            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Dried_Kelp));
-        }
-
     }
 
 }
