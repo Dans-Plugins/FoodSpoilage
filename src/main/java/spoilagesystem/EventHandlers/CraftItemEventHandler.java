@@ -34,6 +34,21 @@ public class CraftItemEventHandler {
             event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Beetroot_Soup));
         }
 
+        if (event.getCurrentItem().getType() == Material.CAKE) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Cake));
+        }
+
+        if (event.getCurrentItem().getType() == Material.PUMPKIN_PIE) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Pumpkin_Pie));
+        }
+
+        if (event.getCurrentItem().getType() == Material.SUGAR) {
+            cancelIfShiftClick(event);
+            event.setCurrentItem(main.timestamp.assignTimeStamp(event.getCurrentItem(), main.storage.Sugar));
+        }
+
     }
 
     public void cancelIfShiftClick(CraftItemEvent event) {

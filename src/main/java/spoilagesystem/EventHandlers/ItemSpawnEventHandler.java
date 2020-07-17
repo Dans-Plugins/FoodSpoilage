@@ -95,6 +95,14 @@ public class ItemSpawnEventHandler {
             event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Melon_Slice));
         }
 
+        if (event.getEntity().getItemStack().getType() == Material.EGG) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Egg));
+        }
+
+        if (event.getEntity().getItemStack().getType() == Material.SUGAR_CANE) {
+            event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Sugar_Cane));
+        }
+
 
     }
 
