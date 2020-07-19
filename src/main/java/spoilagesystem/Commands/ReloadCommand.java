@@ -18,10 +18,10 @@ public class ReloadCommand {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
                 main.storage.loadValuesFromConfig();
-                player.sendMessage(ChatColor.GREEN + "Values loaded!");
+                player.sendMessage(ChatColor.GREEN + "" + main.storage.valuesLoadedText);
             }
             else {
-                player.sendMessage(ChatColor.RED + "Sorry! In order to use this command you need the following permission: 'fs.reload'");
+                player.sendMessage(ChatColor.RED + "" + main.storage.noPermsText + ": 'fs.reload'");
             }
         }
         else {
