@@ -29,7 +29,7 @@ public class TimeStampSubsystem {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.WHITE + main.storage.createdText);
+        lore.add(ChatColor.WHITE + "" + main.storage.createdText);
         lore.add(ChatColor.WHITE + "" + getDateString());
         lore.add("");
         lore.add(ChatColor.WHITE + "" + main.storage.expiryDateText);
@@ -75,7 +75,7 @@ public class TimeStampSubsystem {
 
             if (lore != null) {
                 for (String string : lore) {
-                    if (string.equalsIgnoreCase(ChatColor.WHITE + "" + main.storage.expiryDateText + ":")) {
+                    if (string.equalsIgnoreCase(ChatColor.WHITE + "" + main.storage.expiryDateText)) {
                         System.out.println("Debug] Time stamp is already assigned to this item!");
                         return true;
                     }
