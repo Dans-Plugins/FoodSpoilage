@@ -1,5 +1,5 @@
 name: FoodSpoilage
-version: 1.6
+version: 1.7
 author: DanTheTechMan
 main: spoilagesystem.Main
 api-version: 1.13
