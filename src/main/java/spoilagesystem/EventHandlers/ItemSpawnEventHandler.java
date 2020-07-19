@@ -17,6 +17,7 @@ public class ItemSpawnEventHandler {
 
         // if timestamp not already assigned
         if (!main.timestamp.timeStampAssigned(event.getEntity().getItemStack())) {
+
             if (event.getEntity().getItemStack().getType() == Material.POTATO && main.storage.Potato != 0) {
                 event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Potato));
             }
