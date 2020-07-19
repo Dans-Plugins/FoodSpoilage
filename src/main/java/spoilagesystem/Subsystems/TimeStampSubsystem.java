@@ -76,13 +76,13 @@ public class TimeStampSubsystem {
             if (lore != null) {
                 for (String string : lore) {
                     if (string.equalsIgnoreCase(ChatColor.WHITE + "" + main.storage.expiryDateText)) {
-                        System.out.println("Debug] Time stamp is already assigned to this item!");
+//                        System.out.println("Debug] Time stamp is already assigned to this item!");
                         return true;
                     }
                 }
             }
         }
-        System.out.println("[Debug] Time stamp is not yet applied to this item!");
+//        System.out.println("[Debug] Time stamp is not yet applied to this item!");
         return false;
     }
 
