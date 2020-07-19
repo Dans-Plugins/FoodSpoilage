@@ -29,10 +29,10 @@ public class TimeStampSubsystem {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        lore.add(ChatColor.WHITE + main.storage.createdText + ":");
+        lore.add(ChatColor.WHITE + main.storage.createdText);
         lore.add(ChatColor.WHITE + "" + getDateString());
         lore.add("");
-        lore.add(ChatColor.WHITE + "" + main.storage.expiryDateText + ":");
+        lore.add(ChatColor.WHITE + "" + main.storage.expiryDateText);
         lore.add(ChatColor.WHITE + "" + getDateStringPlusTime(hoursUntilSpoilage));
 
         meta.setLore(lore);

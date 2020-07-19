@@ -22,7 +22,7 @@ public class ReloadCommand {
                 player.sendMessage(ChatColor.GREEN + "" + main.storage.valuesLoadedText);
             }
             else {
-                player.sendMessage(ChatColor.RED + "" + main.storage.noPermsText + ": 'fs.reload'");
+                player.sendMessage(ChatColor.RED + "" + main.storage.noPermsText);
             }
         }
         else {

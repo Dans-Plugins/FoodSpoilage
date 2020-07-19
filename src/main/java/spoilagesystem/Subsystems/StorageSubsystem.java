@@ -55,10 +55,10 @@ public class StorageSubsystem {
     public int Dried_Kelp = 72;
     public int Baked_Potato = 94;
 
-    public String createdText = "Created";
-    public String expiryDateText = "Expiry Date";
+    public String createdText = "Created:";
+    public String expiryDateText = "Expiry Date:";
     public String valuesLoadedText = "Values Loaded!";
-    public String noPermsText = "Sorry! In order to use this command, you need the following permission";
+    public String noPermsText = "Sorry! In order to use this command, you need the following permission: 'fs.reload'";
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
