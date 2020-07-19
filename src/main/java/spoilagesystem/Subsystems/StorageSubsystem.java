@@ -478,6 +478,63 @@ public class StorageSubsystem {
         return false;
     }
 
+    public void saveCustomText() {
+        try {
+            File saveFolder = new File("./plugins/Food-Spoilage/");
+            if (!saveFolder.exists()) {
+                saveFolder.mkdir();
+            }
+            File saveFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-text.txt");
+            if (saveFile.createNewFile()) {
+                System.out.println("Save file for food spoilage text created.");
+            } else {
+                System.out.println("Save file for food spoilage text already exists. Overwriting.");
+            }
+
+            FileWriter saveWriter = new FileWriter(saveFile);
+
+            // actual saving takes place here
+            saveWriter.write(createdText + "\n");
+            saveWriter.write(expiryDateText + "\n");
+            saveWriter.write(valuesLoadedText + "\n");
+            saveWriter.write(noPermsText + "\n");
+
+            saveWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving food spoilage text.");
+        }
+    }
+
+    public void loadCustomText() {
+        try {
+            System.out.println("Attempting to load food spoilage text...");
+            File loadFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-text.txt");
+            Scanner loadReader = new Scanner(loadFile);
+
+            // actual loading
+
+            if (loadReader.hasNextLine()) {
+                createdText = loadReader.nextLine();
+            }
+            if (loadReader.hasNextLine()) {
+                expiryDateText = loadReader.nextLine();
+            }
+            if (loadReader.hasNextLine()) {
+                valuesLoadedText = loadReader.nextLine();
+            }
+            if (loadReader.hasNextLine()) {
+                noPermsText = loadReader.nextLine();
+            }
+
+
+            loadReader.close();
+            System.out.println("Food spoilage text successfully loaded.");
+        } catch (FileNotFoundException e) {
+            System.out.println("There was a problem loading the food spoilage text!");
+        }
+    }
+
 
 
 

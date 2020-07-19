@@ -28,11 +28,13 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         if (!storage.foodSpoilageFolderExists()) {
+            System.out.println("Creating default files");
             storage.saveValuesToConfig();
-            System.out.println("Creating default food-spoilage-times.txt file");
+            storage.saveCustomText();
         }
         else {
             storage.loadValuesFromConfig();
+            storage.loadCustomText();
         }
         this.getServer().getPluginManager().registerEvents(this, this);
     }
@@ -40,6 +42,7 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         storage.saveValuesToConfig();
+        storage.saveCustomText();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
