@@ -69,15 +69,19 @@ public class TimeStampSubsystem {
     public boolean timeStampAssigned(ItemStack item) {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
+            assert meta != null;
+            if (meta.hasLore()) {
+                List<String> lore = meta.getLore();
 
-            List<String> lore = meta.getLore();
-
-            if (lore.toString().contains(main.storage.expiryDateText)) {
-//                System.out.println("Debug] Time stamp is already assigned to this item!");
-                return true;
+                assert lore != null;
+                if (lore.toString().contains(main.storage.expiryDateText)) {
+                System.out.println("Debug] Time stamp is already assigned to this item!");
+                    return true;
+                }
             }
+
         }
-//        System.out.println("[Debug] Time stamp is not yet applied to this item!");
+        System.out.println("[Debug] Time stamp is not yet applied to this item!");
         return false;
     }
 
