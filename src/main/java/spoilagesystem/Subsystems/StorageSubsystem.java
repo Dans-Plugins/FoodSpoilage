@@ -59,6 +59,8 @@ public class StorageSubsystem {
     public String expiryDateText = "Expiry Date:";
     public String valuesLoadedText = "Values Loaded!";
     public String noPermsText = "Sorry! In order to use this command, you need the following permission: 'fs.reload'";
+    public String spoiledFoodName = "Spoiled Food";
+    public String spoiledFoodLore = "This food has gone bad.";
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
@@ -498,6 +500,8 @@ public class StorageSubsystem {
             saveWriter.write(expiryDateText + "\n");
             saveWriter.write(valuesLoadedText + "\n");
             saveWriter.write(noPermsText + "\n");
+            saveWriter.write(spoiledFoodName + "\n");
+            saveWriter.write(spoiledFoodLore + "\n");
 
             saveWriter.close();
 
@@ -525,6 +529,12 @@ public class StorageSubsystem {
             }
             if (loadReader.hasNextLine()) {
                 noPermsText = loadReader.nextLine();
+            }
+            if (loadReader.hasNextLine()) {
+                spoiledFoodName = loadReader.nextLine();
+            }
+            if (loadReader.hasNextLine()) {
+                spoiledFoodLore = loadReader.nextLine();
             }
 
 

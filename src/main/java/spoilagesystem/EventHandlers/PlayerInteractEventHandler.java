@@ -29,9 +29,9 @@ public class PlayerInteractEventHandler {
                         // turn it into rotten flesh
                         ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);
                         ItemMeta meta = spoiledFood.getItemMeta();
-                        meta.setDisplayName("Spoiled Food"); // TODO: add this to custom text
+                        meta.setDisplayName(main.storage.spoiledFoodName);
                         List<String> lore = new ArrayList<>();
-                        lore.add(ChatColor.WHITE + "This food has gone bad."); // TODO: add this to custom text
+                        lore.add(ChatColor.WHITE + main.storage.spoiledFoodLore);
                         meta.setLore(lore);
                         spoiledFood.setItemMeta(meta);
                         event.getPlayer().getInventory().setItemInMainHand(spoiledFood);
