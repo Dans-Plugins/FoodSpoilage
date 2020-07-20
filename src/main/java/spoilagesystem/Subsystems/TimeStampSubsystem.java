@@ -75,13 +75,13 @@ public class TimeStampSubsystem {
 
                 assert lore != null;
                 if (lore.toString().contains(main.storage.expiryDateText)) {
-                System.out.println("Debug] Time stamp is already assigned to this item!");
+//                System.out.println("Debug] Time stamp is already assigned to this item!");
                     return true;
                 }
             }
 
         }
-        System.out.println("[Debug] Time stamp is not yet applied to this item!");
+//        System.out.println("[Debug] Time stamp is not yet applied to this item!");
         return false;
     }
 
