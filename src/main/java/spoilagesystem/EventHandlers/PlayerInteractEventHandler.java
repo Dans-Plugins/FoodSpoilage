@@ -31,7 +31,7 @@ public class PlayerInteractEventHandler {
                         ItemMeta meta = spoiledFood.getItemMeta();
                         meta.setDisplayName(main.storage.spoiledFoodName);
                         List<String> lore = new ArrayList<>();
-                        lore.add(ChatColor.WHITE + main.storage.spoiledFoodLore);
+                        lore.add(ChatColor.WHITE + "" + main.storage.spoiledFoodLore);
                         meta.setLore(lore);
                         spoiledFood.setItemMeta(meta);
                         event.getPlayer().getInventory().setItemInMainHand(spoiledFood);
