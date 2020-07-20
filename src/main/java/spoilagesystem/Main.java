@@ -4,15 +4,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import spoilagesystem.EventHandlers.CraftItemEventHandler;
-import spoilagesystem.EventHandlers.PlayerInteractEventHandler;
-import spoilagesystem.EventHandlers.FurnaceSmeltEventHandler;
-import spoilagesystem.EventHandlers.ItemSpawnEventHandler;
+import spoilagesystem.EventHandlers.*;
 import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
@@ -78,6 +76,12 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler()
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
         FurnaceSmeltEventHandler handler = new FurnaceSmeltEventHandler(this);
+        handler.handle(event);
+    }
+
+    @EventHandler()
+    public void onBlockCook(BlockCookEvent event) {
+        BlockCookEventHandler handler = new BlockCookEventHandler(this);
         handler.handle(event);
     }
 }

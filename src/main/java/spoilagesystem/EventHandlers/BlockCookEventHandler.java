@@ -1,19 +1,19 @@
 package spoilagesystem.EventHandlers;
 
 import org.bukkit.Material;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.Main;
 
-public class FurnaceSmeltEventHandler {
+public class BlockCookEventHandler {
 
     Main main = null;
 
-    public FurnaceSmeltEventHandler(Main plugin) {
+    public BlockCookEventHandler(Main plugin) {
         main = plugin;
     }
 
-    public void handle(FurnaceSmeltEvent event) {
+    public void handle(BlockCookEvent event) {
 
         ItemStack item = event.getResult();
         Material type = item.getType();
