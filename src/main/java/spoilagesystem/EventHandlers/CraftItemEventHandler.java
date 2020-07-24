@@ -5,6 +5,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.Main;
 
+import static org.bukkit.Material.*;
+
 public class CraftItemEventHandler {
 
     Main main = null;
@@ -18,44 +20,44 @@ public class CraftItemEventHandler {
         ItemStack item = event.getCurrentItem();
         Material type = item.getType();
 
-        if (type == Material.BREAD && main.storage.Bread != 0) {
+        if (type == BREAD && main.storage.getTime(BREAD) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Bread));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(BREAD)));
         }
 
-        if (type == Material.MUSHROOM_STEW && main.storage.Mushroom_Stew != 0) {
+        if (type == Material.MUSHROOM_STEW && main.storage.getTime(MUSHROOM_STEM) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Mushroom_Stew));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(MUSHROOM_STEM)));
         }
 
-        if (type == Material.RABBIT_STEW && main.storage.Rabbit_Stew != 0) {
+        if (type == Material.RABBIT_STEW && main.storage.getTime(RABBIT_STEW) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Rabbit_Stew));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(RABBIT_STEW)));
         }
 
-        if (type == Material.BEETROOT_SOUP && main.storage.Beetroot_Soup != 0) {
+        if (type == Material.BEETROOT_SOUP && main.storage.getTime(BEETROOT_SOUP) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Beetroot_Soup));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(BEETROOT_SOUP)));
         }
 
-        if (type == Material.CAKE && main.storage.Cake != 0) {
+        if (type == Material.CAKE && main.storage.getTime(CAKE) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Cake));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(CAKE)));
         }
 
-        if (type == Material.PUMPKIN_PIE && main.storage.Pumpkin_Pie != 0) {
+        if (type == Material.PUMPKIN_PIE && main.storage.getTime(PUMPKIN_PIE) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Pumpkin_Pie));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(PUMPKIN_PIE)));
         }
 
-        if (type == Material.SUGAR && main.storage.Sugar != 0) {
+        if (type == Material.SUGAR && main.storage.getTime(SUGAR) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Sugar));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(SUGAR)));
         }
 
-        if (type == Material.COOKIE && main.storage.Cookie != 0) {
+        if (type == Material.COOKIE && main.storage.getTime(COOKIE) != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.Cookie));
+            event.setCurrentItem(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKIE)));
         }
 
     }
