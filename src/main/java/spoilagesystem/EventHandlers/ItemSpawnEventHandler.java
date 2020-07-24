@@ -6,6 +6,9 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.Main;
 
+import static org.bukkit.Material.*;
+import static org.bukkit.Material.DRIED_KELP;
+
 public class ItemSpawnEventHandler {
 
     Main main = null;
@@ -22,128 +25,136 @@ public class ItemSpawnEventHandler {
         // if timestamp not already assigned
         if (!main.timestamp.timeStampAssigned(event.getEntity().getItemStack())) {
 
-            if (type == Material.POTATO && main.storage.Potato != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.Potato));
+            if (type == Material.POTATO && main.storage.getTime(POTATO) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(event.getEntity().getItemStack(), main.storage.getTime(POTATO)));
             }
 
-            if (type == Material.CARROT && main.storage.Carrot != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Carrot));
+            if (type == Material.CARROT && main.storage.getTime(CARROT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(CARROT)));
             }
 
-            if (type == Material.BEETROOT && main.storage.Beetroot != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Beetroot));
+            if (type == Material.BEETROOT && main.storage.getTime(BEETROOT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(BEETROOT)));
             }
 
-            if (type == Material.BEEF && main.storage.Beef != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Beef));
+            if (type == Material.BEEF && main.storage.getTime(BEEF) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(BEEF)));
             }
 
-            if (type == Material.PORKCHOP && main.storage.Porkchop != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Porkchop));
+            if (type == Material.PORKCHOP && main.storage.getTime(PORKCHOP) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(PORKCHOP)));
             }
 
-            if (type == Material.CHICKEN && main.storage.Chicken != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Chicken));
+            if (type == Material.CHICKEN && main.storage.getTime(CHICKEN) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(CHICKEN)));
             }
 
-            if (type == Material.COD && main.storage.Cod != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cod));
+            if (type == Material.COD && main.storage.getTime(COD) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COD)));
             }
 
-            if (type == Material.SALMON && main.storage.Salmon != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Salmon));
+            if (type == Material.SALMON && main.storage.getTime(SALMON) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(SALMON)));
             }
 
-            if (type == Material.MUTTON && main.storage.Mutton != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Mutton));
+            if (type == Material.MUTTON && main.storage.getTime(MUTTON) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(MUTTON)));
             }
 
-            if (type == Material.RABBIT && main.storage.Rabbit != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Rabbit));
+            if (type == Material.RABBIT && main.storage.getTime(RABBIT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(RABBIT)));
             }
 
-            if (type == Material.TROPICAL_FISH && main.storage.Tropical_Fish != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Tropical_Fish));
+            if (type == Material.TROPICAL_FISH && main.storage.getTime(TROPICAL_FISH) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(TROPICAL_FISH)));
             }
 
-            if (type == Material.PUFFERFISH && main.storage.Pufferfish != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Pufferfish));
+            if (type == Material.PUFFERFISH && main.storage.getTime(PUFFERFISH) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(PUFFERFISH)));
             }
 
-            if (type == Material.WHEAT && main.storage.Wheat != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Wheat));
+            if (type == Material.WHEAT && main.storage.getTime(WHEAT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(WHEAT)));
             }
 
-            if (type == Material.MELON && main.storage.Melon != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Melon));
+            if (type == Material.MELON && main.storage.getTime(MELON) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(MELON)));
             }
 
-            if (type == Material.PUMPKIN && main.storage.Pumpkin != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Pumpkin));
+            if (type == Material.PUMPKIN && main.storage.getTime(PUMPKIN) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(PUMPKIN)));
             }
 
-            if (type == Material.BROWN_MUSHROOM && main.storage.Brown_Mushroom != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Brown_Mushroom));
+            if (type == Material.BROWN_MUSHROOM && main.storage.getTime(BROWN_MUSHROOM) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(BROWN_MUSHROOM)));
             }
 
-            if (type == Material.RED_MUSHROOM && main.storage.Red_Mushroom != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Red_Mushroom));
+            if (type == Material.RED_MUSHROOM && main.storage.getTime(RED_MUSHROOM) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(RED_MUSHROOM)));
             }
 
-            if (type == Material.NETHER_WART && main.storage.Nether_Wart != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Nether_Wart));
+            if (type == Material.NETHER_WART && main.storage.getTime(NETHER_WART) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(NETHER_WART)));
             }
 
-            if (type == Material.MELON_SLICE && main.storage.Melon_Slice != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Melon_Slice));
+            if (type == Material.MELON_SLICE && main.storage.getTime(MELON_SLICE) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(MELON_SLICE)));
             }
 
-            if (type == Material.EGG && main.storage.Egg != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Egg));
+            if (type == Material.EGG && main.storage.getTime(EGG) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(EGG)));
             }
 
-            if (type == Material.SUGAR_CANE && main.storage.Sugar_Cane != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Sugar_Cane));
+            if (type == Material.SUGAR_CANE && main.storage.getTime(SUGAR_CANE) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(SUGAR_CANE)));
             }
 
-            if (type == Material.APPLE && main.storage.Apple != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Apple));
+            if (type == Material.APPLE && main.storage.getTime(APPLE) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(APPLE)));
             }
 
-            if (type == Material.POISONOUS_POTATO && main.storage.Poisonous_Potato != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Poisonous_Potato));
+            if (type == Material.POISONOUS_POTATO && main.storage.getTime(POISONOUS_POTATO) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(POISONOUS_POTATO)));
             }
 
-            if (type == Material.CHORUS_FRUIT && main.storage.Chorus_Fruit != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Chorus_Fruit));
+            if (type == Material.CHORUS_FRUIT && main.storage.getTime(CHORUS_FRUIT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(CHORUS_FRUIT)));
             }
 
-            if (type == Material.COOKED_BEEF && main.storage.Cooked_Beef != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Beef));
+            if (type == COOKED_BEEF && main.storage.getTime(COOKED_BEEF) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_BEEF)));
             }
 
-            if (type == Material.COOKED_PORKCHOP && main.storage.Cooked_Porkchop != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Porkchop));
+            if (type == COOKED_PORKCHOP && main.storage.getTime(COOKED_PORKCHOP) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_PORKCHOP)));
             }
 
-            if (type == Material.COOKED_CHICKEN && main.storage.Cooked_Chicken != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Chicken));
+            if (type == COOKED_CHICKEN && main.storage.getTime(COOKED_CHICKEN) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_CHICKEN)));
             }
 
-            if (type == Material.COOKED_SALMON && main.storage.Cooked_Salmon != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Salmon));
+            if (type == Material.COOKED_SALMON && main.storage.getTime(COOKED_SALMON) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_SALMON)));
             }
 
-            if (type == Material.COOKED_MUTTON && main.storage.Cooked_Mutton != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Mutton));
+            if (type == Material.COOKED_MUTTON && main.storage.getTime(COOKED_MUTTON) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_MUTTON)));
             }
 
-            if (type == Material.COOKED_RABBIT && main.storage.Cooked_Rabbit != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Rabbit));
+            if (type == Material.COOKED_RABBIT && main.storage.getTime(COOKED_RABBIT) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_RABBIT)));
             }
 
-            if (type == Material.COOKED_COD && main.storage.Cooked_Cod != 0) {
-                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.Cooked_Cod));
+            if (type == Material.COOKED_COD && main.storage.getTime(COOKED_COD) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_COD)));
+            }
+
+            if (type == Material.BAKED_POTATO && main.storage.getTime(BAKED_POTATO) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(BAKED_POTATO)));
+            }
+
+            if (type == Material.DRIED_KELP && main.storage.getTime(DRIED_KELP) != 0) {
+                event.getEntity().setItemStack(main.timestamp.assignTimeStamp(item, main.storage.getTime(DRIED_KELP)));
             }
         }
 
