@@ -1,5 +1,6 @@
 package spoilagesystem.Subsystems;
 
+import org.bukkit.Material;
 import spoilagesystem.Main;
 
 import java.io.File;
@@ -13,47 +14,47 @@ public class StorageSubsystem {
     Main main = null;
 
     // values
-    public int Bread = 24;
-    public int Potato = 48;
-    public int Carrot = 48;
-    public int Beetroot = 48;
-    public int Beef = 24;
-    public int Porkchop = 24;
-    public int Chicken = 24;
-    public int Cod = 24;
-    public int Salmon = 24;
-    public int Mutton = 24;
-    public int Rabbit = 24;
-    public int Tropical_Fish = 24;
-    public int Pufferfish = 24;
-    public int Mushroom_Stew = 72;
-    public int Rabbit_Stew = 96;
-    public int Beetroot_Soup = 72;
-    public int Cooked_Beef = 72;
-    public int Cooked_Porkchop = 72;
-    public int Cooked_Chicken = 72;
-    public int Cooked_Salmon = 72;
-    public int Cooked_Mutton = 72;
-    public int Cooked_Rabbit = 72;
-    public int Cooked_Cod = 72;
-    public int Wheat = 48;
-    public int Melon = 48;
-    public int Pumpkin = 48;
-    public int Brown_Mushroom = 48;
-    public int Red_Mushroom = 48;
-    public int Nether_Wart = 168;
-    public int Melon_Slice = 24;
-    public int Cake = 24;
-    public int Pumpkin_Pie = 24;
-    public int Sugar = 72;
-    public int Egg = 72;
-    public int Sugar_Cane = 48;
-    public int Apple = 48;
-    public int Cookie = 94;
-    public int Poisonous_Potato = 24;
-    public int Chorus_Fruit = 94;
-    public int Dried_Kelp = 72;
-    public int Baked_Potato = 94;
+    private int Bread = 24;
+    private int Potato = 48;
+    private int Carrot = 48;
+    private int Beetroot = 48;
+    private int Beef = 24;
+    private int Porkchop = 24;
+    private int Chicken = 24;
+    private int Cod = 24;
+    private int Salmon = 24;
+    private int Mutton = 24;
+    private int Rabbit = 24;
+    private int Tropical_Fish = 24;
+    private int Pufferfish = 24;
+    private int Mushroom_Stew = 72;
+    private int Rabbit_Stew = 96;
+    private int Beetroot_Soup = 72;
+    private int Cooked_Beef = 72;
+    private int Cooked_Porkchop = 72;
+    private int Cooked_Chicken = 72;
+    private int Cooked_Salmon = 72;
+    private int Cooked_Mutton = 72;
+    private int Cooked_Rabbit = 72;
+    private int Cooked_Cod = 72;
+    private int Wheat = 48;
+    private int Melon = 48;
+    private int Pumpkin = 48;
+    private int Brown_Mushroom = 48;
+    private int Red_Mushroom = 48;
+    private int Nether_Wart = 168;
+    private int Melon_Slice = 24;
+    private int Cake = 24;
+    private int Pumpkin_Pie = 24;
+    private int Sugar = 72;
+    private int Egg = 72;
+    private int Sugar_Cane = 48;
+    private int Apple = 48;
+    private int Cookie = 94;
+    private int Poisonous_Potato = 24;
+    private int Chorus_Fruit = 94;
+    private int Dried_Kelp = 72;
+    private int Baked_Potato = 94;
 
     public String createdText = "Created:";
     public String expiryDateText = "Expiry Date:";
@@ -64,6 +65,92 @@ public class StorageSubsystem {
 
     public StorageSubsystem(Main plugin) {
         main = plugin;
+    }
+
+    public int getTime(Material type) {
+        switch(type) {
+            case BREAD:
+                return Bread;
+            case POTATO:
+                return Potato;
+            case CARROT:
+                return Carrot;
+            case BEETROOT:
+                return Beetroot;
+            case BEEF:
+                return Beef;
+            case PORKCHOP:
+                return Porkchop;
+            case CHICKEN:
+                return Chicken;
+            case COD:
+                return Cod;
+            case SALMON:
+                return Salmon;
+            case MUTTON:
+                return Mutton;
+            case RABBIT:
+                return Rabbit;
+            case TROPICAL_FISH:
+                return Tropical_Fish;
+            case PUFFERFISH:
+                return Pufferfish;
+            case MUSHROOM_STEW:
+                return Mushroom_Stew;
+            case RABBIT_STEW:
+                return Rabbit_Stew;
+            case BEETROOT_SOUP:
+                return Beetroot_Soup;
+            case COOKED_BEEF:
+                return Cooked_Beef;
+            case COOKED_PORKCHOP:
+                return Cooked_Porkchop;
+            case COOKED_CHICKEN:
+                return Cooked_Chicken;
+            case COOKED_SALMON:
+                return Cooked_Salmon;
+            case COOKED_MUTTON:
+                return Cooked_Mutton;
+            case COOKED_COD:
+                return Cooked_Cod;
+            case WHEAT:
+                return Wheat;
+            case MELON:
+                return Melon;
+            case PUMPKIN:
+                return Pumpkin;
+            case BROWN_MUSHROOM:
+                return Brown_Mushroom;
+            case RED_MUSHROOM:
+                return Red_Mushroom;
+            case NETHER_WART:
+                return Nether_Wart;
+            case MELON_SLICE:
+                return Melon_Slice;
+            case CAKE:
+                return Cake;
+            case PUMPKIN_PIE:
+                return Pumpkin_Pie;
+            case SUGAR:
+                return Sugar;
+            case EGG:
+                return Egg;
+            case SUGAR_CANE:
+                return Sugar_Cane;
+            case APPLE:
+                return Apple;
+            case COOKIE:
+                return Cookie;
+            case POISONOUS_POTATO:
+                return Poisonous_Potato;
+            case CHORUS_FRUIT:
+                return Chorus_Fruit;
+            case DRIED_KELP:
+                return Dried_Kelp;
+            case BAKED_POTATO:
+                return Baked_Potato;
+        }
+        return 0;
     }
 
     public void saveValuesToConfig() {
