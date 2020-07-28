@@ -169,7 +169,25 @@ public class StorageSubsystem {
 
             // save config
             saveConfigDefaults();
+
+            // delete old directory
+            File oldFolder = new File("./plugins/Food-Spoilage/");
+            deleteLegacyFiles(oldFolder);
         }
+    }
+
+    // Recursive file delete from https://www.baeldung.com/java-delete-directory
+    boolean deleteLegacyFiles(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteLegacyFiles(file);
+            }
+        }
+        if (directoryToBeDeleted.getAbsolutePath().contains("config.yml")){
+            return true;
+        }
+        return directoryToBeDeleted.delete();
     }
 
     public void handleVersionMismatch() {
