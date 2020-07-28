@@ -154,22 +154,22 @@ public class StorageSubsystem {
     }
 
     public void ensureSmoothTransitionBetweenVersions() {
-
-        File loadFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt");
+        File saveFolder = new File("./plugins/Food-Spoilage/");
 
         // if old save files present
-        if (loadFile.exists()) {
+        if (saveFolder.exists()) {
+            System.out.println("[ALERT] Old save folder name (pre v1.9) detected. Updating for compatibility.");
             // legacy load
             legacyLoadValuesFromConfig();
             legacyLoadCustomText();
 
+            // rename directory
+            File newSaveFolder = new File("./plugins/MedievalFactions/");
+            saveFolder.renameTo(newSaveFolder);
+
             // save config
             saveConfigDefaults();
-
-            // delete old files
-            // TODO
         }
-
     }
 
     public void handleVersionMismatch() {
@@ -184,11 +184,11 @@ public class StorageSubsystem {
     private void renameConfigToConfigDotOldAndSaveDefaults() {
 
         // save old config as config.yml.old
-        File saveFile = new File("./plugins/Food-Spoilage/config.yml");
+        File saveFile = new File("./plugins/FoodSpoilage/config.yml");
         if (saveFile.exists()) {
 
             // rename file
-            File newSaveFile = new File("./plugins/Food-Spoilage/config.yml.old");
+            File newSaveFile = new File("./plugins/FoodSpoilage/config.yml.old");
             saveFile.renameTo(newSaveFile);
 
             // save defaults

@@ -30,7 +30,7 @@ public final class Main extends JavaPlugin implements Listener {
         storage.ensureSmoothTransitionBetweenVersions();
 
         // config creation/loading
-        if (!(new File("./plugins/Food-Spoilage/config.yml").exists())) {
+        if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
             storage.saveConfigDefaults();
         }
         else {
