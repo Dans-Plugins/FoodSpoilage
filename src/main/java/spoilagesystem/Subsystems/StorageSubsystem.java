@@ -153,75 +153,60 @@ public class StorageSubsystem {
         return 0;
     }
 
-    public void saveValuesToConfig() {
-        try {
-            File saveFolder = new File("./plugins/Food-Spoilage/");
-            if (!saveFolder.exists()) {
-                saveFolder.mkdir();
-            }
-            File saveFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt");
-            if (saveFile.createNewFile()) {
-                System.out.println("Save file for food spoilage times created.");
-            } else {
-                System.out.println("Save file for food spoilage times already exists. Overwriting.");
-            }
-
-            FileWriter saveWriter = new FileWriter(saveFile);
-
-            // actual saving takes place here
-            saveWriter.write(main.version + "\n");
-            saveWriter.write("== Food Spoilage Times ==\n");
-            saveWriter.write("Bread: " + Bread + " hours\n");
-            saveWriter.write("Potato: " + Potato + " hours\n");
-            saveWriter.write("Carrot: " + Carrot + " hours\n");
-            saveWriter.write("Beetroot: " + Beetroot + " hours\n");
-            saveWriter.write("Beef: " + Beef + " hours\n");
-            saveWriter.write("Porkchop: " + Porkchop + " hours\n");
-            saveWriter.write("Chicken: " + Chicken + " hours\n");
-            saveWriter.write("Cod: " + Cod + " hours\n");
-            saveWriter.write("Salmon: " + Salmon + " hours\n");
-            saveWriter.write("Mutton: " + Mutton + " hours\n");
-            saveWriter.write("Rabbit: " + Rabbit + " hours\n");
-            saveWriter.write("Tropical_Fish: " + Tropical_Fish + " hours\n");
-            saveWriter.write("Pufferfish: " + Pufferfish + " hours\n");
-            saveWriter.write("Mushroom_Stew: " + Mushroom_Stew + " hours\n");
-            saveWriter.write("Rabbit_Stew: " + Rabbit_Stew + " hours\n");
-            saveWriter.write("Beetroot_Soup: " + Beetroot_Soup + " hours\n");
-            saveWriter.write("Cooked_Beef: " + Cooked_Beef + " hours\n");
-            saveWriter.write("Cooked_Porkchop: " + Cooked_Porkchop + " hours\n");
-            saveWriter.write("Cooked_Chicken: " + Cooked_Chicken + " hours\n");
-            saveWriter.write("Cooked_Salmon: " + Cooked_Salmon + " hours\n");
-            saveWriter.write("Cooked_Mutton: " + Cooked_Mutton + " hours\n");
-            saveWriter.write("Cooked_Rabbit: " + Cooked_Rabbit + " hours\n");
-            saveWriter.write("Cooked_Cod: " + Cooked_Cod + " hours\n");
-            saveWriter.write("Wheat: " + Wheat + " hours\n");
-            saveWriter.write("Melon: " + Melon + " hours\n");
-            saveWriter.write("Pumpkin: " + Pumpkin + " hours\n");
-            saveWriter.write("Brown_Mushroom: " + Brown_Mushroom + " hours\n");
-            saveWriter.write("Red_Mushroom: " + Red_Mushroom + " hours\n");
-            saveWriter.write("Nether_Wart: " + Nether_Wart + " hours\n");
-            saveWriter.write("Melon_Slice: " + Melon_Slice + " hours\n");
-            saveWriter.write("Cake: " + Cake + " hours\n");
-            saveWriter.write("Pumpkin_Pie: " + Pumpkin_Pie + " hours\n");
-            saveWriter.write("Sugar: " + Sugar + " hours\n");
-            saveWriter.write("Egg: " + Egg + " hours\n");
-            saveWriter.write("Sugar_Cane: " + Sugar_Cane + " hours\n");
-            saveWriter.write("Apple: " + Apple + " hours\n");
-            saveWriter.write("Cookie: " + Cookie + " hours\n");
-            saveWriter.write("Poisonous_Potato: " + Poisonous_Potato + " hours\n");
-            saveWriter.write("Chorus_Fruit: " + Chorus_Fruit + " hours\n");
-            saveWriter.write("Dried_Kelp: " + Dried_Kelp + " hours\n");
-            saveWriter.write("Baked_Potato: " + Baked_Potato + " hours\n");
-
-            saveWriter.close();
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving food spoilage times.");
-        }
-
+    public void saveConfigDefaults() {
+        main.getConfig().addDefault("version", main.version);
+        main.getConfig().addDefault("Bread", Bread);
+        main.getConfig().addDefault("Potato", Potato);
+        main.getConfig().addDefault("Carrot", Carrot);
+        main.getConfig().addDefault("Beetroot", Beetroot);
+        main.getConfig().addDefault("Beef", Beef);
+        main.getConfig().addDefault("Porkchop", Porkchop);
+        main.getConfig().addDefault("Chicken", Chicken);
+        main.getConfig().addDefault("Cod", Cod);
+        main.getConfig().addDefault("Salmon", Salmon);
+        main.getConfig().addDefault("Mutton", Mutton);
+        main.getConfig().addDefault("Rabbit", Rabbit);
+        main.getConfig().addDefault("Tropical_Fish", Tropical_Fish);
+        main.getConfig().addDefault("Pufferfish", Pufferfish);
+        main.getConfig().addDefault("Mushroom_Stew", Mushroom_Stew);
+        main.getConfig().addDefault("Rabbit_Stew", Rabbit_Stew);
+        main.getConfig().addDefault("Beetroot_Soup", Beetroot_Soup);
+        main.getConfig().addDefault("Cooked_Beef", Cooked_Beef);
+        main.getConfig().addDefault("Cooked_Porkchop", Cooked_Porkchop);
+        main.getConfig().addDefault("Cooked_Chicken", Cooked_Chicken);
+        main.getConfig().addDefault("Cooked_Salmon", Cooked_Salmon);
+        main.getConfig().addDefault("Cooked_Mutton", Cooked_Mutton);
+        main.getConfig().addDefault("Cooked_Rabbit", Cooked_Rabbit);
+        main.getConfig().addDefault("Cooked_Cod", Cooked_Cod);
+        main.getConfig().addDefault("Wheat", Wheat);
+        main.getConfig().addDefault("Melon", Melon);
+        main.getConfig().addDefault("Pumpkin", Pumpkin);
+        main.getConfig().addDefault("Brown_Mushroom", Brown_Mushroom);
+        main.getConfig().addDefault("Red_Mushroom", Red_Mushroom);
+        main.getConfig().addDefault("Nether_Wart", Nether_Wart);
+        main.getConfig().addDefault("Melon_Slice", Melon_Slice);
+        main.getConfig().addDefault("Cake", Cake);
+        main.getConfig().addDefault("Pumpkin_Pie", Pumpkin_Pie);
+        main.getConfig().addDefault("Sugar", Sugar);
+        main.getConfig().addDefault("Egg", Egg);
+        main.getConfig().addDefault("Sugar_Cane", Sugar_Cane);
+        main.getConfig().addDefault("Apple", Apple);
+        main.getConfig().addDefault("Cookie", Cookie);
+        main.getConfig().addDefault("Poisonous_Potato", Poisonous_Potato);
+        main.getConfig().addDefault("Chorus_Fruit", Chorus_Fruit);
+        main.getConfig().addDefault("Dried_Kelp", Dried_Kelp);
+        main.getConfig().addDefault("Baked_Potato", Baked_Potato);
+        main.getConfig().addDefault("createdText", createdText);
+        main.getConfig().addDefault("expiryDateText", expiryDateText);
+        main.getConfig().addDefault("valuesLoadedText", valuesLoadedText);
+        main.getConfig().addDefault("noPermsText", noPermsText);
+        main.getConfig().addDefault("spoiledFoodName", spoiledFoodName);
+        main.getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
+        main.getConfig().options().copyDefaults(true);
+        main.saveConfig();
     }
 
-    public void loadValuesFromConfig() {
+    public void legacyLoadValuesFromConfig() {
 
         try {
             System.out.println("Attempting to load food spoilage times...");
@@ -567,37 +552,7 @@ public class StorageSubsystem {
         return false;
     }
 
-    public void saveCustomText() {
-        try {
-            File saveFolder = new File("./plugins/Food-Spoilage/");
-            if (!saveFolder.exists()) {
-                saveFolder.mkdir();
-            }
-            File saveFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-text.txt");
-            if (saveFile.createNewFile()) {
-                System.out.println("Save file for food spoilage text created.");
-            } else {
-                System.out.println("Save file for food spoilage text already exists. Overwriting.");
-            }
-
-            FileWriter saveWriter = new FileWriter(saveFile);
-
-            // actual saving takes place here
-            saveWriter.write(createdText + "\n");
-            saveWriter.write(expiryDateText + "\n");
-            saveWriter.write(valuesLoadedText + "\n");
-            saveWriter.write(noPermsText + "\n");
-            saveWriter.write(spoiledFoodName + "\n");
-            saveWriter.write(spoiledFoodLore + "\n");
-
-            saveWriter.close();
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving food spoilage text.");
-        }
-    }
-
-    public void loadCustomText() {
+    public void legacyLoadCustomText() {
         try {
             System.out.println("Attempting to load food spoilage text...");
             File loadFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-text.txt");
@@ -633,6 +588,9 @@ public class StorageSubsystem {
     }
 
 
+    public void handleVersionMismatch() {
+    }
 
-
+    public void ensureSmoothTransitionBetweenVersions() {
+    }
 }

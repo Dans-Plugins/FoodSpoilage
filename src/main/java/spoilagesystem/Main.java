@@ -15,9 +15,11 @@ import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
 
+import java.io.File;
+
 public final class Main extends JavaPlugin implements Listener {
 
-    public String version = "v1.8.1";
+    public String version = "v1.9";
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
@@ -25,22 +27,23 @@ public final class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        if (!storage.foodSpoilageFolderExists()) {
-            System.out.println("Creating default files");
-            storage.saveValuesToConfig();
-            storage.saveCustomText();
+        storage.ensureSmoothTransitionBetweenVersions();
+
+        // config creation/loading
+        if (!(new File("./plugins/Food-Spoilage/config.yml").exists())) {
+            storage.saveConfigDefaults();
         }
         else {
-            storage.loadValuesFromConfig();
-            storage.loadCustomText();
+            storage.handleVersionMismatch();
+            reloadConfig();
         }
+
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 
     @Override
     public void onDisable() {
-        storage.saveValuesToConfig();
-        storage.saveCustomText();
+
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
