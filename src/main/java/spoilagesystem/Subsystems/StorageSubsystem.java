@@ -328,8 +328,11 @@ public class StorageSubsystem {
 
             // actual loading
 
+            // ignore version
+            String temp1 = loadReader.nextLine();
+
             // ignore second line
-            String temp = loadReader.nextLine();
+            String temp2 = loadReader.nextLine();
 
             int value = -1;
             if (loadReader.hasNextLine()) {
