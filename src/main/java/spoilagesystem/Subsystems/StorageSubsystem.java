@@ -328,14 +328,6 @@ public class StorageSubsystem {
 
             // actual loading
 
-            // check version
-            if (!loadReader.nextLine().equalsIgnoreCase(main.version)) {
-                System.out.println("[ALERT] Mismatched version found in './plugins/Food-Spoilage/food-spoilage-times.txt'!");
-                System.out.println("[ALERT] Values will not be loaded. Defaults will be used.");
-                System.out.println("[ALERT] To fix this, please delete the following folder: './plugins/Food-Spoilage/'");
-                return;
-            }
-
             // ignore second line
             String temp = loadReader.nextLine();
 
