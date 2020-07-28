@@ -18,7 +18,6 @@ public class ReloadCommand {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
                 main.storage.loadValuesFromConfig();
-                main.storage.loadCustomText();
                 player.sendMessage(ChatColor.GREEN + "" + main.storage.valuesLoadedText);
             }
             else {
@@ -27,7 +26,6 @@ public class ReloadCommand {
         }
         else {
             main.storage.loadValuesFromConfig();
-            main.storage.loadCustomText();
             System.out.println("Values loaded!");
         }
     }

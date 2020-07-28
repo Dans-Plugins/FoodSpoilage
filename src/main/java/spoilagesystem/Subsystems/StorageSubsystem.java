@@ -153,6 +153,51 @@ public class StorageSubsystem {
         return 0;
     }
 
+    public void ensureSmoothTransitionBetweenVersions() {
+
+        File loadFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt");
+
+        // if old save files present
+        if (loadFile.exists()) {
+            // legacy load
+            legacyLoadValuesFromConfig();
+            legacyLoadCustomText();
+
+            // save config
+            saveConfigDefaults();
+
+            // delete old files
+            // TODO
+        }
+
+    }
+
+    public void handleVersionMismatch() {
+
+        if (!main.getConfig().getString("version").equalsIgnoreCase(main.version)) {
+            System.out.println("[ALERT] Verson mismatch! Saving old config as config.yml.old and loading in the default values.");
+            renameConfigToConfigDotOldAndSaveDefaults();
+        }
+
+    }
+
+    private void renameConfigToConfigDotOldAndSaveDefaults() {
+
+        // save old config as config.yml.old
+        File saveFile = new File("./plugins/Food-Spoilage/config.yml");
+        if (saveFile.exists()) {
+
+            // rename file
+            File newSaveFile = new File("./plugins/Food-Spoilage/config.yml.old");
+            saveFile.renameTo(newSaveFile);
+
+            // save defaults
+            saveConfigDefaults();
+
+        }
+
+    }
+
     public void saveConfigDefaults() {
         main.getConfig().addDefault("version", main.version);
         main.getConfig().addDefault("Bread", Bread);
@@ -204,6 +249,56 @@ public class StorageSubsystem {
         main.getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
         main.getConfig().options().copyDefaults(true);
         main.saveConfig();
+    }
+
+    public void loadValuesFromConfig() {
+        Bread = main.getConfig().getInt("Bread");
+        Potato = main.getConfig().getInt("Potato");
+        Carrot = main.getConfig().getInt("Carrot");
+        Beetroot = main.getConfig().getInt("Beetroot");
+        Beef = main.getConfig().getInt("Beef");
+        Porkchop = main.getConfig().getInt("Porkchop");
+        Chicken = main.getConfig().getInt("Porkchop");
+        Cod = main.getConfig().getInt("Cod");
+        Salmon = main.getConfig().getInt("Salmon");
+        Mutton = main.getConfig().getInt("Mutton");
+        Rabbit = main.getConfig().getInt("Rabbit");
+        Tropical_Fish = main.getConfig().getInt("Tropical_Fish");
+        Pufferfish = main.getConfig().getInt("Pufferfish");
+        Mushroom_Stew = main.getConfig().getInt("Mushroom_Stew");
+        Rabbit_Stew = main.getConfig().getInt("Rabbit_Stew");
+        Beetroot_Soup = main.getConfig().getInt("Beetroot_Soup");
+        Cooked_Beef = main.getConfig().getInt("Cooked_Beef");
+        Cooked_Porkchop = main.getConfig().getInt("Cooked_Porkchop");
+        Cooked_Chicken = main.getConfig().getInt("Cooked_Chicken");
+        Cooked_Salmon = main.getConfig().getInt("Cooked_Salmon");
+        Cooked_Mutton = main.getConfig().getInt("Cooked_Mutton");
+        Cooked_Rabbit = main.getConfig().getInt("Cooked_Rabbit");
+        Cooked_Cod = main.getConfig().getInt("Cooked_Cod");
+        Wheat = main.getConfig().getInt("Wheat");
+        Melon = main.getConfig().getInt("Melon");
+        Pumpkin = main.getConfig().getInt("Pumpkin");
+        Brown_Mushroom = main.getConfig().getInt("Brown_Mushroom");
+        Red_Mushroom = main.getConfig().getInt("Red_Mushroom");
+        Nether_Wart = main.getConfig().getInt("Nether_Wart");
+        Melon_Slice = main.getConfig().getInt("Melon_Slice");
+        Cake = main.getConfig().getInt("Cake");
+        Pumpkin_Pie = main.getConfig().getInt("Pumpkin_Pie");
+        Sugar = main.getConfig().getInt("Sugar");
+        Egg = main.getConfig().getInt("Egg");
+        Sugar_Cane = main.getConfig().getInt("Sugar_Cane");
+        Apple = main.getConfig().getInt("Apple");
+        Cookie = main.getConfig().getInt("Cookie");
+        Poisonous_Potato = main.getConfig().getInt("Poisonous_Potato");
+        Chorus_Fruit = main.getConfig().getInt("Chorus_Fruit");
+        Dried_Kelp = main.getConfig().getInt("Dried_Kelp");
+        Baked_Potato = main.getConfig().getInt("Baked_Potato");
+        createdText = main.getConfig().getString("createdText");
+        expiryDateText = main.getConfig().getString("expiryDateText");
+        valuesLoadedText = main.getConfig().getString("valuesLoadedText");
+        noPermsText = main.getConfig().getString("noPermsText");
+        spoiledFoodName = main.getConfig().getString("spoiledFoodName");
+        spoiledFoodLore = main.getConfig().getString("spoiledFoodLore");
     }
 
     public void legacyLoadValuesFromConfig() {
@@ -585,12 +680,5 @@ public class StorageSubsystem {
         } catch (FileNotFoundException e) {
             System.out.println("There was a problem loading the food spoilage text!");
         }
-    }
-
-
-    public void handleVersionMismatch() {
-    }
-
-    public void ensureSmoothTransitionBetweenVersions() {
     }
 }

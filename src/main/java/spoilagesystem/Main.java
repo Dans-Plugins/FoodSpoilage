@@ -38,6 +38,8 @@ public final class Main extends JavaPlugin implements Listener {
             reloadConfig();
         }
 
+        storage.loadValuesFromConfig();
+
         this.getServer().getPluginManager().registerEvents(this, this);
     }
 
