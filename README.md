@@ -25,4 +25,4 @@ A minecraft plugin to make food go bad.
 - 1.6 'Toggle' update
 - 1.7 'Custom Text' update
 - 1.8 'Campfires' update
-- 1.9
+- 1.9 'Config.yml' update
