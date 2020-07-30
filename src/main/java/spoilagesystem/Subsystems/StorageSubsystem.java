@@ -163,16 +163,11 @@ public class StorageSubsystem {
             legacyLoadValuesFromConfig();
             legacyLoadCustomText();
 
-            // rename directory
-            File newSaveFolder = new File("./plugins/FoodSpoilage/");
-            saveFolder.renameTo(newSaveFolder);
-
             // save config
             saveConfigDefaults();
 
             // delete old directory
-            File oldFolder = new File("./plugins/Food-Spoilage/");
-            deleteLegacyFiles(oldFolder);
+            deleteLegacyFiles(saveFolder);
         }
     }
 
