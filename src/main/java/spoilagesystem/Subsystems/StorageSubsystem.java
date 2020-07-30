@@ -164,7 +164,7 @@ public class StorageSubsystem {
             legacyLoadCustomText();
 
             // rename directory
-            File newSaveFolder = new File("./plugins/MedievalFactions/");
+            File newSaveFolder = new File("./plugins/FoodSpoilage/");
             saveFolder.renameTo(newSaveFolder);
 
             // save config
