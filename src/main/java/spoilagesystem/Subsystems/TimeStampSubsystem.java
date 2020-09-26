@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 public class TimeStampSubsystem {
 
     Main main = null;
@@ -26,17 +27,19 @@ public class TimeStampSubsystem {
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
 
-        List<String> lore = new ArrayList<>();
+        if (meta != null) {
+            meta.setLore(asList(
+                    "",
+                    ChatColor.WHITE + main.storage.createdText,
+                    ChatColor.WHITE + getDateString(),
+                    "",
+                    ChatColor.WHITE + main.storage.expiryDateText,
+                    ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
+            ));
 
-        lore.add("");
-        lore.add(ChatColor.WHITE + "" + main.storage.createdText);
-        lore.add(ChatColor.WHITE + "" + getDateString());
-        lore.add("");
-        lore.add(ChatColor.WHITE + "" + main.storage.expiryDateText);
-        lore.add(ChatColor.WHITE + "" + getDateStringPlusTime(hoursUntilSpoilage));
+            item.setItemMeta(meta);
+        }
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
         return item;
     }
 
@@ -69,14 +72,12 @@ public class TimeStampSubsystem {
     public boolean timeStampAssigned(ItemStack item) {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            assert meta != null;
-            if (meta.hasLore()) {
+            if (meta != null && meta.hasLore()) {
                 List<String> lore = meta.getLore();
 
-                assert lore != null;
-                if (lore.toString().contains(main.storage.expiryDateText)) {
-//                System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return true;
+                if (lore != null) {
+                    // System.out.println("Debug] Time stamp is already assigned to this item!");
+                    return lore.toString().contains(main.storage.expiryDateText);
                 }
             }
 
@@ -117,8 +118,13 @@ public class TimeStampSubsystem {
         if (timeStampAssigned(item)) {
             ItemMeta meta = item.getItemMeta();
 
-            List<String> lore = meta.getLore();
-            return lore.get(5);
+            if (meta != null) {
+                List<String> lore = meta.getLore();
+
+                if (lore != null && lore.size() > 5) {
+                    return lore.get(5);
+                }
+            }
         }
         return null;
     }
