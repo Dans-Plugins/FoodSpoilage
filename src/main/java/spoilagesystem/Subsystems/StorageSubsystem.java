@@ -124,11 +124,13 @@ public class StorageSubsystem {
         if (saveFile.exists()) {
 
             // rename file
-            File newSaveFile = new File("./plugins/FoodSpoilage/config.yml.old");
-            saveFile.renameTo(newSaveFile);
+            if (saveFile.renameTo(new File("./plugins/FoodSpoilage/config.yml.old"))) {
 
-            // save defaults
-            saveConfigDefaults();
+                // save defaults
+                saveConfigDefaults();
+            } else {
+                System.out.println("Failed to rename config file!");
+            }
 
         }
 
