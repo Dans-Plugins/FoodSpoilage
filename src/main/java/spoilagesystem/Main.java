@@ -14,6 +14,7 @@ import spoilagesystem.EventHandlers.*;
 import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
+import spoilagesystem.Subsystems.UtilitySubsystem;
 
 import java.io.File;
 
@@ -24,6 +25,7 @@ public final class Main extends JavaPlugin implements Listener {
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
     public StorageSubsystem storage = new StorageSubsystem(this);
+    public UtilitySubsystem utilities = new UtilitySubsystem(this);
 
     @Override
     public void onEnable() {
