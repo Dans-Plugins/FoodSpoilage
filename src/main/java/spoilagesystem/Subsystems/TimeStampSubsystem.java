@@ -1,6 +1,5 @@
 package spoilagesystem.Subsystems;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -8,10 +7,12 @@ import spoilagesystem.Main;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Calendar.HOUR_OF_DAY;
 
 public class TimeStampSubsystem {
 
@@ -26,26 +27,24 @@ public class TimeStampSubsystem {
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
 
-        List<String> lore = new ArrayList<>();
+        if (meta != null) {
+            meta.setLore(asList(
+                    "",
+                    ChatColor.WHITE + main.storage.createdText,
+                    ChatColor.WHITE + getDateString(),
+                    "",
+                    ChatColor.WHITE + main.storage.expiryDateText,
+                    ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
+            ));
 
-        lore.add("");
-        lore.add(ChatColor.WHITE + "" + main.storage.createdText);
-        lore.add(ChatColor.WHITE + "" + getDateString());
-        lore.add("");
-        lore.add(ChatColor.WHITE + "" + main.storage.expiryDateText);
-        lore.add(ChatColor.WHITE + "" + getDateStringPlusTime(hoursUntilSpoilage));
+            item.setItemMeta(meta);
+        }
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
         return item;
     }
 
     private String getDateString() {
-        DateFormat df = new SimpleDateFormat(pattern);
-
-        Date now = getDate();
-
-        return df.format(now);
+        return new SimpleDateFormat(pattern).format(getDate());
     }
 
     private Date getDate() {
@@ -53,35 +52,29 @@ public class TimeStampSubsystem {
     }
 
     private String getDateStringPlusTime(int hours) {
-        DateFormat df = new SimpleDateFormat(pattern);
-
-        Date now = getDatePlusTime(hours);
-
-        return df.format(now);
+        return new SimpleDateFormat(pattern).format(getDatePlusTime(hours));
     }
 
     private Date getDatePlusTime(int hours) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        calendar.add(HOUR_OF_DAY, hours);
         return calendar.getTime();
     }
 
     public boolean timeStampAssigned(ItemStack item) {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            assert meta != null;
-            if (meta.hasLore()) {
+            if (meta != null && meta.hasLore()) {
                 List<String> lore = meta.getLore();
 
-                assert lore != null;
-                if (lore.toString().contains(main.storage.expiryDateText)) {
-//                System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return true;
+                if (lore != null) {
+                    // System.out.println("Debug] Time stamp is already assigned to this item!");
+                    return lore.toString().contains(main.storage.expiryDateText);
                 }
             }
-
         }
-//        System.out.println("[Debug] Time stamp is not yet applied to this item!");
+
+        // System.out.println("[Debug] Time stamp is not yet applied to this item!");
         return false;
     }
 
@@ -92,23 +85,19 @@ public class TimeStampSubsystem {
 
             DateFormat df = new SimpleDateFormat(pattern + ":mm:ss");
 
+            timestamp = timestamp + ":01:01";
+            timestamp = timestamp.substring(2);
+
             Date date = null;
             try {
-                timestamp = timestamp + ":01:01";
-                timestamp = timestamp.substring(2);
                 date = df.parse(timestamp);
             } catch (Exception e) {
                 System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":mm:ss");
             }
 
             if (date != null) {
-
-                Date now = getDate();
-
-                return now.after(date);
-
+                return getDate().after(date);
             }
-
         }
         return false;
     }
@@ -117,8 +106,13 @@ public class TimeStampSubsystem {
         if (timeStampAssigned(item)) {
             ItemMeta meta = item.getItemMeta();
 
-            List<String> lore = meta.getLore();
-            return lore.get(5);
+            if (meta != null) {
+                List<String> lore = meta.getLore();
+
+                if (lore != null && lore.size() > 5) {
+                    return lore.get(5);
+                }
+            }
         }
         return null;
     }

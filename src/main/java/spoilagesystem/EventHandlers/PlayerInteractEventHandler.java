@@ -1,16 +1,9 @@
 package spoilagesystem.EventHandlers;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import spoilagesystem.Main;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlayerInteractEventHandler {
 
@@ -21,28 +14,46 @@ public class PlayerInteractEventHandler {
     }
 
     public void handle(PlayerInteractEvent event) {
-        if (event.getItem() != null) {
-            if (main.timestamp.timeStampAssigned(event.getItem())) {
-                if (event.getHand() != EquipmentSlot.OFF_HAND) {
-                    if (main.timestamp.timeReached(event.getItem())) {
+        ItemStack item = event.getItem();
+
+        if (item != null) {
+
+            // if time stamped
+            if (main.timestamp.timeStampAssigned(item)) {
+
+                System.out.println("Item has timestamp!");
+
+                EquipmentSlot hand = event.getHand();
+                if (hand != null) {
+
+                    // if time stamp has been reached
+                    if (main.timestamp.timeReached(item)) {
 
                         // turn it into rotten flesh
-                        ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);
-                        ItemMeta meta = spoiledFood.getItemMeta();
-                        meta.setDisplayName(main.storage.spoiledFoodName);
-                        List<String> lore = new ArrayList<>();
-                        lore.add(ChatColor.WHITE + "" + main.storage.spoiledFoodLore);
-                        meta.setLore(lore);
-                        spoiledFood.setItemMeta(meta);
-                        event.getPlayer().getInventory().setItemInMainHand(spoiledFood);
+                        ItemStack spoiledFood = main.utilities.createSpoiledFood(item);
+
+                        switch(hand) {
+                            case HAND:
+                                event.getPlayer().getInventory().setItemInMainHand(spoiledFood);
+                                break;
+                            case OFF_HAND:
+                                event.getPlayer().getInventory().setItemInOffHand(spoiledFood);
+                                break;
+                            default:
+                                System.out.println("Unknown Hand" + hand);
+                        }
                         event.setCancelled(true);
+                    } else {
+                        System.out.println("Time has not been reached!");
                     }
                 }
                 else {
                     event.setCancelled(true);
                 }
             }
+
         }
+
     }
 
 }

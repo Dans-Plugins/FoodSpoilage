@@ -15,7 +15,7 @@ public class CommandSubsystem {
 
     public boolean interpretCommand(CommandSender sender, String label, String[] args) {
 
-        if (label.equalsIgnoreCase("foodspoilage") || label.equalsIgnoreCase("fs")) {
+        if ("foodspoilage".equalsIgnoreCase(label) || "fs".equalsIgnoreCase(label)) {
 
             // no arguments
             if (args.length == 0) {
@@ -29,9 +29,8 @@ public class CommandSubsystem {
             }
 
             // reload command
-            if (args[0].equalsIgnoreCase("reload")) {
-                ReloadCommand command = new ReloadCommand(main);
-                command.reload(sender);
+            if ("reload".equalsIgnoreCase(args[0])) {
+                new ReloadCommand(main).reload(sender);
                 return true;
             }
 

@@ -8,12 +8,14 @@ import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.EventHandlers.*;
 import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
+import spoilagesystem.Subsystems.UtilitySubsystem;
 
 import java.io.File;
 
@@ -24,6 +26,7 @@ public final class Main extends JavaPlugin implements Listener {
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
     public StorageSubsystem storage = new StorageSubsystem(this);
+    public UtilitySubsystem utilities = new UtilitySubsystem(this);
 
     @Override
     public void onEnable() {
@@ -32,8 +35,7 @@ public final class Main extends JavaPlugin implements Listener {
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
             storage.saveConfigDefaults();
-        }
-        else {
+        } else {
             storage.handleVersionMismatch();
             reloadConfig();
         }
@@ -59,13 +61,12 @@ public final class Main extends JavaPlugin implements Listener {
         handler.handle(event);
     }
 
-    /*
     @EventHandler()
     public void onInventoryClick(InventoryDragEvent event) {
         InventoryDragEventHandler handler = new InventoryDragEventHandler(this);
-        handler.handle(event); // TODO: Fix null error associated with this method
+        handler.handle(event);
     }
-*/
+
     @EventHandler()
     public void onRightClick(PlayerInteractEvent event) {
         PlayerInteractEventHandler handler = new PlayerInteractEventHandler(this);
