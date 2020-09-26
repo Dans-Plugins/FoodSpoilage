@@ -26,7 +26,7 @@ public class ReloadCommand {
         }
         else {
             main.storage.loadValuesFromConfig();
-            System.out.println("Values loaded!");
+            System.out.println(main.storage.valuesLoadedText);
         }
     }
 
