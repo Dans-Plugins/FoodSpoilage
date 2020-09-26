@@ -102,7 +102,7 @@ public class StorageSubsystem {
                 deleteLegacyFiles(file);
             }
         }
-        if (directoryToBeDeleted.getAbsolutePath().contains("config.yml")){
+        if (directoryToBeDeleted.getAbsolutePath().contains("config.yml")) {
             return true;
         }
         return directoryToBeDeleted.delete();
@@ -213,10 +213,12 @@ public class StorageSubsystem {
             // actual loading
 
             // ignore version
-            String temp1 = loadReader.nextLine();
+            /*String temp1 = */
+            loadReader.nextLine();
 
             // ignore second line
-            String temp2 = loadReader.nextLine();
+            /*String temp2 = */
+            loadReader.nextLine();
 
             int value = -1;
             if (loadReader.hasNextLine()) {
@@ -525,7 +527,7 @@ public class StorageSubsystem {
         int value = 0;
         try {
             value = Integer.parseInt(line.substring(firstSpaceIndex + 1, lastSpaceIndex));
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Something went wrong when getting a value from a config line.");
             return -1;
         }

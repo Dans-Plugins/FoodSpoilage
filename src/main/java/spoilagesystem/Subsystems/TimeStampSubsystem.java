@@ -1,6 +1,5 @@
 package spoilagesystem.Subsystems;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -8,12 +7,13 @@ import spoilagesystem.Main;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Calendar.HOUR_OF_DAY;
+
 public class TimeStampSubsystem {
 
     Main main = null;
@@ -44,11 +44,7 @@ public class TimeStampSubsystem {
     }
 
     private String getDateString() {
-        DateFormat df = new SimpleDateFormat(pattern);
-
-        Date now = getDate();
-
-        return df.format(now);
+        return new SimpleDateFormat(pattern).format(getDate());
     }
 
     private Date getDate() {
@@ -56,16 +52,12 @@ public class TimeStampSubsystem {
     }
 
     private String getDateStringPlusTime(int hours) {
-        DateFormat df = new SimpleDateFormat(pattern);
-
-        Date now = getDatePlusTime(hours);
-
-        return df.format(now);
+        return new SimpleDateFormat(pattern).format(getDatePlusTime(hours));
     }
 
     private Date getDatePlusTime(int hours) {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        calendar.add(HOUR_OF_DAY, hours);
         return calendar.getTime();
     }
 
@@ -80,9 +72,9 @@ public class TimeStampSubsystem {
                     return lore.toString().contains(main.storage.expiryDateText);
                 }
             }
-
         }
-//        System.out.println("[Debug] Time stamp is not yet applied to this item!");
+
+        // System.out.println("[Debug] Time stamp is not yet applied to this item!");
         return false;
     }
 
@@ -93,23 +85,19 @@ public class TimeStampSubsystem {
 
             DateFormat df = new SimpleDateFormat(pattern + ":mm:ss");
 
+            timestamp = timestamp + ":01:01";
+            timestamp = timestamp.substring(2);
+
             Date date = null;
             try {
-                timestamp = timestamp + ":01:01";
-                timestamp = timestamp.substring(2);
                 date = df.parse(timestamp);
             } catch (Exception e) {
                 System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":mm:ss");
             }
 
             if (date != null) {
-
-                Date now = getDate();
-
-                return now.after(date);
-
+                return getDate().after(date);
             }
-
         }
         return false;
     }
