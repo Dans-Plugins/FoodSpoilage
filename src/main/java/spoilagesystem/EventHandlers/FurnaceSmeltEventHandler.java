@@ -5,9 +5,6 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.Main;
 
-import static org.bukkit.Material.*;
-import static org.bukkit.Material.DRIED_KELP;
-
 public class FurnaceSmeltEventHandler {
 
     Main main = null;
@@ -20,41 +17,10 @@ public class FurnaceSmeltEventHandler {
 
         ItemStack item = event.getResult();
         Material type = item.getType();
+        int time = main.storage.getTime(type);
 
-        if (type == COOKED_BEEF && main.storage.getTime(COOKED_BEEF) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_BEEF)));
-        }
-
-        if (type == COOKED_PORKCHOP && main.storage.getTime(COOKED_PORKCHOP) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_PORKCHOP)));
-        }
-
-        if (type == COOKED_CHICKEN && main.storage.getTime(COOKED_CHICKEN) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_CHICKEN)));
-        }
-
-        if (type == Material.COOKED_SALMON && main.storage.getTime(COOKED_SALMON) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_SALMON)));
-        }
-
-        if (type == Material.COOKED_MUTTON && main.storage.getTime(COOKED_MUTTON) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_MUTTON)));
-        }
-
-        if (type == Material.COOKED_RABBIT && main.storage.getTime(COOKED_RABBIT) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_RABBIT)));
-        }
-
-        if (type == Material.COOKED_COD && main.storage.getTime(COOKED_COD) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(COOKED_COD)));
-        }
-
-        if (type == Material.BAKED_POTATO && main.storage.getTime(BAKED_POTATO) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(BAKED_POTATO)));
-        }
-
-        if (type == Material.DRIED_KELP && main.storage.getTime(DRIED_KELP) != 0) {
-            event.setResult(main.timestamp.assignTimeStamp(item, main.storage.getTime(DRIED_KELP)));
+        if (time != 0) {
+            event.setResult(main.timestamp.assignTimeStamp(item, time));
         }
 
     }

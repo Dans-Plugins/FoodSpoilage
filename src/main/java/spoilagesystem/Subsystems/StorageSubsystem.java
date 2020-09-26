@@ -5,56 +5,60 @@ import spoilagesystem.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+
+import static org.bukkit.Material.*;
 
 public class StorageSubsystem {
 
     Main main = null;
 
-    // values
-    private int Bread = 24;
-    private int Potato = 48;
-    private int Carrot = 48;
-    private int Beetroot = 48;
-    private int Beef = 24;
-    private int Porkchop = 24;
-    private int Chicken = 24;
-    private int Cod = 24;
-    private int Salmon = 24;
-    private int Mutton = 24;
-    private int Rabbit = 24;
-    private int Tropical_Fish = 24;
-    private int Pufferfish = 24;
-    private int Mushroom_Stew = 72;
-    private int Rabbit_Stew = 96;
-    private int Beetroot_Soup = 72;
-    private int Cooked_Beef = 72;
-    private int Cooked_Porkchop = 72;
-    private int Cooked_Chicken = 72;
-    private int Cooked_Salmon = 72;
-    private int Cooked_Mutton = 72;
-    private int Cooked_Rabbit = 72;
-    private int Cooked_Cod = 72;
-    private int Wheat = 48;
-    private int Melon = 48;
-    private int Pumpkin = 48;
-    private int Brown_Mushroom = 48;
-    private int Red_Mushroom = 48;
-    private int Nether_Wart = 168;
-    private int Melon_Slice = 24;
-    private int Cake = 24;
-    private int Pumpkin_Pie = 24;
-    private int Sugar = 72;
-    private int Egg = 72;
-    private int Sugar_Cane = 48;
-    private int Apple = 48;
-    private int Cookie = 94;
-    private int Poisonous_Potato = 24;
-    private int Chorus_Fruit = 94;
-    private int Dried_Kelp = 72;
-    private int Baked_Potato = 94;
+    private static final Map<Material, Integer> SPOIL_TIMES = new HashMap<Material, Integer>() {{
+        put(BREAD, 24);
+        put(POTATO, 48);
+        put(CARROT, 48);
+        put(BEETROOT, 48);
+        put(BEEF, 24);
+        put(PORKCHOP, 24);
+        put(CHICKEN, 24);
+        put(COD, 24);
+        put(SALMON, 24);
+        put(MUTTON, 24);
+        put(RABBIT, 24);
+        put(TROPICAL_FISH, 24);
+        put(PUFFERFISH, 24);
+        put(MUSHROOM_STEW, 72);
+        put(RABBIT_STEW, 96);
+        put(BEETROOT_SOUP, 72);
+        put(COOKED_BEEF, 72);
+        put(COOKED_PORKCHOP, 72);
+        put(COOKED_CHICKEN, 72);
+        put(COOKED_SALMON, 72);
+        put(COOKED_MUTTON, 72);
+        put(COOKED_RABBIT, 72);
+        put(COOKED_COD, 72);
+        put(WHEAT, 48);
+        put(MELON, 48);
+        put(PUMPKIN, 48);
+        put(BROWN_MUSHROOM, 48);
+        put(RED_MUSHROOM, 48);
+        put(NETHER_WART, 168);
+        put(MELON_SLICE, 24);
+        put(CAKE, 24);
+        put(PUMPKIN_PIE, 24);
+        put(SUGAR, 72);
+        put(EGG, 72);
+        put(SUGAR_CANE, 48);
+        put(APPLE, 48);
+        put(COOKIE, 94);
+        put(POISONOUS_POTATO, 24);
+        put(CHORUS_FRUIT, 94);
+        put(DRIED_KELP, 72);
+        put(BAKED_POTATO, 94);
+        put(SWEET_BERRIES, 48);
+    }};
 
     public String createdText = "Created:";
     public String expiryDateText = "Expiry Date:";
@@ -68,89 +72,8 @@ public class StorageSubsystem {
     }
 
     public int getTime(Material type) {
-        switch(type) {
-            case BREAD:
-                return Bread;
-            case POTATO:
-                return Potato;
-            case CARROT:
-                return Carrot;
-            case BEETROOT:
-                return Beetroot;
-            case BEEF:
-                return Beef;
-            case PORKCHOP:
-                return Porkchop;
-            case CHICKEN:
-                return Chicken;
-            case COD:
-                return Cod;
-            case SALMON:
-                return Salmon;
-            case MUTTON:
-                return Mutton;
-            case RABBIT:
-                return Rabbit;
-            case TROPICAL_FISH:
-                return Tropical_Fish;
-            case PUFFERFISH:
-                return Pufferfish;
-            case MUSHROOM_STEW:
-                return Mushroom_Stew;
-            case RABBIT_STEW:
-                return Rabbit_Stew;
-            case BEETROOT_SOUP:
-                return Beetroot_Soup;
-            case COOKED_BEEF:
-                return Cooked_Beef;
-            case COOKED_PORKCHOP:
-                return Cooked_Porkchop;
-            case COOKED_CHICKEN:
-                return Cooked_Chicken;
-            case COOKED_SALMON:
-                return Cooked_Salmon;
-            case COOKED_MUTTON:
-                return Cooked_Mutton;
-            case COOKED_COD:
-                return Cooked_Cod;
-            case WHEAT:
-                return Wheat;
-            case MELON:
-                return Melon;
-            case PUMPKIN:
-                return Pumpkin;
-            case BROWN_MUSHROOM:
-                return Brown_Mushroom;
-            case RED_MUSHROOM:
-                return Red_Mushroom;
-            case NETHER_WART:
-                return Nether_Wart;
-            case MELON_SLICE:
-                return Melon_Slice;
-            case CAKE:
-                return Cake;
-            case PUMPKIN_PIE:
-                return Pumpkin_Pie;
-            case SUGAR:
-                return Sugar;
-            case EGG:
-                return Egg;
-            case SUGAR_CANE:
-                return Sugar_Cane;
-            case APPLE:
-                return Apple;
-            case COOKIE:
-                return Cookie;
-            case POISONOUS_POTATO:
-                return Poisonous_Potato;
-            case CHORUS_FRUIT:
-                return Chorus_Fruit;
-            case DRIED_KELP:
-                return Dried_Kelp;
-            case BAKED_POTATO:
-                return Baked_Potato;
-        }
-        return 0;
+        Integer time = SPOIL_TIMES.get(type);
+        return time != null ? time : 0;
     }
 
     public void ensureSmoothTransitionBetweenVersions() {
@@ -213,99 +136,64 @@ public class StorageSubsystem {
 
     public void saveConfigDefaults() {
         main.getConfig().addDefault("version", main.version);
-        main.getConfig().addDefault("Bread", Bread);
-        main.getConfig().addDefault("Potato", Potato);
-        main.getConfig().addDefault("Carrot", Carrot);
-        main.getConfig().addDefault("Beetroot", Beetroot);
-        main.getConfig().addDefault("Beef", Beef);
-        main.getConfig().addDefault("Porkchop", Porkchop);
-        main.getConfig().addDefault("Chicken", Chicken);
-        main.getConfig().addDefault("Cod", Cod);
-        main.getConfig().addDefault("Salmon", Salmon);
-        main.getConfig().addDefault("Mutton", Mutton);
-        main.getConfig().addDefault("Rabbit", Rabbit);
-        main.getConfig().addDefault("Tropical_Fish", Tropical_Fish);
-        main.getConfig().addDefault("Pufferfish", Pufferfish);
-        main.getConfig().addDefault("Mushroom_Stew", Mushroom_Stew);
-        main.getConfig().addDefault("Rabbit_Stew", Rabbit_Stew);
-        main.getConfig().addDefault("Beetroot_Soup", Beetroot_Soup);
-        main.getConfig().addDefault("Cooked_Beef", Cooked_Beef);
-        main.getConfig().addDefault("Cooked_Porkchop", Cooked_Porkchop);
-        main.getConfig().addDefault("Cooked_Chicken", Cooked_Chicken);
-        main.getConfig().addDefault("Cooked_Salmon", Cooked_Salmon);
-        main.getConfig().addDefault("Cooked_Mutton", Cooked_Mutton);
-        main.getConfig().addDefault("Cooked_Rabbit", Cooked_Rabbit);
-        main.getConfig().addDefault("Cooked_Cod", Cooked_Cod);
-        main.getConfig().addDefault("Wheat", Wheat);
-        main.getConfig().addDefault("Melon", Melon);
-        main.getConfig().addDefault("Pumpkin", Pumpkin);
-        main.getConfig().addDefault("Brown_Mushroom", Brown_Mushroom);
-        main.getConfig().addDefault("Red_Mushroom", Red_Mushroom);
-        main.getConfig().addDefault("Nether_Wart", Nether_Wart);
-        main.getConfig().addDefault("Melon_Slice", Melon_Slice);
-        main.getConfig().addDefault("Cake", Cake);
-        main.getConfig().addDefault("Pumpkin_Pie", Pumpkin_Pie);
-        main.getConfig().addDefault("Sugar", Sugar);
-        main.getConfig().addDefault("Egg", Egg);
-        main.getConfig().addDefault("Sugar_Cane", Sugar_Cane);
-        main.getConfig().addDefault("Apple", Apple);
-        main.getConfig().addDefault("Cookie", Cookie);
-        main.getConfig().addDefault("Poisonous_Potato", Poisonous_Potato);
-        main.getConfig().addDefault("Chorus_Fruit", Chorus_Fruit);
-        main.getConfig().addDefault("Dried_Kelp", Dried_Kelp);
-        main.getConfig().addDefault("Baked_Potato", Baked_Potato);
+
+        SPOIL_TIMES.forEach((key, value) -> main.getConfig().addDefault(key.toString(), value));
+
         main.getConfig().addDefault("createdText", createdText);
         main.getConfig().addDefault("expiryDateText", expiryDateText);
         main.getConfig().addDefault("valuesLoadedText", valuesLoadedText);
         main.getConfig().addDefault("noPermsText", noPermsText);
         main.getConfig().addDefault("spoiledFoodName", spoiledFoodName);
         main.getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
+
         main.getConfig().options().copyDefaults(true);
         main.saveConfig();
     }
 
     public void loadValuesFromConfig() {
-        Bread = main.getConfig().getInt("Bread");
-        Potato = main.getConfig().getInt("Potato");
-        Carrot = main.getConfig().getInt("Carrot");
-        Beetroot = main.getConfig().getInt("Beetroot");
-        Beef = main.getConfig().getInt("Beef");
-        Porkchop = main.getConfig().getInt("Porkchop");
-        Chicken = main.getConfig().getInt("Porkchop");
-        Cod = main.getConfig().getInt("Cod");
-        Salmon = main.getConfig().getInt("Salmon");
-        Mutton = main.getConfig().getInt("Mutton");
-        Rabbit = main.getConfig().getInt("Rabbit");
-        Tropical_Fish = main.getConfig().getInt("Tropical_Fish");
-        Pufferfish = main.getConfig().getInt("Pufferfish");
-        Mushroom_Stew = main.getConfig().getInt("Mushroom_Stew");
-        Rabbit_Stew = main.getConfig().getInt("Rabbit_Stew");
-        Beetroot_Soup = main.getConfig().getInt("Beetroot_Soup");
-        Cooked_Beef = main.getConfig().getInt("Cooked_Beef");
-        Cooked_Porkchop = main.getConfig().getInt("Cooked_Porkchop");
-        Cooked_Chicken = main.getConfig().getInt("Cooked_Chicken");
-        Cooked_Salmon = main.getConfig().getInt("Cooked_Salmon");
-        Cooked_Mutton = main.getConfig().getInt("Cooked_Mutton");
-        Cooked_Rabbit = main.getConfig().getInt("Cooked_Rabbit");
-        Cooked_Cod = main.getConfig().getInt("Cooked_Cod");
-        Wheat = main.getConfig().getInt("Wheat");
-        Melon = main.getConfig().getInt("Melon");
-        Pumpkin = main.getConfig().getInt("Pumpkin");
-        Brown_Mushroom = main.getConfig().getInt("Brown_Mushroom");
-        Red_Mushroom = main.getConfig().getInt("Red_Mushroom");
-        Nether_Wart = main.getConfig().getInt("Nether_Wart");
-        Melon_Slice = main.getConfig().getInt("Melon_Slice");
-        Cake = main.getConfig().getInt("Cake");
-        Pumpkin_Pie = main.getConfig().getInt("Pumpkin_Pie");
-        Sugar = main.getConfig().getInt("Sugar");
-        Egg = main.getConfig().getInt("Egg");
-        Sugar_Cane = main.getConfig().getInt("Sugar_Cane");
-        Apple = main.getConfig().getInt("Apple");
-        Cookie = main.getConfig().getInt("Cookie");
-        Poisonous_Potato = main.getConfig().getInt("Poisonous_Potato");
-        Chorus_Fruit = main.getConfig().getInt("Chorus_Fruit");
-        Dried_Kelp = main.getConfig().getInt("Dried_Kelp");
-        Baked_Potato = main.getConfig().getInt("Baked_Potato");
+        SPOIL_TIMES.put(BREAD, main.getConfig().getInt("Bread"));
+        SPOIL_TIMES.put(POTATO, main.getConfig().getInt("Potato"));
+        SPOIL_TIMES.put(CARROT, main.getConfig().getInt("Carrot"));
+        SPOIL_TIMES.put(BEETROOT, main.getConfig().getInt("Beetroot"));
+        SPOIL_TIMES.put(BEEF, main.getConfig().getInt("Beef"));
+        SPOIL_TIMES.put(PORKCHOP, main.getConfig().getInt("Porkchop"));
+        SPOIL_TIMES.put(CHICKEN, main.getConfig().getInt("Chicken"));
+        SPOIL_TIMES.put(COD, main.getConfig().getInt("Cod"));
+        SPOIL_TIMES.put(SALMON, main.getConfig().getInt("Salmon"));
+        SPOIL_TIMES.put(MUTTON, main.getConfig().getInt("Mutton"));
+        SPOIL_TIMES.put(RABBIT, main.getConfig().getInt("Rabbit"));
+        SPOIL_TIMES.put(TROPICAL_FISH, main.getConfig().getInt("Tropical_Fish"));
+        SPOIL_TIMES.put(PUFFERFISH, main.getConfig().getInt("Pufferfish"));
+        SPOIL_TIMES.put(MUSHROOM_STEW, main.getConfig().getInt("Mushroom_Stew"));
+        SPOIL_TIMES.put(RABBIT_STEW, main.getConfig().getInt("Rabbit_Stew"));
+        SPOIL_TIMES.put(BEETROOT_SOUP, main.getConfig().getInt("Beetroot_Soup"));
+        SPOIL_TIMES.put(COOKED_BEEF, main.getConfig().getInt("Cooked_Beef"));
+        SPOIL_TIMES.put(COOKED_PORKCHOP, main.getConfig().getInt("Cooked_Porkchop"));
+        SPOIL_TIMES.put(COOKED_CHICKEN, main.getConfig().getInt("Cooked_Chicken"));
+        SPOIL_TIMES.put(COOKED_SALMON, main.getConfig().getInt("Cooked_Salmon"));
+        SPOIL_TIMES.put(COOKED_MUTTON, main.getConfig().getInt("Cooked_Mutton"));
+        SPOIL_TIMES.put(COOKED_RABBIT, main.getConfig().getInt("Cooked_Rabbit"));
+        SPOIL_TIMES.put(COOKED_COD, main.getConfig().getInt("Cooked_Cod"));
+        SPOIL_TIMES.put(WHEAT, main.getConfig().getInt("Wheat"));
+        SPOIL_TIMES.put(MELON, main.getConfig().getInt("Melon"));
+        SPOIL_TIMES.put(PUMPKIN, main.getConfig().getInt("Pumpkin"));
+        SPOIL_TIMES.put(BROWN_MUSHROOM, main.getConfig().getInt("Brown_Mushroom"));
+        SPOIL_TIMES.put(RED_MUSHROOM, main.getConfig().getInt("Red_Mushroom"));
+        SPOIL_TIMES.put(NETHER_WART, main.getConfig().getInt("Nether_Wart"));
+        SPOIL_TIMES.put(MELON_SLICE, main.getConfig().getInt("Melon_Slice"));
+        SPOIL_TIMES.put(CAKE, main.getConfig().getInt("Cake"));
+        SPOIL_TIMES.put(PUMPKIN_PIE, main.getConfig().getInt("Pumpkin_Pie"));
+        SPOIL_TIMES.put(SUGAR, main.getConfig().getInt("Sugar"));
+        SPOIL_TIMES.put(EGG, main.getConfig().getInt("Egg"));
+        SPOIL_TIMES.put(SUGAR_CANE, main.getConfig().getInt("Sugar_Cane"));
+        SPOIL_TIMES.put(APPLE, main.getConfig().getInt("Apple"));
+        SPOIL_TIMES.put(COOKIE, main.getConfig().getInt("Cookie"));
+        SPOIL_TIMES.put(POISONOUS_POTATO, main.getConfig().getInt("Poisonous_Potato"));
+        SPOIL_TIMES.put(CHORUS_FRUIT, main.getConfig().getInt("Chorus_Fruit"));
+        SPOIL_TIMES.put(DRIED_KELP, main.getConfig().getInt("Dried_Kelp"));
+        SPOIL_TIMES.put(BAKED_POTATO, main.getConfig().getInt("Baked_Potato"));
+        SPOIL_TIMES.put(SWEET_BERRIES, main.getConfig().getInt("Sweet_Berries"));
+
         createdText = main.getConfig().getString("createdText");
         expiryDateText = main.getConfig().getString("expiryDateText");
         valuesLoadedText = main.getConfig().getString("valuesLoadedText");
@@ -318,8 +206,7 @@ public class StorageSubsystem {
 
         try {
             System.out.println("Attempting to load food spoilage times...");
-            File loadFile = new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt");
-            Scanner loadReader = new Scanner(loadFile);
+            Scanner loadReader = new Scanner(new File("./plugins/Food-Spoilage/" + "food-spoilage-times.txt"));
 
             // actual loading
 
@@ -334,126 +221,126 @@ public class StorageSubsystem {
                 // get value from each config line and set it to corresponding field
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 2
                 if (value != -1) {
-                    Bread = value;
+                    SPOIL_TIMES.put(BREAD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 3
                 if (value != -1) {
-                    Potato = value;
+                    SPOIL_TIMES.put(POTATO, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 4
                 if (value != -1) {
-                    Carrot = value;
+                    SPOIL_TIMES.put(CARROT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 5
                 if (value != -1) {
-                    Beetroot = value;
+                    SPOIL_TIMES.put(BEETROOT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Beef = value;
+                    SPOIL_TIMES.put(BEEF, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Porkchop = value;
+                    SPOIL_TIMES.put(PORKCHOP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Chicken = value;
+                    SPOIL_TIMES.put(CHICKEN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cod = value;
+                    SPOIL_TIMES.put(COD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Salmon = value;
+                    SPOIL_TIMES.put(SALMON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Mutton = value;
+                    SPOIL_TIMES.put(MUTTON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Rabbit = value;
+                    SPOIL_TIMES.put(RABBIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Tropical_Fish = value;
+                    SPOIL_TIMES.put(TROPICAL_FISH, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Pufferfish = value;
+                    SPOIL_TIMES.put(PUFFERFISH, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Mushroom_Stew = value;
+                    SPOIL_TIMES.put(MUSHROOM_STEW, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Rabbit_Stew = value;
+                    SPOIL_TIMES.put(RABBIT_STEW, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Beetroot_Soup = value;
+                    SPOIL_TIMES.put(BEETROOT_SOUP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Beef = value;
+                    SPOIL_TIMES.put(COOKED_BEEF, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Porkchop = value;
+                    SPOIL_TIMES.put(COOKED_PORKCHOP, value);
                 }
 
             }
@@ -461,161 +348,161 @@ public class StorageSubsystem {
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Chicken = value;
+                    SPOIL_TIMES.put(COOKED_CHICKEN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Salmon = value;
+                    SPOIL_TIMES.put(COOKED_SALMON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Mutton = value;
+                    SPOIL_TIMES.put(COOKED_MUTTON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Rabbit = value;
+                    SPOIL_TIMES.put(COOKED_RABBIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cooked_Cod = value;
+                    SPOIL_TIMES.put(COOKED_COD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Wheat = value;
+                    SPOIL_TIMES.put(WHEAT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Melon = value;
+                    SPOIL_TIMES.put(MELON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Pumpkin = value;
+                    SPOIL_TIMES.put(PUMPKIN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Brown_Mushroom = value;
+                    SPOIL_TIMES.put(BROWN_MUSHROOM, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Red_Mushroom = value;
+                    SPOIL_TIMES.put(RED_MUSHROOM, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Nether_Wart = value;
+                    SPOIL_TIMES.put(NETHER_WART, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Melon_Slice = value;
+                    SPOIL_TIMES.put(MELON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cake = value;
+                    SPOIL_TIMES.put(CAKE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Pumpkin_Pie = value;
+                    SPOIL_TIMES.put(PUMPKIN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Sugar = value;
+                    SPOIL_TIMES.put(SUGAR, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Egg = value;
+                    SPOIL_TIMES.put(EGG, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Sugar_Cane = value;
+                    SPOIL_TIMES.put(SUGAR_CANE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Apple = value;
+                    SPOIL_TIMES.put(APPLE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Cookie = value;
+                    SPOIL_TIMES.put(COOKIE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Poisonous_Potato = value;
+                    SPOIL_TIMES.put(POISONOUS_POTATO, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Chorus_Fruit = value;
+                    SPOIL_TIMES.put(CHORUS_FRUIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Dried_Kelp = value;
+                    SPOIL_TIMES.put(DRIED_KELP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    Baked_Potato = value;
+                    SPOIL_TIMES.put(BAKED_POTATO, value);
                 }
             }
 
