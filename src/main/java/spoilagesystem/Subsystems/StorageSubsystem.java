@@ -110,8 +110,8 @@ public class StorageSubsystem {
 
     public void handleVersionMismatch() {
 
-        if (!main.getConfig().getString("version").equalsIgnoreCase(main.version)) {
-            System.out.println("[ALERT] Verson mismatch! Saving old config as config.yml.old and loading in the default values.");
+        if (!main.version.equalsIgnoreCase(main.getConfig().getString("version"))) {
+            System.out.println("[ALERT] Version mismatch! Saving old config as config.yml.old and loading in the default values.");
             renameConfigToConfigDotOldAndSaveDefaults();
         }
 
