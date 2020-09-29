@@ -16,12 +16,13 @@ import spoilagesystem.Subsystems.CommandSubsystem;
 import spoilagesystem.Subsystems.StorageSubsystem;
 import spoilagesystem.Subsystems.TimeStampSubsystem;
 import spoilagesystem.Subsystems.UtilitySubsystem;
+import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
 
 public final class Main extends JavaPlugin implements Listener {
 
-    public String version = "v1.9";
+    public String version = "v1.10";
 
     // subsystems
     public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
@@ -43,6 +44,10 @@ public final class Main extends JavaPlugin implements Listener {
         storage.loadValuesFromConfig();
 
         this.getServer().getPluginManager().registerEvents(this, this);
+
+        int pluginId = 8992;
+
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
     @Override
