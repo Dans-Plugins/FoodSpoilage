@@ -1,7 +1,7 @@
 name: FoodSpoilage
 version: 1.10
 author: DanTheTechMan
-main: dansplugins.spoilagesystem.FoodSpoilage
+main: spoilagesystem.FoodSpoilage
 api-version: 1.13
 
 commands:
