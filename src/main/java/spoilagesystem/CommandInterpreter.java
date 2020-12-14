@@ -6,21 +6,15 @@ import spoilagesystem.Commands.ReloadCommand;
 
 public class CommandInterpreter {
 
-    FoodSpoilage foodSpoilage = null;
-
-    public CommandInterpreter(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
-
     public boolean interpretCommand(CommandSender sender, String label, String[] args) {
 
-        if ("foodspoilage".equalsIgnoreCase(label) || "fs".equalsIgnoreCase(label)) {
+        if ("FoodSpoilage.getInstance()".equalsIgnoreCase(label) || "fs".equalsIgnoreCase(label)) {
 
             // no arguments
             if (args.length == 0) {
 
                 // show info
-                sender.sendMessage(ChatColor.AQUA + "Food Spoilage " + foodSpoilage.version);
+                sender.sendMessage(ChatColor.AQUA + "Food Spoilage " + FoodSpoilage.getInstance().version);
                 sender.sendMessage(ChatColor.AQUA + "Author: DanTheTechMan");
                 sender.sendMessage(ChatColor.AQUA + "Link: https://www.spigotmc.org/resources/food-spoilage.81507/");
 
@@ -29,7 +23,7 @@ public class CommandInterpreter {
 
             // reload command
             if ("reload".equalsIgnoreCase(args[0])) {
-                new ReloadCommand(foodSpoilage).reload(sender);
+                new ReloadCommand().reload(sender);
                 return true;
             }
 

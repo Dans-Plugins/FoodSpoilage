@@ -7,21 +7,15 @@ import spoilagesystem.FoodSpoilage;
 
 public class CraftItemEventHandler {
 
-    FoodSpoilage foodSpoilage = null;
-
-    public CraftItemEventHandler(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
-
     public void handle(CraftItemEvent event) {
 
         ItemStack item = event.getCurrentItem();
         Material type = item.getType();
-        int time = foodSpoilage.storage.getTime(type);
+        int time = FoodSpoilage.getInstance().storage.getTime(type);
 
         if (time != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(foodSpoilage.timestamp.assignTimeStamp(item, time));
+            event.setCurrentItem(FoodSpoilage.getInstance().timestamp.assignTimeStamp(item, time));
         }
     }
 

@@ -7,21 +7,15 @@ import spoilagesystem.FoodSpoilage;
 
 public class ItemSpawnEventHandler {
 
-    FoodSpoilage foodSpoilage = null;
-
-    public ItemSpawnEventHandler(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
-
     public void handle(ItemSpawnEvent event) {
 
         ItemStack item = event.getEntity().getItemStack();
         Material type = item.getType();
-        int time = foodSpoilage.storage.getTime(type);
+        int time = FoodSpoilage.getInstance().storage.getTime(type);
 
         // if timestamp not already assigned
-        if (time != 0 && !foodSpoilage.timestamp.timeStampAssigned(item)) {
-            event.getEntity().setItemStack(foodSpoilage.timestamp.assignTimeStamp(item, time));
+        if (time != 0 && !FoodSpoilage.getInstance().timestamp.timeStampAssigned(item)) {
+            event.getEntity().setItemStack(FoodSpoilage.getInstance().timestamp.assignTimeStamp(item, time));
         }
 
     }

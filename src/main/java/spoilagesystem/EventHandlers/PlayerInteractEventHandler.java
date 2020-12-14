@@ -7,19 +7,13 @@ import spoilagesystem.FoodSpoilage;
 
 public class PlayerInteractEventHandler {
 
-    FoodSpoilage foodSpoilage = null;
-
-    public PlayerInteractEventHandler(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
-
     public void handle(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
 
         if (item != null) {
 
             // if time stamped
-            if (foodSpoilage.timestamp.timeStampAssigned(item)) {
+            if (FoodSpoilage.getInstance().timestamp.timeStampAssigned(item)) {
 
                 System.out.println("Item has timestamp!");
 
@@ -27,10 +21,10 @@ public class PlayerInteractEventHandler {
                 if (hand != null) {
 
                     // if time stamp has been reached
-                    if (foodSpoilage.timestamp.timeReached(item)) {
+                    if (FoodSpoilage.getInstance().timestamp.timeReached(item)) {
 
                         // turn it into rotten flesh
-                        ItemStack spoiledFood = foodSpoilage.utilities.createSpoiledFood(item);
+                        ItemStack spoiledFood = FoodSpoilage.getInstance().utilities.createSpoiledFood(item);
 
                         switch(hand) {
                             case HAND:

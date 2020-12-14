@@ -12,8 +12,6 @@ import static org.bukkit.Material.*;
 
 public class StorageManager {
 
-    FoodSpoilage foodSpoilage = null;
-
     private static final Map<Material, Integer> SPOIL_TIMES = new HashMap<Material, Integer>() {{
         put(BREAD, 24);
         put(POTATO, 48);
@@ -66,10 +64,6 @@ public class StorageManager {
     public String spoiledFoodName = "Spoiled Food";
     public String spoiledFoodLore = "This food has gone bad.";
 
-    public StorageManager(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
-
     public int getTime(Material type) {
         Integer time = SPOIL_TIMES.get(type);
         return time != null ? time : 0;
@@ -109,7 +103,7 @@ public class StorageManager {
 
     public void handleVersionMismatch() {
 
-        if (!foodSpoilage.version.equalsIgnoreCase(foodSpoilage.getConfig().getString("version"))) {
+        if (!FoodSpoilage.getInstance().version.equalsIgnoreCase(FoodSpoilage.getInstance().getConfig().getString("version"))) {
             System.out.println("[ALERT] Version mismatch! Saving old config as config.yml.old and loading in the default values.");
             renameConfigToConfigDotOldAndSaveDefaults();
         }
@@ -136,71 +130,71 @@ public class StorageManager {
     }
 
     public void saveConfigDefaults() {
-        foodSpoilage.getConfig().addDefault("version", foodSpoilage.version);
+        FoodSpoilage.getInstance().getConfig().addDefault("version", FoodSpoilage.getInstance().version);
 
-        SPOIL_TIMES.forEach((key, value) -> foodSpoilage.getConfig().addDefault(key.toString(), value));
+        SPOIL_TIMES.forEach((key, value) -> FoodSpoilage.getInstance().getConfig().addDefault(key.toString(), value));
 
-        foodSpoilage.getConfig().addDefault("createdText", createdText);
-        foodSpoilage.getConfig().addDefault("expiryDateText", expiryDateText);
-        foodSpoilage.getConfig().addDefault("valuesLoadedText", valuesLoadedText);
-        foodSpoilage.getConfig().addDefault("noPermsText", noPermsText);
-        foodSpoilage.getConfig().addDefault("spoiledFoodName", spoiledFoodName);
-        foodSpoilage.getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
+        FoodSpoilage.getInstance().getConfig().addDefault("createdText", createdText);
+        FoodSpoilage.getInstance().getConfig().addDefault("expiryDateText", expiryDateText);
+        FoodSpoilage.getInstance().getConfig().addDefault("valuesLoadedText", valuesLoadedText);
+        FoodSpoilage.getInstance().getConfig().addDefault("noPermsText", noPermsText);
+        FoodSpoilage.getInstance().getConfig().addDefault("spoiledFoodName", spoiledFoodName);
+        FoodSpoilage.getInstance().getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
 
-        foodSpoilage.getConfig().options().copyDefaults(true);
-        foodSpoilage.saveConfig();
+        FoodSpoilage.getInstance().getConfig().options().copyDefaults(true);
+        FoodSpoilage.getInstance().saveConfig();
     }
 
     public void loadValuesFromConfig() {
-        SPOIL_TIMES.put(BREAD, foodSpoilage.getConfig().getInt("Bread"));
-        SPOIL_TIMES.put(POTATO, foodSpoilage.getConfig().getInt("Potato"));
-        SPOIL_TIMES.put(CARROT, foodSpoilage.getConfig().getInt("Carrot"));
-        SPOIL_TIMES.put(BEETROOT, foodSpoilage.getConfig().getInt("Beetroot"));
-        SPOIL_TIMES.put(BEEF, foodSpoilage.getConfig().getInt("Beef"));
-        SPOIL_TIMES.put(PORKCHOP, foodSpoilage.getConfig().getInt("Porkchop"));
-        SPOIL_TIMES.put(CHICKEN, foodSpoilage.getConfig().getInt("Chicken"));
-        SPOIL_TIMES.put(COD, foodSpoilage.getConfig().getInt("Cod"));
-        SPOIL_TIMES.put(SALMON, foodSpoilage.getConfig().getInt("Salmon"));
-        SPOIL_TIMES.put(MUTTON, foodSpoilage.getConfig().getInt("Mutton"));
-        SPOIL_TIMES.put(RABBIT, foodSpoilage.getConfig().getInt("Rabbit"));
-        SPOIL_TIMES.put(TROPICAL_FISH, foodSpoilage.getConfig().getInt("Tropical_Fish"));
-        SPOIL_TIMES.put(PUFFERFISH, foodSpoilage.getConfig().getInt("Pufferfish"));
-        SPOIL_TIMES.put(MUSHROOM_STEW, foodSpoilage.getConfig().getInt("Mushroom_Stew"));
-        SPOIL_TIMES.put(RABBIT_STEW, foodSpoilage.getConfig().getInt("Rabbit_Stew"));
-        SPOIL_TIMES.put(BEETROOT_SOUP, foodSpoilage.getConfig().getInt("Beetroot_Soup"));
-        SPOIL_TIMES.put(COOKED_BEEF, foodSpoilage.getConfig().getInt("Cooked_Beef"));
-        SPOIL_TIMES.put(COOKED_PORKCHOP, foodSpoilage.getConfig().getInt("Cooked_Porkchop"));
-        SPOIL_TIMES.put(COOKED_CHICKEN, foodSpoilage.getConfig().getInt("Cooked_Chicken"));
-        SPOIL_TIMES.put(COOKED_SALMON, foodSpoilage.getConfig().getInt("Cooked_Salmon"));
-        SPOIL_TIMES.put(COOKED_MUTTON, foodSpoilage.getConfig().getInt("Cooked_Mutton"));
-        SPOIL_TIMES.put(COOKED_RABBIT, foodSpoilage.getConfig().getInt("Cooked_Rabbit"));
-        SPOIL_TIMES.put(COOKED_COD, foodSpoilage.getConfig().getInt("Cooked_Cod"));
-        SPOIL_TIMES.put(WHEAT, foodSpoilage.getConfig().getInt("Wheat"));
-        SPOIL_TIMES.put(MELON, foodSpoilage.getConfig().getInt("Melon"));
-        SPOIL_TIMES.put(PUMPKIN, foodSpoilage.getConfig().getInt("Pumpkin"));
-        SPOIL_TIMES.put(BROWN_MUSHROOM, foodSpoilage.getConfig().getInt("Brown_Mushroom"));
-        SPOIL_TIMES.put(RED_MUSHROOM, foodSpoilage.getConfig().getInt("Red_Mushroom"));
-        SPOIL_TIMES.put(NETHER_WART, foodSpoilage.getConfig().getInt("Nether_Wart"));
-        SPOIL_TIMES.put(MELON_SLICE, foodSpoilage.getConfig().getInt("Melon_Slice"));
-        SPOIL_TIMES.put(CAKE, foodSpoilage.getConfig().getInt("Cake"));
-        SPOIL_TIMES.put(PUMPKIN_PIE, foodSpoilage.getConfig().getInt("Pumpkin_Pie"));
-        SPOIL_TIMES.put(SUGAR, foodSpoilage.getConfig().getInt("Sugar"));
-        SPOIL_TIMES.put(EGG, foodSpoilage.getConfig().getInt("Egg"));
-        SPOIL_TIMES.put(SUGAR_CANE, foodSpoilage.getConfig().getInt("Sugar_Cane"));
-        SPOIL_TIMES.put(APPLE, foodSpoilage.getConfig().getInt("Apple"));
-        SPOIL_TIMES.put(COOKIE, foodSpoilage.getConfig().getInt("Cookie"));
-        SPOIL_TIMES.put(POISONOUS_POTATO, foodSpoilage.getConfig().getInt("Poisonous_Potato"));
-        SPOIL_TIMES.put(CHORUS_FRUIT, foodSpoilage.getConfig().getInt("Chorus_Fruit"));
-        SPOIL_TIMES.put(DRIED_KELP, foodSpoilage.getConfig().getInt("Dried_Kelp"));
-        SPOIL_TIMES.put(BAKED_POTATO, foodSpoilage.getConfig().getInt("Baked_Potato"));
-        SPOIL_TIMES.put(SWEET_BERRIES, foodSpoilage.getConfig().getInt("Sweet_Berries"));
+        SPOIL_TIMES.put(BREAD, FoodSpoilage.getInstance().getConfig().getInt("Bread"));
+        SPOIL_TIMES.put(POTATO, FoodSpoilage.getInstance().getConfig().getInt("Potato"));
+        SPOIL_TIMES.put(CARROT, FoodSpoilage.getInstance().getConfig().getInt("Carrot"));
+        SPOIL_TIMES.put(BEETROOT, FoodSpoilage.getInstance().getConfig().getInt("Beetroot"));
+        SPOIL_TIMES.put(BEEF, FoodSpoilage.getInstance().getConfig().getInt("Beef"));
+        SPOIL_TIMES.put(PORKCHOP, FoodSpoilage.getInstance().getConfig().getInt("Porkchop"));
+        SPOIL_TIMES.put(CHICKEN, FoodSpoilage.getInstance().getConfig().getInt("Chicken"));
+        SPOIL_TIMES.put(COD, FoodSpoilage.getInstance().getConfig().getInt("Cod"));
+        SPOIL_TIMES.put(SALMON, FoodSpoilage.getInstance().getConfig().getInt("Salmon"));
+        SPOIL_TIMES.put(MUTTON, FoodSpoilage.getInstance().getConfig().getInt("Mutton"));
+        SPOIL_TIMES.put(RABBIT, FoodSpoilage.getInstance().getConfig().getInt("Rabbit"));
+        SPOIL_TIMES.put(TROPICAL_FISH, FoodSpoilage.getInstance().getConfig().getInt("Tropical_Fish"));
+        SPOIL_TIMES.put(PUFFERFISH, FoodSpoilage.getInstance().getConfig().getInt("Pufferfish"));
+        SPOIL_TIMES.put(MUSHROOM_STEW, FoodSpoilage.getInstance().getConfig().getInt("Mushroom_Stew"));
+        SPOIL_TIMES.put(RABBIT_STEW, FoodSpoilage.getInstance().getConfig().getInt("Rabbit_Stew"));
+        SPOIL_TIMES.put(BEETROOT_SOUP, FoodSpoilage.getInstance().getConfig().getInt("Beetroot_Soup"));
+        SPOIL_TIMES.put(COOKED_BEEF, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Beef"));
+        SPOIL_TIMES.put(COOKED_PORKCHOP, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Porkchop"));
+        SPOIL_TIMES.put(COOKED_CHICKEN, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Chicken"));
+        SPOIL_TIMES.put(COOKED_SALMON, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Salmon"));
+        SPOIL_TIMES.put(COOKED_MUTTON, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Mutton"));
+        SPOIL_TIMES.put(COOKED_RABBIT, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Rabbit"));
+        SPOIL_TIMES.put(COOKED_COD, FoodSpoilage.getInstance().getConfig().getInt("Cooked_Cod"));
+        SPOIL_TIMES.put(WHEAT, FoodSpoilage.getInstance().getConfig().getInt("Wheat"));
+        SPOIL_TIMES.put(MELON, FoodSpoilage.getInstance().getConfig().getInt("Melon"));
+        SPOIL_TIMES.put(PUMPKIN, FoodSpoilage.getInstance().getConfig().getInt("Pumpkin"));
+        SPOIL_TIMES.put(BROWN_MUSHROOM, FoodSpoilage.getInstance().getConfig().getInt("Brown_Mushroom"));
+        SPOIL_TIMES.put(RED_MUSHROOM, FoodSpoilage.getInstance().getConfig().getInt("Red_Mushroom"));
+        SPOIL_TIMES.put(NETHER_WART, FoodSpoilage.getInstance().getConfig().getInt("Nether_Wart"));
+        SPOIL_TIMES.put(MELON_SLICE, FoodSpoilage.getInstance().getConfig().getInt("Melon_Slice"));
+        SPOIL_TIMES.put(CAKE, FoodSpoilage.getInstance().getConfig().getInt("Cake"));
+        SPOIL_TIMES.put(PUMPKIN_PIE, FoodSpoilage.getInstance().getConfig().getInt("Pumpkin_Pie"));
+        SPOIL_TIMES.put(SUGAR, FoodSpoilage.getInstance().getConfig().getInt("Sugar"));
+        SPOIL_TIMES.put(EGG, FoodSpoilage.getInstance().getConfig().getInt("Egg"));
+        SPOIL_TIMES.put(SUGAR_CANE, FoodSpoilage.getInstance().getConfig().getInt("Sugar_Cane"));
+        SPOIL_TIMES.put(APPLE, FoodSpoilage.getInstance().getConfig().getInt("Apple"));
+        SPOIL_TIMES.put(COOKIE, FoodSpoilage.getInstance().getConfig().getInt("Cookie"));
+        SPOIL_TIMES.put(POISONOUS_POTATO, FoodSpoilage.getInstance().getConfig().getInt("Poisonous_Potato"));
+        SPOIL_TIMES.put(CHORUS_FRUIT, FoodSpoilage.getInstance().getConfig().getInt("Chorus_Fruit"));
+        SPOIL_TIMES.put(DRIED_KELP, FoodSpoilage.getInstance().getConfig().getInt("Dried_Kelp"));
+        SPOIL_TIMES.put(BAKED_POTATO, FoodSpoilage.getInstance().getConfig().getInt("Baked_Potato"));
+        SPOIL_TIMES.put(SWEET_BERRIES, FoodSpoilage.getInstance().getConfig().getInt("Sweet_Berries"));
 
-        createdText = foodSpoilage.getConfig().getString("createdText");
-        expiryDateText = foodSpoilage.getConfig().getString("expiryDateText");
-        valuesLoadedText = foodSpoilage.getConfig().getString("valuesLoadedText");
-        noPermsText = foodSpoilage.getConfig().getString("noPermsText");
-        spoiledFoodName = foodSpoilage.getConfig().getString("spoiledFoodName");
-        spoiledFoodLore = foodSpoilage.getConfig().getString("spoiledFoodLore");
+        createdText = FoodSpoilage.getInstance().getConfig().getString("createdText");
+        expiryDateText = FoodSpoilage.getInstance().getConfig().getString("expiryDateText");
+        valuesLoadedText = FoodSpoilage.getInstance().getConfig().getString("valuesLoadedText");
+        noPermsText = FoodSpoilage.getInstance().getConfig().getString("noPermsText");
+        spoiledFoodName = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodName");
+        spoiledFoodLore = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodLore");
     }
 
     public void legacyLoadValuesFromConfig() {
