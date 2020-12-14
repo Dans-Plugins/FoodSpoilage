@@ -15,6 +15,19 @@ import static java.util.Calendar.HOUR_OF_DAY;
 
 public class TimeStamper {
 
+    private static TimeStamper instance;
+
+    private TimeStamper() {
+
+    }
+
+    public static TimeStamper getInstance() {
+        if (instance == null) {
+            instance = new TimeStamper();
+        }
+        return instance;
+    }
+
     String pattern = "MM/dd/yyyy HH";
 
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {

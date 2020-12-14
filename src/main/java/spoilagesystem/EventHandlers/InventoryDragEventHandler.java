@@ -3,6 +3,7 @@ package spoilagesystem.EventHandlers;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.TimeStamper;
 
 public class InventoryDragEventHandler {
 
@@ -12,12 +13,12 @@ public class InventoryDragEventHandler {
         if (item != null) {
 
             // if time stamped
-            if (FoodSpoilage.getInstance().timestamp.timeStampAssigned(item)) {
+            if (TimeStamper.getInstance().timeStampAssigned(item)) {
 
                 System.out.println("Item has timestamp!");
 
                 // if time stamp has been reached
-                if (FoodSpoilage.getInstance().timestamp.timeReached(item)) {
+                if (TimeStamper.getInstance().timeReached(item)) {
 
                     System.out.println("Time has been reached!");
 

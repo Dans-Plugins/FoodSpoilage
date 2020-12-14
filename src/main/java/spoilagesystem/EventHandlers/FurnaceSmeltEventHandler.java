@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.TimeStamper;
 
 public class FurnaceSmeltEventHandler {
 
@@ -14,7 +15,7 @@ public class FurnaceSmeltEventHandler {
         int time = FoodSpoilage.getInstance().storage.getTime(type);
 
         if (time != 0) {
-            event.setResult(FoodSpoilage.getInstance().timestamp.assignTimeStamp(item, time));
+            event.setResult(TimeStamper.getInstance().assignTimeStamp(item, time));
         }
 
     }

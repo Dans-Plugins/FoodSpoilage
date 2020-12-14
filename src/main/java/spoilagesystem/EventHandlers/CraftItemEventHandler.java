@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.TimeStamper;
 
 public class CraftItemEventHandler {
 
@@ -15,7 +16,7 @@ public class CraftItemEventHandler {
 
         if (time != 0) {
             cancelIfShiftClick(event);
-            event.setCurrentItem(FoodSpoilage.getInstance().timestamp.assignTimeStamp(item, time));
+            event.setCurrentItem(TimeStamper.getInstance().assignTimeStamp(item, time));
         }
     }
 

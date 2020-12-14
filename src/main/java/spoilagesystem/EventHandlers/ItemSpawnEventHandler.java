@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.TimeStamper;
 
 public class ItemSpawnEventHandler {
 
@@ -14,8 +15,8 @@ public class ItemSpawnEventHandler {
         int time = FoodSpoilage.getInstance().storage.getTime(type);
 
         // if timestamp not already assigned
-        if (time != 0 && !FoodSpoilage.getInstance().timestamp.timeStampAssigned(item)) {
-            event.getEntity().setItemStack(FoodSpoilage.getInstance().timestamp.assignTimeStamp(item, time));
+        if (time != 0 && !TimeStamper.getInstance().timeStampAssigned(item)) {
+            event.getEntity().setItemStack(TimeStamper.getInstance().assignTimeStamp(item, time));
         }
 
     }

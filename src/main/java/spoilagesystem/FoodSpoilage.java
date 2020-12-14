@@ -23,7 +23,6 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
     public String version = "v1.10";
 
     // subsystems
-    public TimeStamper timestamp = new TimeStamper();
     public StorageManager storage = new StorageManager();
     public Utilities utilities = new Utilities();
 
