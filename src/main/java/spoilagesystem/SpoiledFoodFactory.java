@@ -7,7 +7,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 
-public class Utilities {
+public class SpoiledFoodFactory {
+
+    private static SpoiledFoodFactory instance;
+
+    private SpoiledFoodFactory() {
+
+    }
+
+    public static SpoiledFoodFactory getInstance() {
+        if (instance == null) {
+            instance = new SpoiledFoodFactory();
+        }
+        return instance;
+    }
 
     public ItemStack createSpoiledFood(ItemStack item) {
         ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);

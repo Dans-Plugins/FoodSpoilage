@@ -3,6 +3,7 @@ package spoilagesystem.EventHandlers;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.TimeStamper;
 
 public class InventoryDragEventHandler {
@@ -23,7 +24,7 @@ public class InventoryDragEventHandler {
                     System.out.println("Time has been reached!");
 
                     // turn it into rotten flesh
-                    event.setCursor(FoodSpoilage.getInstance().utilities.createSpoiledFood(item));
+                    event.setCursor(SpoiledFoodFactory.getInstance().createSpoiledFood(item));
 
                 } else {
                     System.out.println("Time has not been reached!");

@@ -4,6 +4,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.TimeStamper;
 
 public class PlayerInteractEventHandler {
@@ -25,7 +26,7 @@ public class PlayerInteractEventHandler {
                     if (TimeStamper.getInstance().timeReached(item)) {
 
                         // turn it into rotten flesh
-                        ItemStack spoiledFood = FoodSpoilage.getInstance().utilities.createSpoiledFood(item);
+                        ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(item);
 
                         switch(hand) {
                             case HAND:

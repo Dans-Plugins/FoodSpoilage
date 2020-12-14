@@ -24,7 +24,6 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     // subsystems
     public StorageManager storage = new StorageManager();
-    public Utilities utilities = new Utilities();
 
     public static FoodSpoilage getInstance() {
         return instance;
