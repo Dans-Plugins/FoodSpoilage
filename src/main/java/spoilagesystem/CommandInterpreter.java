@@ -6,6 +6,19 @@ import spoilagesystem.Commands.ReloadCommand;
 
 public class CommandInterpreter {
 
+    private static CommandInterpreter instance;
+
+    private CommandInterpreter() {
+
+    }
+
+    public static CommandInterpreter getInstance() {
+        if (instance == null) {
+            instance = new CommandInterpreter();
+        }
+        return instance;
+    }
+
     public boolean interpretCommand(CommandSender sender, String label, String[] args) {
 
         if ("FoodSpoilage.getInstance()".equalsIgnoreCase(label) || "fs".equalsIgnoreCase(label)) {

@@ -60,8 +60,7 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CommandInterpreter commandInterpreter = new CommandInterpreter();
-        return commandInterpreter.interpretCommand(sender, label, args);
+        return CommandInterpreter.getInstance().interpretCommand(sender, label, args);
     }
 
     @EventHandler()
