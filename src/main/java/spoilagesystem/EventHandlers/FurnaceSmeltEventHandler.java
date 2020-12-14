@@ -4,23 +4,19 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.StorageManager;
+import spoilagesystem.TimeStamper;
 
 public class FurnaceSmeltEventHandler {
-
-    FoodSpoilage foodSpoilage = null;
-
-    public FurnaceSmeltEventHandler(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
 
     public void handle(FurnaceSmeltEvent event) {
 
         ItemStack item = event.getResult();
         Material type = item.getType();
-        int time = foodSpoilage.storage.getTime(type);
+        int time = StorageManager.getInstance().getTime(type);
 
         if (time != 0) {
-            event.setResult(foodSpoilage.timestamp.assignTimeStamp(item, time));
+            event.setResult(TimeStamper.getInstance().assignTimeStamp(item, time));
         }
 
     }

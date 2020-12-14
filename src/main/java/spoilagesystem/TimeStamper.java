@@ -15,13 +15,20 @@ import static java.util.Calendar.HOUR_OF_DAY;
 
 public class TimeStamper {
 
-    FoodSpoilage foodSpoilage = null;
+    private static TimeStamper instance;
+
+    private TimeStamper() {
+
+    }
+
+    public static TimeStamper getInstance() {
+        if (instance == null) {
+            instance = new TimeStamper();
+        }
+        return instance;
+    }
 
     String pattern = "MM/dd/yyyy HH";
-
-    public TimeStamper(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
 
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
@@ -29,10 +36,10 @@ public class TimeStamper {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + foodSpoilage.storage.createdText,
+                    ChatColor.WHITE + StorageManager.getInstance().createdText,
                     ChatColor.WHITE + getDateString(),
                     "",
-                    ChatColor.WHITE + foodSpoilage.storage.expiryDateText,
+                    ChatColor.WHITE + StorageManager.getInstance().expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
 
@@ -68,7 +75,7 @@ public class TimeStamper {
 
                 if (lore != null) {
                     // System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return lore.toString().contains(foodSpoilage.storage.expiryDateText);
+                    return lore.toString().contains(StorageManager.getInstance().expiryDateText);
                 }
             }
         }

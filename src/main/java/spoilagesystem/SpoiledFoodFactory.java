@@ -7,12 +7,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 
-public class Utilities {
+public class SpoiledFoodFactory {
 
-    FoodSpoilage foodSpoilage = null;
+    private static SpoiledFoodFactory instance;
 
-    public Utilities(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
+    private SpoiledFoodFactory() {
+
+    }
+
+    public static SpoiledFoodFactory getInstance() {
+        if (instance == null) {
+            instance = new SpoiledFoodFactory();
+        }
+        return instance;
     }
 
     public ItemStack createSpoiledFood(ItemStack item) {
@@ -21,8 +28,8 @@ public class Utilities {
         ItemMeta meta = spoiledFood.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(foodSpoilage.storage.spoiledFoodName);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + foodSpoilage.storage.spoiledFoodLore));
+            meta.setDisplayName(StorageManager.getInstance().spoiledFoodName);
+            meta.setLore(Collections.singletonList(ChatColor.WHITE + StorageManager.getInstance().spoiledFoodLore));
         }
 
         spoiledFood.setItemMeta(meta);

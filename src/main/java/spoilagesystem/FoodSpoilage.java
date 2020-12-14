@@ -18,26 +18,29 @@ import java.io.File;
 
 public final class FoodSpoilage extends JavaPlugin implements Listener {
 
-    public String version = "v1.10";
+    private static FoodSpoilage instance;
 
-    // subsystems
-    public TimeStamper timestamp = new TimeStamper(this);
-    public StorageManager storage = new StorageManager(this);
-    public Utilities utilities = new Utilities(this);
+    private String version = "v1.10";
+
+    public static FoodSpoilage getInstance() {
+        return instance;
+    }
 
     @Override
     public void onEnable() {
-        storage.ensureSmoothTransitionBetweenVersions();
+        instance = this;
+
+        StorageManager.getInstance().ensureSmoothTransitionBetweenVersions();
 
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
-            storage.saveConfigDefaults();
+            StorageManager.getInstance().saveConfigDefaults();
         } else {
-            storage.handleVersionMismatch();
+            StorageManager.getInstance().handleVersionMismatch();
             reloadConfig();
         }
 
-        storage.loadValuesFromConfig();
+        StorageManager.getInstance().loadValuesFromConfig();
 
         this.getServer().getPluginManager().registerEvents(this, this);
 
@@ -52,43 +55,46 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CommandInterpreter commandInterpreter = new CommandInterpreter(this);
-        return commandInterpreter.interpretCommand(sender, label, args);
+        return CommandInterpreter.getInstance().interpretCommand(sender, label, args);
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     @EventHandler()
     public void onCraft(CraftItemEvent event) {
-        CraftItemEventHandler handler = new CraftItemEventHandler(this);
+        CraftItemEventHandler handler = new CraftItemEventHandler();
         handler.handle(event);
     }
 
     @EventHandler()
     public void onInventoryClick(InventoryDragEvent event) {
-        InventoryDragEventHandler handler = new InventoryDragEventHandler(this);
+        InventoryDragEventHandler handler = new InventoryDragEventHandler();
         handler.handle(event);
     }
 
     @EventHandler()
     public void onRightClick(PlayerInteractEvent event) {
-        PlayerInteractEventHandler handler = new PlayerInteractEventHandler(this);
+        PlayerInteractEventHandler handler = new PlayerInteractEventHandler();
         handler.handle(event);
     }
 
     @EventHandler()
     public void onDrop(ItemSpawnEvent event) {
-        ItemSpawnEventHandler handler = new ItemSpawnEventHandler(this);
+        ItemSpawnEventHandler handler = new ItemSpawnEventHandler();
         handler.handle(event);
     }
 
     @EventHandler()
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
-        FurnaceSmeltEventHandler handler = new FurnaceSmeltEventHandler(this);
+        FurnaceSmeltEventHandler handler = new FurnaceSmeltEventHandler();
         handler.handle(event);
     }
 
     @EventHandler()
     public void onBlockCook(BlockCookEvent event) {
-        BlockCookEventHandler handler = new BlockCookEventHandler(this);
+        BlockCookEventHandler handler = new BlockCookEventHandler();
         handler.handle(event);
     }
 }

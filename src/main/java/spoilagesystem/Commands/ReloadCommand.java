@@ -4,29 +4,24 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.StorageManager;
 
 public class ReloadCommand {
-
-    FoodSpoilage foodSpoilage = null;
-
-    public ReloadCommand(FoodSpoilage plugin) {
-        foodSpoilage = plugin;
-    }
 
     public void reload(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
-                foodSpoilage.storage.loadValuesFromConfig();
-                player.sendMessage(ChatColor.GREEN + foodSpoilage.storage.valuesLoadedText);
+                StorageManager.getInstance().loadValuesFromConfig();
+                player.sendMessage(ChatColor.GREEN + StorageManager.getInstance().valuesLoadedText);
             }
             else {
-                player.sendMessage(ChatColor.RED + foodSpoilage.storage.noPermsText);
+                player.sendMessage(ChatColor.RED + StorageManager.getInstance().noPermsText);
             }
         }
         else {
-            foodSpoilage.storage.loadValuesFromConfig();
-            System.out.println(foodSpoilage.storage.valuesLoadedText);
+            StorageManager.getInstance().loadValuesFromConfig();
+            System.out.println(StorageManager.getInstance().valuesLoadedText);
         }
     }
 
