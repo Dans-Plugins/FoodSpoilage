@@ -1,7 +1,6 @@
 package spoilagesystem;
 
 import org.bukkit.Material;
-import spoilagesystem.FoodSpoilage;
 
 import java.io.File;
 import java.io.FileNotFoundException;

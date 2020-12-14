@@ -3,7 +3,6 @@ package spoilagesystem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import spoilagesystem.Commands.ReloadCommand;
-import spoilagesystem.FoodSpoilage;
 
 public class CommandInterpreter {
 

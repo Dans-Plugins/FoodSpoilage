@@ -3,7 +3,6 @@ package spoilagesystem;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import spoilagesystem.FoodSpoilage;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
