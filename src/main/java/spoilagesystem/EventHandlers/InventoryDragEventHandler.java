@@ -2,14 +2,14 @@ package spoilagesystem.EventHandlers;
 
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.Main;
+import spoilagesystem.FoodSpoilage;
 
 public class InventoryDragEventHandler {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
-    public InventoryDragEventHandler(Main plugin) {
-        main = plugin;
+    public InventoryDragEventHandler(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public void handle(InventoryDragEvent event) {
@@ -18,17 +18,17 @@ public class InventoryDragEventHandler {
         if (item != null) {
 
             // if time stamped
-            if (main.timestamp.timeStampAssigned(item)) {
+            if (foodSpoilage.timestamp.timeStampAssigned(item)) {
 
                 System.out.println("Item has timestamp!");
 
                 // if time stamp has been reached
-                if (main.timestamp.timeReached(item)) {
+                if (foodSpoilage.timestamp.timeReached(item)) {
 
                     System.out.println("Time has been reached!");
 
                     // turn it into rotten flesh
-                    event.setCursor(main.utilities.createSpoiledFood(item));
+                    event.setCursor(foodSpoilage.utilities.createSpoiledFood(item));
 
                 } else {
                     System.out.println("Time has not been reached!");

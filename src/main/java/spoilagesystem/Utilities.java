@@ -1,19 +1,19 @@
-package spoilagesystem.Subsystems;
+package spoilagesystem;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import spoilagesystem.Main;
+import spoilagesystem.FoodSpoilage;
 
 import java.util.Collections;
 
-public class UtilitySubsystem {
+public class Utilities {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
-    public UtilitySubsystem(Main plugin) {
-        main = plugin;
+    public Utilities(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public ItemStack createSpoiledFood(ItemStack item) {
@@ -22,8 +22,8 @@ public class UtilitySubsystem {
         ItemMeta meta = spoiledFood.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(main.storage.spoiledFoodName);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + main.storage.spoiledFoodLore));
+            meta.setDisplayName(foodSpoilage.storage.spoiledFoodName);
+            meta.setLore(Collections.singletonList(ChatColor.WHITE + foodSpoilage.storage.spoiledFoodLore));
         }
 
         spoiledFood.setItemMeta(meta);
