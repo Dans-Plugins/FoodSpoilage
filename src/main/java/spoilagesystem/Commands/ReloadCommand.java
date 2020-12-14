@@ -3,30 +3,30 @@ package spoilagesystem.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import spoilagesystem.Main;
+import spoilagesystem.FoodSpoilage;
 
 public class ReloadCommand {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
-    public ReloadCommand(Main plugin) {
-        main = plugin;
+    public ReloadCommand(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public void reload(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
-                main.storage.loadValuesFromConfig();
-                player.sendMessage(ChatColor.GREEN + main.storage.valuesLoadedText);
+                foodSpoilage.storage.loadValuesFromConfig();
+                player.sendMessage(ChatColor.GREEN + foodSpoilage.storage.valuesLoadedText);
             }
             else {
-                player.sendMessage(ChatColor.RED + main.storage.noPermsText);
+                player.sendMessage(ChatColor.RED + foodSpoilage.storage.noPermsText);
             }
         }
         else {
-            main.storage.loadValuesFromConfig();
-            System.out.println(main.storage.valuesLoadedText);
+            foodSpoilage.storage.loadValuesFromConfig();
+            System.out.println(foodSpoilage.storage.valuesLoadedText);
         }
     }
 

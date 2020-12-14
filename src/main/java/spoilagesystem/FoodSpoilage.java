@@ -12,22 +12,18 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.EventHandlers.*;
-import spoilagesystem.Subsystems.CommandSubsystem;
-import spoilagesystem.Subsystems.StorageSubsystem;
-import spoilagesystem.Subsystems.TimeStampSubsystem;
-import spoilagesystem.Subsystems.UtilitySubsystem;
 import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
 
-public final class Main extends JavaPlugin implements Listener {
+public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     public String version = "v1.10";
 
     // subsystems
-    public TimeStampSubsystem timestamp = new TimeStampSubsystem(this);
-    public StorageSubsystem storage = new StorageSubsystem(this);
-    public UtilitySubsystem utilities = new UtilitySubsystem(this);
+    public TimeStamper timestamp = new TimeStamper(this);
+    public StorageManager storage = new StorageManager(this);
+    public Utilities utilities = new Utilities(this);
 
     @Override
     public void onEnable() {
@@ -56,7 +52,7 @@ public final class Main extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CommandSubsystem commandInterpreter = new CommandSubsystem(this);
+        CommandInterpreter commandInterpreter = new CommandInterpreter(this);
         return commandInterpreter.interpretCommand(sender, label, args);
     }
 

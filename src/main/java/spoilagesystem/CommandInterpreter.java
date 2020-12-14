@@ -1,16 +1,15 @@
-package spoilagesystem.Subsystems;
+package spoilagesystem;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import spoilagesystem.Commands.ReloadCommand;
-import spoilagesystem.Main;
 
-public class CommandSubsystem {
+public class CommandInterpreter {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
-    public CommandSubsystem(Main plugin) {
-        main = plugin;
+    public CommandInterpreter(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public boolean interpretCommand(CommandSender sender, String label, String[] args) {
@@ -21,7 +20,7 @@ public class CommandSubsystem {
             if (args.length == 0) {
 
                 // show info
-                sender.sendMessage(ChatColor.AQUA + "Food Spoilage " + main.version);
+                sender.sendMessage(ChatColor.AQUA + "Food Spoilage " + foodSpoilage.version);
                 sender.sendMessage(ChatColor.AQUA + "Author: DanTheTechMan");
                 sender.sendMessage(ChatColor.AQUA + "Link: https://www.spigotmc.org/resources/food-spoilage.81507/");
 
@@ -30,7 +29,7 @@ public class CommandSubsystem {
 
             // reload command
             if ("reload".equalsIgnoreCase(args[0])) {
-                new ReloadCommand(main).reload(sender);
+                new ReloadCommand(foodSpoilage).reload(sender);
                 return true;
             }
 

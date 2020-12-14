@@ -1,9 +1,8 @@
-package spoilagesystem.Subsystems;
+package spoilagesystem;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import spoilagesystem.Main;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,14 +13,14 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Calendar.HOUR_OF_DAY;
 
-public class TimeStampSubsystem {
+public class TimeStamper {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
     String pattern = "MM/dd/yyyy HH";
 
-    public TimeStampSubsystem(Main plugin) {
-        main = plugin;
+    public TimeStamper(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
@@ -30,10 +29,10 @@ public class TimeStampSubsystem {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + main.storage.createdText,
+                    ChatColor.WHITE + foodSpoilage.storage.createdText,
                     ChatColor.WHITE + getDateString(),
                     "",
-                    ChatColor.WHITE + main.storage.expiryDateText,
+                    ChatColor.WHITE + foodSpoilage.storage.expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
 
@@ -69,7 +68,7 @@ public class TimeStampSubsystem {
 
                 if (lore != null) {
                     // System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return lore.toString().contains(main.storage.expiryDateText);
+                    return lore.toString().contains(foodSpoilage.storage.expiryDateText);
                 }
             }
         }

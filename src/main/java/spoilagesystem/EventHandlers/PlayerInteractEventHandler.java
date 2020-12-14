@@ -3,14 +3,14 @@ package spoilagesystem.EventHandlers;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.Main;
+import spoilagesystem.FoodSpoilage;
 
 public class PlayerInteractEventHandler {
 
-    Main main = null;
+    FoodSpoilage foodSpoilage = null;
 
-    public PlayerInteractEventHandler(Main plugin) {
-        main = plugin;
+    public PlayerInteractEventHandler(FoodSpoilage plugin) {
+        foodSpoilage = plugin;
     }
 
     public void handle(PlayerInteractEvent event) {
@@ -19,7 +19,7 @@ public class PlayerInteractEventHandler {
         if (item != null) {
 
             // if time stamped
-            if (main.timestamp.timeStampAssigned(item)) {
+            if (foodSpoilage.timestamp.timeStampAssigned(item)) {
 
                 System.out.println("Item has timestamp!");
 
@@ -27,10 +27,10 @@ public class PlayerInteractEventHandler {
                 if (hand != null) {
 
                     // if time stamp has been reached
-                    if (main.timestamp.timeReached(item)) {
+                    if (foodSpoilage.timestamp.timeReached(item)) {
 
                         // turn it into rotten flesh
-                        ItemStack spoiledFood = main.utilities.createSpoiledFood(item);
+                        ItemStack spoiledFood = foodSpoilage.utilities.createSpoiledFood(item);
 
                         switch(hand) {
                             case HAND:
