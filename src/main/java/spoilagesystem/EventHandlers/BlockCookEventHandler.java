@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.StorageManager;
 import spoilagesystem.TimeStamper;
 
 public class BlockCookEventHandler {
@@ -12,7 +13,7 @@ public class BlockCookEventHandler {
 
         ItemStack item = event.getResult();
         Material type = item.getType();
-        int time = FoodSpoilage.getInstance().storage.getTime(type);
+        int time = StorageManager.getInstance().getTime(type);
 
         if (time != 0) {
             event.setResult(TimeStamper.getInstance().assignTimeStamp(item, time));

@@ -36,10 +36,10 @@ public class TimeStamper {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + FoodSpoilage.getInstance().storage.createdText,
+                    ChatColor.WHITE + StorageManager.getInstance().createdText,
                     ChatColor.WHITE + getDateString(),
                     "",
-                    ChatColor.WHITE + FoodSpoilage.getInstance().storage.expiryDateText,
+                    ChatColor.WHITE + StorageManager.getInstance().expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
 
@@ -75,7 +75,7 @@ public class TimeStamper {
 
                 if (lore != null) {
                     // System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return lore.toString().contains(FoodSpoilage.getInstance().storage.expiryDateText);
+                    return lore.toString().contains(StorageManager.getInstance().expiryDateText);
                 }
             }
         }

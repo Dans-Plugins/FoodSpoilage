@@ -22,9 +22,6 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     public String version = "v1.10";
 
-    // subsystems
-    public StorageManager storage = new StorageManager();
-
     public static FoodSpoilage getInstance() {
         return instance;
     }
@@ -33,17 +30,17 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
     public void onEnable() {
         instance = this;
 
-        storage.ensureSmoothTransitionBetweenVersions();
+        StorageManager.getInstance().ensureSmoothTransitionBetweenVersions();
 
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
-            storage.saveConfigDefaults();
+            StorageManager.getInstance().saveConfigDefaults();
         } else {
-            storage.handleVersionMismatch();
+            StorageManager.getInstance().handleVersionMismatch();
             reloadConfig();
         }
 
-        storage.loadValuesFromConfig();
+        StorageManager.getInstance().loadValuesFromConfig();
 
         this.getServer().getPluginManager().registerEvents(this, this);
 

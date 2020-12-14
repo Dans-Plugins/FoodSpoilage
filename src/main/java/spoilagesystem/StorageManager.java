@@ -12,6 +12,19 @@ import static org.bukkit.Material.*;
 
 public class StorageManager {
 
+    private static StorageManager instance;
+
+    private StorageManager() {
+
+    }
+
+    public static StorageManager getInstance() {
+        if (instance == null) {
+            instance = new StorageManager();
+        }
+        return instance;
+    }
+
     private static final Map<Material, Integer> SPOIL_TIMES = new HashMap<Material, Integer>() {{
         put(BREAD, 24);
         put(POTATO, 48);
