@@ -116,7 +116,7 @@ public class StorageManager {
 
     public void handleVersionMismatch() {
 
-        if (!FoodSpoilage.getInstance().version.equalsIgnoreCase(FoodSpoilage.getInstance().getConfig().getString("version"))) {
+        if (!FoodSpoilage.getInstance().getVersion().equalsIgnoreCase(FoodSpoilage.getInstance().getConfig().getString("version"))) {
             System.out.println("[ALERT] Version mismatch! Saving old config as config.yml.old and loading in the default values.");
             renameConfigToConfigDotOldAndSaveDefaults();
         }
@@ -143,7 +143,7 @@ public class StorageManager {
     }
 
     public void saveConfigDefaults() {
-        FoodSpoilage.getInstance().getConfig().addDefault("version", FoodSpoilage.getInstance().version);
+        FoodSpoilage.getInstance().getConfig().addDefault("version", FoodSpoilage.getInstance().getVersion());
 
         SPOIL_TIMES.forEach((key, value) -> FoodSpoilage.getInstance().getConfig().addDefault(key.toString(), value));
 

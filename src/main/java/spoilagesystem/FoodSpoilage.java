@@ -20,7 +20,7 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     private static FoodSpoilage instance;
 
-    public String version = "v1.10";
+    private String version = "v1.10";
 
     public static FoodSpoilage getInstance() {
         return instance;
@@ -56,6 +56,10 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return CommandInterpreter.getInstance().interpretCommand(sender, label, args);
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     @EventHandler()
