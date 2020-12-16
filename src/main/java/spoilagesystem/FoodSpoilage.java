@@ -16,7 +16,7 @@ import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
 
-public final class FoodSpoilage extends JavaPlugin implements Listener {
+public final class FoodSpoilage extends JavaPlugin {
 
     private static FoodSpoilage instance;
 
@@ -42,7 +42,7 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
         StorageManager.getInstance().loadValuesFromConfig();
 
-        this.getServer().getPluginManager().registerEvents(this, this);
+        EventRegistry.getInstance().registerEvents();
 
         int pluginId = 8992;
 
@@ -60,41 +60,5 @@ public final class FoodSpoilage extends JavaPlugin implements Listener {
 
     public String getVersion() {
         return version;
-    }
-
-    @EventHandler()
-    public void onCraft(CraftItemEvent event) {
-        CraftItemEventHandler handler = new CraftItemEventHandler();
-        handler.handle(event);
-    }
-
-    @EventHandler()
-    public void onInventoryClick(InventoryDragEvent event) {
-        InventoryDragEventHandler handler = new InventoryDragEventHandler();
-        handler.handle(event);
-    }
-
-    @EventHandler()
-    public void onRightClick(PlayerInteractEvent event) {
-        PlayerInteractEventHandler handler = new PlayerInteractEventHandler();
-        handler.handle(event);
-    }
-
-    @EventHandler()
-    public void onDrop(ItemSpawnEvent event) {
-        ItemSpawnEventHandler handler = new ItemSpawnEventHandler();
-        handler.handle(event);
-    }
-
-    @EventHandler()
-    public void onFurnaceSmelt(FurnaceSmeltEvent event) {
-        FurnaceSmeltEventHandler handler = new FurnaceSmeltEventHandler();
-        handler.handle(event);
-    }
-
-    @EventHandler()
-    public void onBlockCook(BlockCookEvent event) {
-        BlockCookEventHandler handler = new BlockCookEventHandler();
-        handler.handle(event);
     }
 }

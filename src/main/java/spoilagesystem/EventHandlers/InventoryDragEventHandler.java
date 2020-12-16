@@ -1,13 +1,16 @@
 package spoilagesystem.EventHandlers;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.TimeStamper;
 
-public class InventoryDragEventHandler {
+public class InventoryDragEventHandler implements Listener {
 
+    @EventHandler()
     public void handle(InventoryDragEvent event) {
         ItemStack item = event.getCursor();
 

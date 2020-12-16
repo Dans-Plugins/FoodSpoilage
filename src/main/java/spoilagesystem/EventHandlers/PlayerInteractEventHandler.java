@@ -1,5 +1,7 @@
 package spoilagesystem.EventHandlers;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -7,8 +9,9 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.TimeStamper;
 
-public class PlayerInteractEventHandler {
+public class PlayerInteractEventHandler implements Listener {
 
+    @EventHandler()
     public void handle(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
 
