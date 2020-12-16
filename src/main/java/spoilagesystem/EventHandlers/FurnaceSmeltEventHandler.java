@@ -1,14 +1,17 @@
 package spoilagesystem.EventHandlers;
 
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.StorageManager;
 import spoilagesystem.TimeStamper;
 
-public class FurnaceSmeltEventHandler {
+public class FurnaceSmeltEventHandler implements Listener {
 
+    @EventHandler()
     public void handle(FurnaceSmeltEvent event) {
 
         ItemStack item = event.getResult();

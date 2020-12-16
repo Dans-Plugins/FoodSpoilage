@@ -1,14 +1,17 @@
 package spoilagesystem.EventHandlers;
 
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.StorageManager;
 import spoilagesystem.TimeStamper;
 
-public class ItemSpawnEventHandler {
+public class ItemSpawnEventHandler implements Listener {
 
+    @EventHandler()
     public void handle(ItemSpawnEvent event) {
 
         ItemStack item = event.getEntity().getItemStack();
