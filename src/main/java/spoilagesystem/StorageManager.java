@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 import static org.bukkit.Material.*;
@@ -24,6 +25,10 @@ public class StorageManager {
         }
         return instance;
     }
+
+    private static final Map<Material, Float> SPOIL_CHANCE = new HashMap<Material, Float>() {{
+        put(WHEAT, 0.3f);
+    }};
 
     private static final Map<Material, Integer> SPOIL_TIMES = new HashMap<Material, Integer>() {{
         put(BREAD, 24);
@@ -50,6 +55,7 @@ public class StorageManager {
         put(COOKED_RABBIT, 72);
         put(COOKED_COD, 72);
         put(WHEAT, 48);
+        put(HAY_BLOCK, 48);
         put(MELON, 48);
         put(PUMPKIN, 48);
         put(BROWN_MUSHROOM, 48);
@@ -80,6 +86,20 @@ public class StorageManager {
     public int getTime(Material type) {
         Integer time = SPOIL_TIMES.get(type);
         return time != null ? time : 0;
+    }
+
+    public int getSpoilAmt(Material type, int Qty) {
+        Float chance = SPOIL_CHANCE.get(type);
+        if (type != null) {
+            if (chance != null) {
+                Random rand = new Random();
+                float roll = rand.nextFloat();
+                if (roll <= chance) {
+                    return (int)(roll * Qty);
+                }
+            }
+        }
+        return 0;
     }
 
     public void ensureSmoothTransitionBetweenVersions() {
@@ -201,6 +221,7 @@ public class StorageManager {
         SPOIL_TIMES.put(DRIED_KELP, FoodSpoilage.getInstance().getConfig().getInt("DRIED_KELP"));
         SPOIL_TIMES.put(BAKED_POTATO, FoodSpoilage.getInstance().getConfig().getInt("BAKED_POTATO"));
         SPOIL_TIMES.put(SWEET_BERRIES, FoodSpoilage.getInstance().getConfig().getInt("SWEET_BERRIES"));
+        SPOIL_TIMES.put(HAY_BLOCK, FoodSpoilage.getInstance().getConfig().getInt("HAY_BLOCK"));
 
         createdText = FoodSpoilage.getInstance().getConfig().getString("createdText");
         expiryDateText = FoodSpoilage.getInstance().getConfig().getString("expiryDateText");
