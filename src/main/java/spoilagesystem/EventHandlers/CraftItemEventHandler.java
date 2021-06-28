@@ -27,7 +27,7 @@ public class CraftItemEventHandler implements Listener {
                 ItemStack spoiled = item.clone();
                 spoiled.setAmount(spoilAmt);
                 ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(spoiled);
-                event.getInventory().addItem(spoiledFood);
+                event.getWhoClicked().getInventory().addItem(spoiledFood);
             }
             event.setCurrentItem(TimeStamper.getInstance().assignTimeStamp(item, time));
         }
