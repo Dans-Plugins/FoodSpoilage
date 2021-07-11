@@ -20,7 +20,7 @@ public final class FoodSpoilage extends JavaPlugin {
 
     private static FoodSpoilage instance;
 
-    private String version = "v1.10";
+    private String version = "v1.10-beta-1";
 
     public static FoodSpoilage getInstance() {
         return instance;
