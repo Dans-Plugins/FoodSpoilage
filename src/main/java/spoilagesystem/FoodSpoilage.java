@@ -2,16 +2,7 @@ package spoilagesystem;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockCookEvent;
-import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import spoilagesystem.EventHandlers.*;
 import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
@@ -30,17 +21,20 @@ public final class FoodSpoilage extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        StorageManager.getInstance().ensureSmoothTransitionBetweenVersions();
+        ConfigManager.getInstance().ensureSmoothTransitionBetweenVersions();
 
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
-            StorageManager.getInstance().saveConfigDefaults();
+            ConfigManager.getInstance().saveConfigDefaults();
         } else {
-            StorageManager.getInstance().handleVersionMismatch();
+            if (!getVersion().equalsIgnoreCase(getConfig().getString("version"))) {
+                ConfigManager.getInstance().handleVersionMismatch();
+            }
+
             reloadConfig();
         }
 
-        StorageManager.getInstance().loadValuesFromConfig();
+        ConfigManager.getInstance().loadValuesFromConfig();
 
         EventRegistry.getInstance().registerEvents();
 

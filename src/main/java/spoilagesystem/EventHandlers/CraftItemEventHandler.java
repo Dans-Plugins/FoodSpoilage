@@ -4,11 +4,9 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.FoodSpoilage;
 import spoilagesystem.SpoiledFoodFactory;
-import spoilagesystem.StorageManager;
+import spoilagesystem.ConfigManager;
 import spoilagesystem.TimeStamper;
 
 public class CraftItemEventHandler implements Listener {
@@ -18,10 +16,10 @@ public class CraftItemEventHandler implements Listener {
 
         ItemStack item = event.getCurrentItem();
         Material type = item.getType();
-        int time = StorageManager.getInstance().getTime(type);
+        int time = ConfigManager.getInstance().getTime(type);
         if (time != 0) {
             cancelIfShiftClick(event);
-            int spoilAmt = StorageManager.getInstance().getSpoilAmt(type, item.getAmount());
+            int spoilAmt = ConfigManager.getInstance().getSpoilChance(type, item.getAmount());
             if (spoilAmt > 0) {
                 item.setAmount(item.getAmount() - spoilAmt);
                 ItemStack spoiled = item.clone();

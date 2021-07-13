@@ -39,7 +39,7 @@ public class TimeStamper {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + StorageManager.getInstance().expiryDateText,
+                    ChatColor.WHITE + ConfigManager.getInstance().expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
 
@@ -71,7 +71,7 @@ public class TimeStamper {
 
                 if (lore != null) {
                     // System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return lore.toString().contains(StorageManager.getInstance().expiryDateText);
+                    return lore.toString().contains(ConfigManager.getInstance().expiryDateText);
                 }
             }
         }

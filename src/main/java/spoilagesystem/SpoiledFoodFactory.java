@@ -28,8 +28,8 @@ public class SpoiledFoodFactory {
         ItemMeta meta = spoiledFood.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(StorageManager.getInstance().spoiledFoodName);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + StorageManager.getInstance().spoiledFoodLore));
+            meta.setDisplayName(ConfigManager.getInstance().spoiledFoodName);
+            meta.setLore(Collections.singletonList(ChatColor.WHITE + ConfigManager.getInstance().spoiledFoodLore));
         }
 
         spoiledFood.setItemMeta(meta);

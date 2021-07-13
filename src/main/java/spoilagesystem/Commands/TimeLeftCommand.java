@@ -3,7 +3,7 @@ package spoilagesystem.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.StorageManager;
+import spoilagesystem.ConfigManager;
 import spoilagesystem.TimeStamper;
 
 public class TimeLeftCommand {
@@ -21,10 +21,10 @@ public class TimeLeftCommand {
 
         if (timeLeft == null) {
             // this item will never spoil
-            player.sendMessage(StorageManager.getInstance().thisItemWillNeverSpoilText);
+            player.sendMessage(ConfigManager.getInstance().thisItemWillNeverSpoilText);
             return;
         }
 
-        player.sendMessage(String.format(StorageManager.getInstance().timeLeftText, timeLeft));
+        player.sendMessage(String.format(ConfigManager.getInstance().timeLeftText, timeLeft));
     }
 }
