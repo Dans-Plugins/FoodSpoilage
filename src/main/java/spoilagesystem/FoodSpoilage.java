@@ -27,11 +27,11 @@ public final class FoodSpoilage extends JavaPlugin {
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
             ConfigManager.getInstance().saveConfigDefaults();
         } else {
-            if (!getVersion().equalsIgnoreCase(getConfig().getString("version"))) {
-                ConfigManager.getInstance().handleVersionMismatch();
-            }
-
             reloadConfig();
+        }
+
+        if (!getVersion().equalsIgnoreCase(getConfig().getString("version"))) {
+            ConfigManager.getInstance().handleVersionMismatch();
         }
 
         ConfigManager.getInstance().loadValuesFromConfig();
