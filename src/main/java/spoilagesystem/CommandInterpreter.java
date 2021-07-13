@@ -29,7 +29,7 @@ public class CommandInterpreter {
 
                 // show info
                 sender.sendMessage(ChatColor.AQUA + "Food Spoilage " + FoodSpoilage.getInstance().getVersion());
-                sender.sendMessage(ChatColor.AQUA + "Author: DanTheTechMan");
+                sender.sendMessage(ChatColor.AQUA + "Authors: DanTheTechMan, Undead_Zeratul, Caibinus");
                 sender.sendMessage(ChatColor.AQUA + "Link: https://www.spigotmc.org/resources/food-spoilage.81507/");
 
                 return true;
