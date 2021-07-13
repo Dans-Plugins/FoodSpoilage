@@ -82,7 +82,7 @@ public class StorageManager {
     public String spoiledFoodName = "Spoiled Food";
     public String spoiledFoodLore = "This food has gone bad.";
     public String thisItemWillNeverSpoilText = "This item will never spoil.";
-    public String timeLeftText = "This will expire in %s";
+    public String timeLeftText = "This will expire in %s.";
 
     public int getTime(Material type) {
         Integer time = SPOIL_TIMES.get(type);
