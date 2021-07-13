@@ -36,9 +36,6 @@ public class TimeStamper {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + StorageManager.getInstance().createdText,
-                    ChatColor.WHITE + getDateString(),
-                    "",
                     ChatColor.WHITE + StorageManager.getInstance().expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
@@ -47,10 +44,6 @@ public class TimeStamper {
         }
 
         return item;
-    }
-
-    private String getDateString() {
-        return new SimpleDateFormat(pattern).format(getDate());
     }
 
     private Date getDate() {

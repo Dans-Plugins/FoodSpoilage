@@ -76,7 +76,6 @@ public class StorageManager {
         put(SWEET_BERRIES, 48);
     }};
 
-    public String createdText = "Created:";
     public String expiryDateText = "Expiry Date:";
     public String valuesLoadedText = "Values Loaded!";
     public String noPermsText = "Sorry! In order to use this command, you need the following permission: 'fs.reload'";
@@ -167,7 +166,6 @@ public class StorageManager {
 
         SPOIL_TIMES.forEach((key, value) -> FoodSpoilage.getInstance().getConfig().addDefault(key.toString(), value));
 
-        FoodSpoilage.getInstance().getConfig().addDefault("createdText", createdText);
         FoodSpoilage.getInstance().getConfig().addDefault("expiryDateText", expiryDateText);
         FoodSpoilage.getInstance().getConfig().addDefault("valuesLoadedText", valuesLoadedText);
         FoodSpoilage.getInstance().getConfig().addDefault("noPermsText", noPermsText);
@@ -223,7 +221,6 @@ public class StorageManager {
         SPOIL_TIMES.put(SWEET_BERRIES, FoodSpoilage.getInstance().getConfig().getInt("SWEET_BERRIES"));
         SPOIL_TIMES.put(HAY_BLOCK, FoodSpoilage.getInstance().getConfig().getInt("HAY_BLOCK"));
 
-        createdText = FoodSpoilage.getInstance().getConfig().getString("createdText");
         expiryDateText = FoodSpoilage.getInstance().getConfig().getString("expiryDateText");
         valuesLoadedText = FoodSpoilage.getInstance().getConfig().getString("valuesLoadedText");
         noPermsText = FoodSpoilage.getInstance().getConfig().getString("noPermsText");
@@ -581,9 +578,6 @@ public class StorageManager {
 
             // actual loading
 
-            if (loadReader.hasNextLine()) {
-                createdText = loadReader.nextLine();
-            }
             if (loadReader.hasNextLine()) {
                 expiryDateText = loadReader.nextLine();
             }
