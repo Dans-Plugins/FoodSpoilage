@@ -81,6 +81,8 @@ public class StorageManager {
     public String noPermsText = "Sorry! In order to use this command, you need the following permission: 'fs.reload'";
     public String spoiledFoodName = "Spoiled Food";
     public String spoiledFoodLore = "This food has gone bad.";
+    public String thisItemWillNeverSpoilText = "This item will never spoil.";
+    public String timeLeftText = "This will expire in %s";
 
     public int getTime(Material type) {
         Integer time = SPOIL_TIMES.get(type);
@@ -171,6 +173,8 @@ public class StorageManager {
         FoodSpoilage.getInstance().getConfig().addDefault("noPermsText", noPermsText);
         FoodSpoilage.getInstance().getConfig().addDefault("spoiledFoodName", spoiledFoodName);
         FoodSpoilage.getInstance().getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
+        FoodSpoilage.getInstance().getConfig().addDefault("thisItemWillNeverSpoilText", thisItemWillNeverSpoilText);
+        FoodSpoilage.getInstance().getConfig().addDefault("timeLeftText", timeLeftText);
 
         FoodSpoilage.getInstance().getConfig().options().copyDefaults(true);
         FoodSpoilage.getInstance().saveConfig();
