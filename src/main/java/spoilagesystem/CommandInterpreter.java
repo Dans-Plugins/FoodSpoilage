@@ -3,6 +3,7 @@ package spoilagesystem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import spoilagesystem.Commands.ReloadCommand;
+import spoilagesystem.Commands.TimeLeftCommand;
 
 public class CommandInterpreter {
 
@@ -35,8 +36,13 @@ public class CommandInterpreter {
             }
 
             // reload command
-            if ("reload".equalsIgnoreCase(args[0])) {
+            if (args[0].equalsIgnoreCase("reload")) {
                 new ReloadCommand().reload(sender);
+                return true;
+            }
+
+            if (args[0].equalsIgnoreCase("timeleft")) {
+                new TimeLeftCommand().sendTimeLeft(sender);
                 return true;
             }
 
