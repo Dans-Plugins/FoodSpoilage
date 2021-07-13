@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.ConfigManager;
-import spoilagesystem.TimeStamper;
+import spoilagesystem.TimeStampManager;
 
 public class FurnaceSmeltEventHandler implements Listener {
 
@@ -18,7 +18,7 @@ public class FurnaceSmeltEventHandler implements Listener {
         int time = ConfigManager.getInstance().getTime(type);
 
         if (time != 0) {
-            event.setResult(TimeStamper.getInstance().assignTimeStamp(item, time));
+            event.setResult(TimeStampManager.getInstance().assignTimeStamp(item, time));
         }
 
     }

@@ -5,9 +5,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.FoodSpoilage;
 import spoilagesystem.SpoiledFoodFactory;
-import spoilagesystem.TimeStamper;
+import spoilagesystem.TimeStampManager;
 
 public class PlayerInteractEventHandler implements Listener {
 
@@ -18,7 +17,7 @@ public class PlayerInteractEventHandler implements Listener {
         if (item != null) {
 
             // if time stamped
-            if (TimeStamper.getInstance().timeStampAssigned(item)) {
+            if (TimeStampManager.getInstance().timeStampAssigned(item)) {
 
                 System.out.println("Item has timestamp!");
 
@@ -26,7 +25,7 @@ public class PlayerInteractEventHandler implements Listener {
                 if (hand != null) {
 
                     // if time stamp has been reached
-                    if (TimeStamper.getInstance().timeReached(item)) {
+                    if (TimeStampManager.getInstance().timeReached(item)) {
 
                         // turn it into rotten flesh
                         ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(item);

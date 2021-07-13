@@ -81,6 +81,7 @@ public class ConfigManager {
     public String spoiledFoodLore = "This food has gone bad.";
     public String thisItemWillNeverSpoilText = "This item will never spoil.";
     public String timeLeftText = "This will expire in %s.";
+    public String lessThanAnHour = "This will expire in less than an hour.";
 
     public int getTime(Material type) {
         Integer time = SPOIL_TIMES.get(type);
@@ -160,6 +161,9 @@ public class ConfigManager {
         if (!FoodSpoilage.getInstance().getConfig().isString("timeLeftText")) {
             FoodSpoilage.getInstance().getConfig().addDefault("timeLeftText", timeLeftText);
         }
+        if (!FoodSpoilage.getInstance().getConfig().isString("lessThanAnHour")) {
+            FoodSpoilage.getInstance().getConfig().addDefault("lessThanAnHour", lessThanAnHour);
+        }
     }
 
     public void saveConfigDefaults() {
@@ -174,6 +178,7 @@ public class ConfigManager {
         FoodSpoilage.getInstance().getConfig().addDefault("spoiledFoodLore", spoiledFoodLore);
         FoodSpoilage.getInstance().getConfig().addDefault("thisItemWillNeverSpoilText", thisItemWillNeverSpoilText);
         FoodSpoilage.getInstance().getConfig().addDefault("timeLeftText", timeLeftText);
+        FoodSpoilage.getInstance().getConfig().addDefault("lessThanAnHour", lessThanAnHour);
 
         FoodSpoilage.getInstance().getConfig().options().copyDefaults(true);
         FoodSpoilage.getInstance().saveConfig();
@@ -229,6 +234,8 @@ public class ConfigManager {
         noPermsText = FoodSpoilage.getInstance().getConfig().getString("noPermsText");
         spoiledFoodName = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodName");
         spoiledFoodLore = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodLore");
+        timeLeftText = FoodSpoilage.getInstance().getConfig().getString("timeLeftText");
+        lessThanAnHour = FoodSpoilage.getInstance().getConfig().getString("lessThanAnHour");
     }
 
     public void reloadValuesFromConfig() {
@@ -281,5 +288,7 @@ public class ConfigManager {
         noPermsText = FoodSpoilage.getInstance().getConfig().getString("noPermsText");
         spoiledFoodName = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodName");
         spoiledFoodLore = FoodSpoilage.getInstance().getConfig().getString("spoiledFoodLore");
+        timeLeftText = FoodSpoilage.getInstance().getConfig().getString("timeLeftText");
+        lessThanAnHour = FoodSpoilage.getInstance().getConfig().getString("lessThanAnHour");
     }
 }

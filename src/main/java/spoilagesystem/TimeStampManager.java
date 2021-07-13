@@ -16,17 +16,17 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Calendar.HOUR_OF_DAY;
 
-public class TimeStamper {
+public class TimeStampManager {
 
-    private static TimeStamper instance;
+    private static TimeStampManager instance;
 
-    private TimeStamper() {
+    private TimeStampManager() {
 
     }
 
-    public static TimeStamper getInstance() {
+    public static TimeStampManager getInstance() {
         if (instance == null) {
-            instance = new TimeStamper();
+            instance = new TimeStampManager();
         }
         return instance;
     }
@@ -166,7 +166,12 @@ public class TimeStamper {
         days = days * -1;
         hoursUntil = hoursUntil * -1;
 
-        return days + " days and " + hoursUntil + " hours";
+        if (days == 0 && hoursUntil == 0) {
+            return ConfigManager.getInstance().lessThanAnHour;
+        }
+        else {
+            return String.format(ConfigManager.getInstance().timeLeftText, days + " days and " + hoursUntil + " hours");
+        }
     }
 
 }

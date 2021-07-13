@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.ConfigManager;
-import spoilagesystem.TimeStamper;
+import spoilagesystem.TimeStampManager;
 
 public class CraftItemEventHandler implements Listener {
 
@@ -27,7 +27,7 @@ public class CraftItemEventHandler implements Listener {
                 ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(spoiled);
                 event.getWhoClicked().getInventory().addItem(spoiledFood);
             }
-            event.setCurrentItem(TimeStamper.getInstance().assignTimeStamp(item, time));
+            event.setCurrentItem(TimeStampManager.getInstance().assignTimeStamp(item, time));
         }
     }
 

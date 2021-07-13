@@ -4,9 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.FoodSpoilage;
 import spoilagesystem.SpoiledFoodFactory;
-import spoilagesystem.TimeStamper;
+import spoilagesystem.TimeStampManager;
 
 public class InventoryDragEventHandler implements Listener {
 
@@ -19,12 +18,12 @@ public class InventoryDragEventHandler implements Listener {
         if (item != null) {
 
             // if time stamped
-            if (TimeStamper.getInstance().timeStampAssigned(item)) {
+            if (TimeStampManager.getInstance().timeStampAssigned(item)) {
 
                 if (debug) { System.out.println("Item has timestamp!"); }
 
                 // if time stamp has been reached
-                if (TimeStamper.getInstance().timeReached(item)) {
+                if (TimeStampManager.getInstance().timeReached(item)) {
 
                     if (debug) { System.out.println("Time has been reached!"); }
 
