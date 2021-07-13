@@ -11,7 +11,7 @@ public class ReloadCommand {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
-                ConfigManager.getInstance().loadValuesFromConfig();
+                ConfigManager.getInstance().reloadValuesFromConfig();
                 player.sendMessage(ChatColor.GREEN + ConfigManager.getInstance().valuesLoadedText);
             }
             else {
@@ -19,7 +19,7 @@ public class ReloadCommand {
             }
         }
         else {
-            ConfigManager.getInstance().loadValuesFromConfig();
+            ConfigManager.getInstance().reloadValuesFromConfig();
             System.out.println(ConfigManager.getInstance().valuesLoadedText);
         }
     }
