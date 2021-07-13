@@ -140,6 +140,7 @@ public class StorageManager {
         if (!FoodSpoilage.getInstance().getVersion().equalsIgnoreCase(FoodSpoilage.getInstance().getConfig().getString("version"))) {
             System.out.println("[ALERT] Version mismatch! Saving old config as config.yml.old and loading in the default values.");
             renameConfigToConfigDotOldAndSaveDefaults();
+            FoodSpoilage.getInstance().getConfig().set("version", FoodSpoilage.getInstance().getVersion());
         }
 
     }
