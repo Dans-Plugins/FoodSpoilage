@@ -10,6 +10,8 @@ import spoilagesystem.TimeStamper;
 
 public class InventoryDragEventHandler implements Listener {
 
+    private boolean debug = false;
+
     @EventHandler()
     public void handle(InventoryDragEvent event) {
         ItemStack item = event.getCursor();
@@ -19,18 +21,18 @@ public class InventoryDragEventHandler implements Listener {
             // if time stamped
             if (TimeStamper.getInstance().timeStampAssigned(item)) {
 
-                System.out.println("Item has timestamp!");
+                if (debug) { System.out.println("Item has timestamp!"); }
 
                 // if time stamp has been reached
                 if (TimeStamper.getInstance().timeReached(item)) {
 
-                    System.out.println("Time has been reached!");
+                    if (debug) { System.out.println("Time has been reached!"); }
 
                     // turn it into rotten flesh
                     event.setCursor(SpoiledFoodFactory.getInstance().createSpoiledFood(item));
 
                 } else {
-                    System.out.println("Time has not been reached!");
+                    if (debug) { System.out.println("Time has not been reached!"); }
                 }
 
             }
