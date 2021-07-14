@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import spoilagesystem.ConfigManager;
+import spoilagesystem.FoodSpoilage;
 
 public class ReloadCommand {
 
@@ -11,7 +12,8 @@ public class ReloadCommand {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
-                ConfigManager.getInstance().reloadValuesFromConfig();
+                // ConfigManager.getInstance().reloadValuesFromConfig();
+                ConfigManager.getInstance().reload();
                 player.sendMessage(ChatColor.GREEN + ConfigManager.getInstance().valuesLoadedText);
             }
             else {
@@ -19,7 +21,8 @@ public class ReloadCommand {
             }
         }
         else {
-            ConfigManager.getInstance().reloadValuesFromConfig();
+            // ConfigManager.getInstance().reloadValuesFromConfig();
+            ConfigManager.getInstance().reload();
             System.out.println(ConfigManager.getInstance().valuesLoadedText);
         }
     }

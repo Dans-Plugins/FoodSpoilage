@@ -1,7 +1,10 @@
 package spoilagesystem;
 
+import org.bukkit.Material;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static org.bukkit.Material.*;
@@ -20,6 +23,8 @@ public class LegacyStorageManager {
         }
         return instance;
     }
+
+    public final HashMap<Material, Integer> spoilTimes = new HashMap<>();
 
     public void legacyLoadValuesFromConfig() {
 
@@ -42,126 +47,126 @@ public class LegacyStorageManager {
                 // get value from each config line and set it to corresponding field
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 2
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BREAD, value);
+                    spoilTimes.put(BREAD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 3
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(POTATO, value);
+                    spoilTimes.put(POTATO, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 4
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(CARROT, value);
+                    spoilTimes.put(CARROT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine()); // line 5
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BEETROOT, value);
+                    spoilTimes.put(BEETROOT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BEEF, value);
+                    spoilTimes.put(BEEF, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(PORKCHOP, value);
+                    spoilTimes.put(PORKCHOP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(CHICKEN, value);
+                    spoilTimes.put(CHICKEN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COD, value);
+                    spoilTimes.put(COD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(SALMON, value);
+                    spoilTimes.put(SALMON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(MUTTON, value);
+                    spoilTimes.put(MUTTON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(RABBIT, value);
+                    spoilTimes.put(RABBIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(TROPICAL_FISH, value);
+                    spoilTimes.put(TROPICAL_FISH, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(PUFFERFISH, value);
+                    spoilTimes.put(PUFFERFISH, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(MUSHROOM_STEW, value);
+                    spoilTimes.put(MUSHROOM_STEW, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(RABBIT_STEW, value);
+                    spoilTimes.put(RABBIT_STEW, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BEETROOT_SOUP, value);
+                    spoilTimes.put(BEETROOT_SOUP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_BEEF, value);
+                    spoilTimes.put(COOKED_BEEF, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_PORKCHOP, value);
+                    spoilTimes.put(COOKED_PORKCHOP, value);
                 }
 
             }
@@ -169,161 +174,161 @@ public class LegacyStorageManager {
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_CHICKEN, value);
+                    spoilTimes.put(COOKED_CHICKEN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_SALMON, value);
+                    spoilTimes.put(COOKED_SALMON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_MUTTON, value);
+                    spoilTimes.put(COOKED_MUTTON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_RABBIT, value);
+                    spoilTimes.put(COOKED_RABBIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKED_COD, value);
+                    spoilTimes.put(COOKED_COD, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(WHEAT, value);
+                    spoilTimes.put(WHEAT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(MELON, value);
+                    spoilTimes.put(MELON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(PUMPKIN, value);
+                    spoilTimes.put(PUMPKIN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BROWN_MUSHROOM, value);
+                    spoilTimes.put(BROWN_MUSHROOM, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(RED_MUSHROOM, value);
+                    spoilTimes.put(RED_MUSHROOM, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(NETHER_WART, value);
+                    spoilTimes.put(NETHER_WART, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(MELON, value);
+                    spoilTimes.put(MELON, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(CAKE, value);
+                    spoilTimes.put(CAKE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(PUMPKIN, value);
+                    spoilTimes.put(PUMPKIN, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(SUGAR, value);
+                    spoilTimes.put(SUGAR, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(EGG, value);
+                    spoilTimes.put(EGG, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(SUGAR_CANE, value);
+                    spoilTimes.put(SUGAR_CANE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(APPLE, value);
+                    spoilTimes.put(APPLE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(COOKIE, value);
+                    spoilTimes.put(COOKIE, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(POISONOUS_POTATO, value);
+                    spoilTimes.put(POISONOUS_POTATO, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(CHORUS_FRUIT, value);
+                    spoilTimes.put(CHORUS_FRUIT, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(DRIED_KELP, value);
+                    spoilTimes.put(DRIED_KELP, value);
                 }
             }
 
             if (loadReader.hasNextLine()) {
                 value = getValueFromConfigLine(loadReader.nextLine());
                 if (value != -1) {
-                    ConfigManager.getInstance().getSpoilTimes().put(BAKED_POTATO, value);
+                    spoilTimes.put(BAKED_POTATO, value);
                 }
             }
 

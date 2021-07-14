@@ -6,12 +6,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
+import java.io.IOException;
 
 public final class FoodSpoilage extends JavaPlugin {
 
     private static FoodSpoilage instance;
-
-    private String version = "v1.10-beta-2";
 
     public static FoodSpoilage getInstance() {
         return instance;
@@ -25,7 +24,7 @@ public final class FoodSpoilage extends JavaPlugin {
 
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
-            ConfigManager.getInstance().saveConfigDefaults();
+            ConfigManager.getInstance().create();
         } else {
             reloadConfig();
         }
@@ -33,8 +32,6 @@ public final class FoodSpoilage extends JavaPlugin {
         if (!getVersion().equalsIgnoreCase(getConfig().getString("version"))) {
             ConfigManager.getInstance().handleVersionMismatch();
         }
-
-        ConfigManager.getInstance().loadValuesFromConfig();
 
         EventRegistry.getInstance().registerEvents();
 
@@ -53,6 +50,7 @@ public final class FoodSpoilage extends JavaPlugin {
     }
 
     public String getVersion() {
-        return version;
+        return "v1.10-beta-2";
     }
+
 }
