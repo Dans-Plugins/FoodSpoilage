@@ -50,7 +50,7 @@ public final class FoodSpoilage extends JavaPlugin {
     }
 
     public String getVersion() {
-        return "v1.10-beta-2";
+        return "v1.10";
     }
 
 }
