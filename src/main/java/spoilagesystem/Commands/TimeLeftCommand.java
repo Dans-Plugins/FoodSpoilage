@@ -21,7 +21,7 @@ public class TimeLeftCommand {
 
         if (timeLeft == null) {
             // this item will never spoil
-            player.sendMessage(ConfigManager.getInstance().thisItemWillNeverSpoilText);
+            player.sendMessage(ConfigManager.getInstance().neverSpoilText);
             return;
         }
 
