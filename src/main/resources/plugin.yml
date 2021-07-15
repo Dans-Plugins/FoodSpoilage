@@ -1,5 +1,5 @@
 name: FoodSpoilage
-version: 1.10
+version: 2.0
 authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum]
 main: spoilagesystem.FoodSpoilage
 api-version: 1.13

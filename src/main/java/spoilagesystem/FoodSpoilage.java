@@ -16,6 +16,10 @@ public final class FoodSpoilage extends JavaPlugin {
         return instance;
     }
 
+    public String getVersion() {
+        return "v2.0";
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -47,10 +51,6 @@ public final class FoodSpoilage extends JavaPlugin {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         return CommandInterpreter.getInstance().interpretCommand(sender, label, args);
-    }
-
-    public String getVersion() {
-        return "v1.10";
     }
 
 }
