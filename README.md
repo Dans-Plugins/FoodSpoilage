@@ -26,4 +26,4 @@ A minecraft plugin to make food go bad.
 - 1.7 'Custom Text' update
 - 1.8 'Campfires' update
 - 1.9 'Config.yml' update
-- 1.10 'Major Refactoring, bStats' update
+- 2.0 'Major Refactoring, bStats, Timeleft Command' update
