@@ -10,6 +10,8 @@ import spoilagesystem.TimeStampManager;
 
 public class PlayerInteractEventHandler implements Listener {
 
+    private boolean debug = false;
+
     @EventHandler()
     public void handle(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
@@ -19,7 +21,7 @@ public class PlayerInteractEventHandler implements Listener {
             // if time stamped
             if (TimeStampManager.getInstance().timeStampAssigned(item)) {
 
-                System.out.println("Item has timestamp!");
+                if (debug) { System.out.println("Item has timestamp!"); }
 
                 EquipmentSlot hand = event.getHand();
                 if (hand != null) {
@@ -38,11 +40,11 @@ public class PlayerInteractEventHandler implements Listener {
                                 event.getPlayer().getInventory().setItemInOffHand(spoiledFood);
                                 break;
                             default:
-                                System.out.println("Unknown Hand" + hand);
+                                if (debug) { System.out.println("Unknown Hand" + hand); }
                         }
                         event.setCancelled(true);
                     } else {
-                        System.out.println("Time has not been reached!");
+                        if (debug) { System.out.println("Time has not been reached!"); }
                     }
                 }
                 else {
