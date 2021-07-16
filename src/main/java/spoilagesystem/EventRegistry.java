@@ -36,6 +36,7 @@ public class EventRegistry {
         manager.registerEvents(new ItemSpawnEventHandler(), mainInstance);
         manager.registerEvents(new FurnaceSmeltEventHandler(), mainInstance);
         manager.registerEvents(new BlockCookEventHandler(), mainInstance);
+        manager.registerEvents(new VillagerInventoryClickEvent(), mainInstance);
 
     }
 
