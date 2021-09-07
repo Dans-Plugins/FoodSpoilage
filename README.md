@@ -33,7 +33,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/FoodSpoi
 Name | Main Contributions
 ------------ | -------------
 DanTheTechMan | Creator
-UndeadZeratul | Overhauled many parts of the plugin
+Undead_Zeratul | Overhauled many parts of the plugin
 Caibinus | Fixed some bugs
 Callum | Fixed some bugs and implemented a caching system for food spoilage times
 
