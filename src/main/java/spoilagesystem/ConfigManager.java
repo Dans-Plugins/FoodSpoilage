@@ -91,6 +91,7 @@ public class ConfigManager {
     public String neverSpoilText = "This item will never spoil.";
     public String timeLeftText = "This will expire in %s.";
     public String lessThanAnHour = "This will expire in less than an hour.";
+    public String lessThanADay = "This will expire in less than a day.";
 
     /**
      * Method to obtain the Spoilage Time for the given Material.
@@ -268,6 +269,7 @@ public class ConfigManager {
         if (!config.isString("thisItemWillNeverSpoilText")) config.addDefault("thisItemWillNeverSpoilText", neverSpoilText);
         if (!config.isString("timeLeftText")) config.addDefault("timeLeftText", timeLeftText);
         if (!config.isString("lessThanAnHour")) config.addDefault("lessThanAnHour", lessThanAnHour);
+        if (!config.isString("lessThanADay")) config.addDefault("lessThanADay", lessThanADay);
     }
 
     public void reload() {
@@ -281,6 +283,7 @@ public class ConfigManager {
         spoiledFoodLore = config.getString("spoiledFoodLore");
         timeLeftText = config.getString("timeLeftText");
         lessThanAnHour = config.getString("lessThanAnHour");
+        lessThanADay = config.getString("lessThanADay");
     }
 
     public void create() {
@@ -294,6 +297,7 @@ public class ConfigManager {
         config.set("spoiledFoodLore", spoiledFoodLore);
         config.set("timeLeftText", timeLeftText);
         config.set("lessThanAnHour", lessThanAnHour);
+        config.set("lessThanADay", lessThanADay);
         FoodSpoilage.getInstance().saveConfig();
     }
 }
