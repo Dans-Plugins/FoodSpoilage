@@ -17,7 +17,7 @@ public final class FoodSpoilage extends JavaPlugin {
     }
 
     public String getVersion() {
-        return "v2.0";
+        return "v2.1-alpha-1";
     }
 
     @Override
