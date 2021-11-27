@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.bStats.Metrics;
 
 import java.io.File;
-import java.io.IOException;
 
 public final class FoodSpoilage extends JavaPlugin {
 

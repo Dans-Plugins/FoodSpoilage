@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static org.bukkit.Material.*;
+import static org.bukkit.Material.WHEAT;
+import static org.bukkit.Material.values;
 
 public class ConfigManager {
 
