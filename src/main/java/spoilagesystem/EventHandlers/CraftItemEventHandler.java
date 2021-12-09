@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.ConfigManager;
+import spoilagesystem.SpoiledFoodFactory;
 import spoilagesystem.TimeStampManager;
 
 public class CraftItemEventHandler implements Listener {

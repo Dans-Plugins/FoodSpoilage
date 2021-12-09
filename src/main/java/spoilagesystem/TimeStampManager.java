@@ -31,7 +31,7 @@ public class TimeStampManager {
         return instance;
     }
 
-    String pattern = "MM/dd/yyyy HH";
+    String pattern = "MM/dd/yyyy";
 
     public ItemStack assignTimeStamp(ItemStack item, int hoursUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
@@ -85,16 +85,16 @@ public class TimeStampManager {
 
         if (timestamp != null) {
 
-            DateFormat df = new SimpleDateFormat(pattern + ":mm:ss");
+            DateFormat df = new SimpleDateFormat(pattern + "HH:mm:ss");
 
-            timestamp = timestamp + ":01:01";
+            timestamp = timestamp + "01:01:01";
             timestamp = timestamp.substring(2);
 
             Date date = null;
             try {
                 date = df.parse(timestamp);
             } catch (Exception e) {
-                System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":mm:ss");
+                System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + "HH:mm:ss");
             }
 
             if (date != null) {
@@ -142,16 +142,16 @@ public class TimeStampManager {
             return null;
         }
 
-        DateFormat df = new SimpleDateFormat(pattern + ":mm:ss");
+        DateFormat df = new SimpleDateFormat(pattern + "HH:mm:ss");
 
-        timestamp = timestamp + ":01:01";
+        timestamp = timestamp + "01:01:01";
         timestamp = timestamp.substring(2);
 
         Date date = null;
         try {
             date = df.parse(timestamp);
         } catch (Exception e) {
-            System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + ":mm:ss");
+            System.out.println("Something went wrong parsing timestamp " + timestamp + " with pattern " + pattern + "HH:mm:ss");
         }
 
         ZonedDateTime zDate = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
@@ -161,16 +161,14 @@ public class TimeStampManager {
         int minutes = (int) totalSeconds/60;
         int hours = minutes / 60;
         int days = hours / 24;
-        int hoursUntil = hours - (days * 24);
 
         days = days * -1;
-        hoursUntil = hoursUntil * -1;
 
-        if (days == 0 && hoursUntil == 0) {
-            return ConfigManager.getInstance().lessThanAnHour;
+        if (days == 0) {
+            return ConfigManager.getInstance().lessThanADay;
         }
         else {
-            return String.format(ConfigManager.getInstance().timeLeftText, days + " days and " + hoursUntil + " hours");
+            return String.format(ConfigManager.getInstance().timeLeftText, days + " days");
         }
     }
 
