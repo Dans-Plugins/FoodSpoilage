@@ -1,9 +1,11 @@
-package spoilagesystem;
+package spoilagesystem.factories;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import spoilagesystem.services.LocalConfigService;
 
 import java.util.Collections;
 
@@ -28,8 +30,8 @@ public class SpoiledFoodFactory {
         ItemMeta meta = spoiledFood.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(ConfigManager.getInstance().spoiledFoodName);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + ConfigManager.getInstance().spoiledFoodLore));
+            meta.setDisplayName(LocalConfigService.getInstance().spoiledFoodName);
+            meta.setLore(Collections.singletonList(ChatColor.WHITE + LocalConfigService.getInstance().spoiledFoodLore));
         }
 
         spoiledFood.setItemMeta(meta);

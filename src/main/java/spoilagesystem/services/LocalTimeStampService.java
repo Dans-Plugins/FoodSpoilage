@@ -1,4 +1,4 @@
-package spoilagesystem;
+package spoilagesystem.services;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -16,17 +16,17 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Calendar.HOUR_OF_DAY;
 
-public class TimeStampManager {
+public class LocalTimeStampService {
 
-    private static TimeStampManager instance;
+    private static LocalTimeStampService instance;
 
-    private TimeStampManager() {
+    private LocalTimeStampService() {
 
     }
 
-    public static TimeStampManager getInstance() {
+    public static LocalTimeStampService getInstance() {
         if (instance == null) {
-            instance = new TimeStampManager();
+            instance = new LocalTimeStampService();
         }
         return instance;
     }
@@ -39,7 +39,7 @@ public class TimeStampManager {
         if (meta != null) {
             meta.setLore(asList(
                     "",
-                    ChatColor.WHITE + ConfigManager.getInstance().expiryDateText,
+                    ChatColor.WHITE + LocalConfigService.getInstance().expiryDateText,
                     ChatColor.WHITE + getDateStringPlusTime(hoursUntilSpoilage)
             ));
 
@@ -71,7 +71,7 @@ public class TimeStampManager {
 
                 if (lore != null) {
                     // System.out.println("Debug] Time stamp is already assigned to this item!");
-                    return lore.toString().contains(ConfigManager.getInstance().expiryDateText);
+                    return lore.toString().contains(LocalConfigService.getInstance().expiryDateText);
                 }
             }
         }
@@ -165,10 +165,10 @@ public class TimeStampManager {
         days = days * -1;
 
         if (days == 0) {
-            return ConfigManager.getInstance().lessThanADay;
+            return LocalConfigService.getInstance().lessThanADay;
         }
         else {
-            return String.format(ConfigManager.getInstance().timeLeftText, days + " days");
+            return String.format(LocalConfigService.getInstance().timeLeftText, days + " days");
         }
     }
 
