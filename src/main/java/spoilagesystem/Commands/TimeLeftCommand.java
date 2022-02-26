@@ -3,8 +3,9 @@ package spoilagesystem.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.ConfigManager;
-import spoilagesystem.TimeStampManager;
+
+import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.services.LocalTimeStampService;
 
 public class TimeLeftCommand {
 
@@ -17,11 +18,11 @@ public class TimeLeftCommand {
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        String timeLeft = TimeStampManager.getInstance().getTimeLeft(item);
+        String timeLeft = LocalTimeStampService.getInstance().getTimeLeft(item);
 
         if (timeLeft == null) {
             // this item will never spoil
-            player.sendMessage(ConfigManager.getInstance().neverSpoilText);
+            player.sendMessage(LocalConfigService.getInstance().neverSpoilText);
             return;
         }
 

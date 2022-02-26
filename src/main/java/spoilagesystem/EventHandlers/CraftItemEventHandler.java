@@ -5,9 +5,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.ConfigManager;
-import spoilagesystem.SpoiledFoodFactory;
-import spoilagesystem.TimeStampManager;
+
+import spoilagesystem.factories.SpoiledFoodFactory;
+import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.services.LocalTimeStampService;
 
 public class CraftItemEventHandler implements Listener {
 
@@ -16,10 +17,10 @@ public class CraftItemEventHandler implements Listener {
 
         ItemStack item = event.getCurrentItem();
         Material type = item.getType();
-        int time = ConfigManager.getInstance().getTime(type);
+        int time = LocalConfigService.getInstance().getTime(type);
         if (time != 0) {
             cancelIfShiftClick(event);
-            int spoilAmt = ConfigManager.getInstance().getSpoilChance(type, item.getAmount());
+            int spoilAmt = LocalConfigService.getInstance().getSpoilChance(type, item.getAmount());
             if (spoilAmt > 0) {
                 item.setAmount(item.getAmount() - spoilAmt);
                 ItemStack spoiled = item.clone();
@@ -27,7 +28,7 @@ public class CraftItemEventHandler implements Listener {
                 ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(spoiled);
                 event.getWhoClicked().getInventory().addItem(spoiledFood);
             }
-            event.setCurrentItem(TimeStampManager.getInstance().assignTimeStamp(item, time));
+            event.setCurrentItem(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
         }
     }
 
