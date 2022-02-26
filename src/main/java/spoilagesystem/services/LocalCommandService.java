@@ -4,11 +4,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import spoilagesystem.FoodSpoilage;
-import spoilagesystem.Commands.ReloadCommand;
-import spoilagesystem.Commands.TimeLeftCommand;
+import spoilagesystem.commands.ReloadCommand;
+import spoilagesystem.commands.TimeLeftCommand;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class LocalCommandService {
-
     private static LocalCommandService instance;
 
     private LocalCommandService() {
@@ -39,12 +41,12 @@ public class LocalCommandService {
 
             // reload command
             if (args[0].equalsIgnoreCase("reload")) {
-                new ReloadCommand().reload(sender);
+                new ReloadCommand().execute(sender);
                 return true;
             }
 
             if (args[0].equalsIgnoreCase("timeleft")) {
-                new TimeLeftCommand().sendTimeLeft(sender);
+                new TimeLeftCommand().execute(sender);
                 return true;
             }
 

@@ -1,4 +1,4 @@
-package spoilagesystem.EventHandlers;
+package spoilagesystem.eventhandlers;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.services.LocalTimeStampService;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class PlayerInteractEventHandler implements Listener {
 
     private boolean debug = false;
@@ -52,9 +55,6 @@ public class PlayerInteractEventHandler implements Listener {
                     event.setCancelled(true);
                 }
             }
-
         }
-
     }
-
 }

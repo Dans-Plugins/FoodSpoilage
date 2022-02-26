@@ -3,8 +3,11 @@ package spoilagesystem.utils;
 import org.bukkit.plugin.PluginManager;
 
 import spoilagesystem.FoodSpoilage;
-import spoilagesystem.EventHandlers.*;
+import spoilagesystem.eventhandlers.*;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class EventRegistry {
 
     private static EventRegistry instance;
@@ -21,7 +24,6 @@ public class EventRegistry {
     }
 
     public void registerEvents() {
-
         FoodSpoilage mainInstance = FoodSpoilage.getInstance();
         PluginManager manager = mainInstance.getServer().getPluginManager();
 
@@ -31,7 +33,5 @@ public class EventRegistry {
         manager.registerEvents(new ItemSpawnEventHandler(), mainInstance);
         manager.registerEvents(new FurnaceSmeltEventHandler(), mainInstance);
         manager.registerEvents(new BlockCookEventHandler(), mainInstance);
-
     }
-
 }

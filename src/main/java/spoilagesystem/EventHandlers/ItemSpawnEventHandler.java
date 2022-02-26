@@ -1,4 +1,4 @@
-package spoilagesystem.EventHandlers;
+package spoilagesystem.eventhandlers;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -9,6 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import spoilagesystem.services.LocalConfigService;
 import spoilagesystem.services.LocalTimeStampService;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class ItemSpawnEventHandler implements Listener {
 
     @EventHandler()
@@ -22,7 +25,5 @@ public class ItemSpawnEventHandler implements Listener {
         if (time != 0 && !LocalTimeStampService.getInstance().timeStampAssigned(item)) {
             event.getEntity().setItemStack(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
         }
-
     }
-
 }

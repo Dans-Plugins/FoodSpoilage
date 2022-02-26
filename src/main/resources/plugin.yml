@@ -1,5 +1,5 @@
 name: FoodSpoilage
-version: 2.1-alpha-1
+version: '${project.version}'
 authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum]
 main: spoilagesystem.FoodSpoilage
 api-version: 1.13

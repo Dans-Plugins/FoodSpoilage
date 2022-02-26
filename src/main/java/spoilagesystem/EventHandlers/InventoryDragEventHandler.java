@@ -1,4 +1,4 @@
-package spoilagesystem.EventHandlers;
+package spoilagesystem.eventhandlers;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,8 +8,10 @@ import org.bukkit.inventory.ItemStack;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.services.LocalTimeStampService;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class InventoryDragEventHandler implements Listener {
-
     private boolean debug = false;
 
     @EventHandler()
@@ -34,11 +36,7 @@ public class InventoryDragEventHandler implements Listener {
                 } else {
                     if (debug) { System.out.println("Time has not been reached!"); }
                 }
-
             }
-
         }
-
     }
-
 }

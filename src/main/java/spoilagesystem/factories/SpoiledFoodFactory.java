@@ -9,8 +9,10 @@ import spoilagesystem.services.LocalConfigService;
 
 import java.util.Collections;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class SpoiledFoodFactory {
-
     private static SpoiledFoodFactory instance;
 
     private SpoiledFoodFactory() {

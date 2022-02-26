@@ -9,8 +9,10 @@ import java.util.Scanner;
 
 import static org.bukkit.Material.*;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class LocalLegacyStorageService {
-
     private static LocalLegacyStorageService instance;
 
     private LocalLegacyStorageService() {
