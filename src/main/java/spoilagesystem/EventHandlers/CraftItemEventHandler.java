@@ -1,4 +1,4 @@
-package spoilagesystem.EventHandlers;
+package spoilagesystem.eventhandlers;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -10,6 +10,9 @@ import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.services.LocalConfigService;
 import spoilagesystem.services.LocalTimeStampService;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class CraftItemEventHandler implements Listener {
 
     @EventHandler()
@@ -37,5 +40,4 @@ public class CraftItemEventHandler implements Listener {
             event.setCancelled(true); //TODO: find better solution
         }
     }
-
 }

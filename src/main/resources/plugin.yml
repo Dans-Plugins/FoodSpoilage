@@ -1,5 +1,5 @@
 name: FoodSpoilage
-version: 2.1-alpha-1
+version: '${project.version}'
 authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum]
 main: spoilagesystem.FoodSpoilage
 api-version: 1.13
@@ -7,3 +7,11 @@ api-version: 1.13
 commands:
   foodspoilage:
   fs:
+
+permissions:
+  fs.help:
+    default: true
+  fs.timeleft:
+    default: true
+  fs.reload:
+    default: op

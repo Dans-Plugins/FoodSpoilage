@@ -14,8 +14,10 @@ import java.util.Random;
 import static org.bukkit.Material.WHEAT;
 import static org.bukkit.Material.values;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class LocalConfigService {
-
     private static LocalConfigService instance;
 
     private LocalConfigService() {
@@ -302,5 +304,12 @@ public class LocalConfigService {
         config.set("lessThanAnHour", lessThanAnHour);
         config.set("lessThanADay", lessThanADay);
         FoodSpoilage.getInstance().saveConfig();
+    }
+
+    public void saveMissingConfigDefaultsIfNotPresent() {
+    }
+
+    public boolean getBoolean(String string) {
+        return false;
     }
 }

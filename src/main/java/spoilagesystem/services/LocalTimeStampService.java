@@ -16,8 +16,10 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Calendar.HOUR_OF_DAY;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class LocalTimeStampService {
-
     private static LocalTimeStampService instance;
 
     private LocalTimeStampService() {
@@ -171,5 +173,4 @@ public class LocalTimeStampService {
             return String.format(LocalConfigService.getInstance().timeLeftText, days + " days");
         }
     }
-
 }
