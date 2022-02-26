@@ -1,21 +1,23 @@
-package spoilagesystem;
+package spoilagesystem.services;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+
+import spoilagesystem.FoodSpoilage;
 import spoilagesystem.Commands.ReloadCommand;
 import spoilagesystem.Commands.TimeLeftCommand;
 
-public class CommandInterpreter {
+public class LocalCommandService {
 
-    private static CommandInterpreter instance;
+    private static LocalCommandService instance;
 
-    private CommandInterpreter() {
+    private LocalCommandService() {
 
     }
 
-    public static CommandInterpreter getInstance() {
+    public static LocalCommandService getInstance() {
         if (instance == null) {
-            instance = new CommandInterpreter();
+            instance = new LocalCommandService();
         }
         return instance;
     }

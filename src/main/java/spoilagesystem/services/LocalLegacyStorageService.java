@@ -1,4 +1,4 @@
-package spoilagesystem;
+package spoilagesystem.services;
 
 import org.bukkit.Material;
 
@@ -9,17 +9,17 @@ import java.util.Scanner;
 
 import static org.bukkit.Material.*;
 
-public class LegacyStorageManager {
+public class LocalLegacyStorageService {
 
-    private static LegacyStorageManager instance;
+    private static LocalLegacyStorageService instance;
 
-    private LegacyStorageManager() {
+    private LocalLegacyStorageService() {
 
     }
 
-    public static LegacyStorageManager getInstance() {
+    public static LocalLegacyStorageService getInstance() {
         if (instance == null) {
-            instance = new LegacyStorageManager();
+            instance = new LocalLegacyStorageService();
         }
         return instance;
     }
@@ -348,19 +348,19 @@ public class LegacyStorageManager {
             // actual loading
 
             if (loadReader.hasNextLine()) {
-                ConfigManager.getInstance().expiryDateText = loadReader.nextLine();
+                LocalConfigService.getInstance().expiryDateText = loadReader.nextLine();
             }
             if (loadReader.hasNextLine()) {
-                ConfigManager.getInstance().valuesLoadedText = loadReader.nextLine();
+                LocalConfigService.getInstance().valuesLoadedText = loadReader.nextLine();
             }
             if (loadReader.hasNextLine()) {
-                ConfigManager.getInstance().noPermsText = loadReader.nextLine();
+                LocalConfigService.getInstance().noPermsText = loadReader.nextLine();
             }
             if (loadReader.hasNextLine()) {
-                ConfigManager.getInstance().spoiledFoodName = loadReader.nextLine();
+                LocalConfigService.getInstance().spoiledFoodName = loadReader.nextLine();
             }
             if (loadReader.hasNextLine()) {
-                ConfigManager.getInstance().spoiledFoodLore = loadReader.nextLine();
+                LocalConfigService.getInstance().spoiledFoodLore = loadReader.nextLine();
             }
 
 

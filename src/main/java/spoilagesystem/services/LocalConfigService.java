@@ -1,8 +1,10 @@
-package spoilagesystem;
+package spoilagesystem.services;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
+
+import spoilagesystem.FoodSpoilage;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,17 +14,17 @@ import java.util.Random;
 import static org.bukkit.Material.WHEAT;
 import static org.bukkit.Material.values;
 
-public class ConfigManager {
+public class LocalConfigService {
 
-    private static ConfigManager instance;
+    private static LocalConfigService instance;
 
-    private ConfigManager() {
+    private LocalConfigService() {
         reloaded = 0;
         this.random = new Random(System.currentTimeMillis()); // Time as seed.
     }
 
-    public static ConfigManager getInstance() {
-        return instance == null ? instance = new ConfigManager() : instance;
+    public static LocalConfigService getInstance() {
+        return instance == null ? instance = new LocalConfigService() : instance;
     }
 
     private static final Map<Material, Float> SPOIL_CHANCE = new HashMap<Material, Float>() {{
@@ -216,12 +218,12 @@ public class ConfigManager {
         if (saveFolder.exists()) {
             System.out.println("[ALERT] Old save folder name (pre v1.9) detected. Updating for compatibility.");
             // legacy load
-            LegacyStorageManager.getInstance().legacyLoadValuesFromConfig();
-            LegacyStorageManager.getInstance().legacyLoadCustomText();
+            LocalLegacyStorageService.getInstance().legacyLoadValuesFromConfig();
+            LocalLegacyStorageService.getInstance().legacyLoadCustomText();
 
             // Pull old data to the new configuration without passing reference
             // to the (this class) spoil-times map.
-            LegacyStorageManager.getInstance().spoilTimes.forEach((k, v) -> {
+            LocalLegacyStorageService.getInstance().spoilTimes.forEach((k, v) -> {
                 FoodSpoilage.getInstance().getConfig().addDefault(k.name(), v);
             });
 
@@ -240,7 +242,7 @@ public class ConfigManager {
             FoodSpoilage.getInstance().saveConfig();
 
             // delete old directory
-            LegacyStorageManager.getInstance().deleteLegacyFiles(saveFolder);
+            LocalLegacyStorageService.getInstance().deleteLegacyFiles(saveFolder);
         }
     }
 

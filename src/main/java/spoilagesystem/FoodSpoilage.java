@@ -4,6 +4,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import spoilagesystem.bStats.Metrics;
+import spoilagesystem.services.LocalCommandService;
+import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.utils.EventRegistry;
 
 import java.io.File;
 
@@ -23,24 +26,24 @@ public final class FoodSpoilage extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        ConfigManager.getInstance().ensureSmoothTransitionBetweenVersions();
+        LocalConfigService.getInstance().ensureSmoothTransitionBetweenVersions();
 
         // config creation/loading
         if (!(new File("./plugins/FoodSpoilage/config.yml").exists())) {
-            ConfigManager.getInstance().create();
+            LocalConfigService.getInstance().create();
         } else {
             reloadConfig();
         }
 
         if (!getVersion().equalsIgnoreCase(getConfig().getString("version"))) {
-            ConfigManager.getInstance().handleVersionMismatch();
+            LocalConfigService.getInstance().handleVersionMismatch();
         }
 
         EventRegistry.getInstance().registerEvents();
 
         int pluginId = 8992;
 
-        Metrics metrics = new Metrics(this, pluginId);
+        new Metrics(this, pluginId);
     }
 
     @Override
@@ -49,7 +52,7 @@ public final class FoodSpoilage extends JavaPlugin {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        return CommandInterpreter.getInstance().interpretCommand(sender, label, args);
+        return LocalCommandService.getInstance().interpretCommand(sender, label, args);
     }
 
 }

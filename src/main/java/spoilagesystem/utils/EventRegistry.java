@@ -1,6 +1,8 @@
-package spoilagesystem;
+package spoilagesystem.utils;
 
 import org.bukkit.plugin.PluginManager;
+
+import spoilagesystem.FoodSpoilage;
 import spoilagesystem.EventHandlers.*;
 
 public class EventRegistry {
