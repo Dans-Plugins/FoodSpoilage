@@ -5,8 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.ConfigManager;
-import spoilagesystem.TimeStampManager;
+
+import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.services.LocalTimeStampService;
 
 public class ItemSpawnEventHandler implements Listener {
 
@@ -15,11 +16,11 @@ public class ItemSpawnEventHandler implements Listener {
 
         ItemStack item = event.getEntity().getItemStack();
         Material type = item.getType();
-        int time = ConfigManager.getInstance().getTime(type);
+        int time = LocalConfigService.getInstance().getTime(type);
 
         // if timestamp not already assigned
-        if (time != 0 && !TimeStampManager.getInstance().timeStampAssigned(item)) {
-            event.getEntity().setItemStack(TimeStampManager.getInstance().assignTimeStamp(item, time));
+        if (time != 0 && !LocalTimeStampService.getInstance().timeStampAssigned(item)) {
+            event.getEntity().setItemStack(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
         }
 
     }

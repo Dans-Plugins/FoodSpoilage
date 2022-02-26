@@ -5,8 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
-import spoilagesystem.ConfigManager;
-import spoilagesystem.TimeStampManager;
+
+import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.services.LocalTimeStampService;
 
 public class BlockCookEventHandler  implements Listener {
 
@@ -15,10 +16,10 @@ public class BlockCookEventHandler  implements Listener {
 
         ItemStack item = event.getResult();
         Material type = item.getType();
-        int time = ConfigManager.getInstance().getTime(type);
+        int time = LocalConfigService.getInstance().getTime(type);
 
         if (time != 0) {
-            event.setResult(TimeStampManager.getInstance().assignTimeStamp(item, time));
+            event.setResult(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
         }
 
     }

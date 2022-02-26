@@ -3,7 +3,8 @@ package spoilagesystem.Commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import spoilagesystem.ConfigManager;
+
+import spoilagesystem.services.LocalConfigService;
 
 public class ReloadCommand {
 
@@ -12,17 +13,17 @@ public class ReloadCommand {
             Player player = (Player) sender;
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
                 // ConfigManager.getInstance().reloadValuesFromConfig();
-                ConfigManager.getInstance().reload();
-                player.sendMessage(ChatColor.GREEN + ConfigManager.getInstance().valuesLoadedText);
+                LocalConfigService.getInstance().reload();
+                player.sendMessage(ChatColor.GREEN + LocalConfigService.getInstance().valuesLoadedText);
             }
             else {
-                player.sendMessage(ChatColor.RED + ConfigManager.getInstance().noPermsText);
+                player.sendMessage(ChatColor.RED + LocalConfigService.getInstance().noPermsText);
             }
         }
         else {
             // ConfigManager.getInstance().reloadValuesFromConfig();
-            ConfigManager.getInstance().reload();
-            System.out.println(ConfigManager.getInstance().valuesLoadedText);
+            LocalConfigService.getInstance().reload();
+            System.out.println(LocalConfigService.getInstance().valuesLoadedText);
         }
     }
 
