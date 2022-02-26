@@ -7,3 +7,11 @@ api-version: 1.13
 commands:
   foodspoilage:
   fs:
+
+permissions:
+  fs.help:
+    default: true
+  fs.timeleft:
+    default: true
+  fs.reload:
+    default: op
