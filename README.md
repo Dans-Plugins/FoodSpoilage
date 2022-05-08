@@ -36,6 +36,7 @@ Daniel Stephenson | Creator
 Undead_Zeratul | Overhauled many parts of the plugin
 Caibinus | Fixed some bugs
 Callum | Fixed some bugs and implemented a caching system for food spoilage times
+alyphen | Migrated the project to gradle
 
 ## License
 GPL3
