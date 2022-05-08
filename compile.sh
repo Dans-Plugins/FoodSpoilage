@@ -1,1 +1,2 @@
-mvn clean package
+#!/usr/bin/env bash
+./gradlew clean build

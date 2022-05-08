@@ -1,6 +1,6 @@
 name: FoodSpoilage
-version: '${project.version}'
-authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum]
+version: @version@
+authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum, alyphen]
 main: spoilagesystem.FoodSpoilage
 api-version: 1.13
 
