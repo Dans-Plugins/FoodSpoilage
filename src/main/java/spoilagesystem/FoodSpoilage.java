@@ -1,5 +1,6 @@
 package spoilagesystem;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
@@ -8,7 +9,6 @@ import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.services.CommandService;
 import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
-import spoilagesystem.bstats.Metrics;
 import spoilagesystem.commands.DefaultCommand;
 import spoilagesystem.commands.HelpCommand;
 import spoilagesystem.commands.ReloadCommand;
