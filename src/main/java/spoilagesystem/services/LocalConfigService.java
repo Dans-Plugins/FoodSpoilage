@@ -307,6 +307,7 @@ public class LocalConfigService {
     }
 
     public void saveMissingConfigDefaultsIfNotPresent() {
+        handleVersionMismatch();
     }
 
     public boolean getBoolean(String string) {
