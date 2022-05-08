@@ -1,4 +1,4 @@
-package spoilagesystem.bStats;
+package spoilagesystem.bstats;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
