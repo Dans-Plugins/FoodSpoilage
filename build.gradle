@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation 'com.github.Preponderous-Software:ponder:1.0'
     implementation 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
+    implementation 'org.bstats:bstats-bukkit:3.0.0'
 }
 
 group = 'KingdomProgrammers'
@@ -34,10 +35,13 @@ shadowJar {
     mergeServiceFiles()
     dependencies {
         include(dependency('com.github.Preponderous-Software:ponder'))
+        include(dependency('org.bstats:bstats-bukkit'))
+        include(dependency('org.bstats:bstats-base'))
     }
     relocate 'preponderous.ponder', 'spoilagesystem.shadow.preponderous.ponder'
     relocate 'org.intellij', 'spoilagesystem.shadow.org.intellij'
     relocate 'org.jetbrains', 'spoilagesystem.shadow.org.jetbrains'
+    relocate 'org.bstats', 'spoilagesystem.shadow.org.bstats'
 }
 
 artifacts {
