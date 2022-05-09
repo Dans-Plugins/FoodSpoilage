@@ -30,13 +30,13 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/FoodSpoi
 - [Notes for Developers](https://github.com/dmccoystephenson/FoodSpoilage/wiki/Developer-Notes)
 
 ## Authors and acknowledgement
-Name | Main Contributions
------------- | -------------
-Daniel Stephenson | Creator
-Undead_Zeratul | Overhauled many parts of the plugin
-Caibinus | Fixed some bugs
-Callum | Fixed some bugs and implemented a caching system for food spoilage times
-alyphen | Migrated the project to gradle
+| Name              | Main Contributions                                                       |
+|-------------------|--------------------------------------------------------------------------|
+| Daniel Stephenson | Creator                                                                  |
+| Undead_Zeratul    | Overhauled many parts of the plugin                                      |
+| Caibinus          | Fixed some bugs                                                          |
+| Callum            | Fixed some bugs and implemented a caching system for food spoilage times |
+| alyphen           | Migrated the project to gradle, refactored services                      |
 
 ## License
 GPL3

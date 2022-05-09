@@ -7,14 +7,21 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import spoilagesystem.factories.SpoiledFoodFactory;
-import spoilagesystem.services.LocalTimeStampService;
+import spoilagesystem.timestamp.LocalTimeStampService;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class PlayerInteractEventHandler implements Listener {
+public final class PlayerInteractEventHandler implements Listener {
 
+    private final LocalTimeStampService timeStampService;
+    private final SpoiledFoodFactory spoiledFoodFactory;
     private boolean debug = false;
+
+    public PlayerInteractEventHandler(LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+        this.timeStampService = timeStampService;
+        this.spoiledFoodFactory = spoiledFoodFactory;
+    }
 
     @EventHandler()
     public void handle(PlayerInteractEvent event) {
@@ -23,7 +30,7 @@ public class PlayerInteractEventHandler implements Listener {
         if (item != null) {
 
             // if time stamped
-            if (LocalTimeStampService.getInstance().timeStampAssigned(item)) {
+            if (timeStampService.timeStampAssigned(item)) {
 
                 if (debug) { System.out.println("Item has timestamp!"); }
 
@@ -31,10 +38,10 @@ public class PlayerInteractEventHandler implements Listener {
                 if (hand != null) {
 
                     // if time stamp has been reached
-                    if (LocalTimeStampService.getInstance().timeReached(item)) {
+                    if (timeStampService.timeReached(item)) {
 
                         // turn it into rotten flesh
-                        ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(item);
+                        ItemStack spoiledFood = spoiledFoodFactory.createSpoiledFood(item);
 
                         switch(hand) {
                             case HAND:

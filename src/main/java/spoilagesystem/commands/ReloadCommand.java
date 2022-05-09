@@ -1,43 +1,46 @@
 package spoilagesystem.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.FoodSpoilage;
+import spoilagesystem.config.LocalConfigService;
+import spoilagesystem.timestamp.LocalTimeStampService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class ReloadCommand extends AbstractPluginCommand {
+public final class ReloadCommand extends AbstractPluginCommand {
 
-    public ReloadCommand() {
-        super(new ArrayList<>(Arrays.asList("reload")), new ArrayList<>(Arrays.asList("fs.reload")));
+    private final FoodSpoilage plugin;
+    private final LocalConfigService configService;
+
+    public ReloadCommand(FoodSpoilage plugin, LocalConfigService configService, LocalTimeStampService timeStampService) {
+        super(new ArrayList<>(List.of("reload")), new ArrayList<>(List.of("fs.reload")));
+        this.plugin = plugin;
+        this.configService = configService;
     }
 
     @Override
     public boolean execute(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (player.hasPermission("fs.reload") || player.hasPermission("fs.admin")) {
-                // ConfigManager.getInstance().reloadValuesFromConfig();
-                LocalConfigService.getInstance().reload();
-                player.sendMessage(ChatColor.GREEN + LocalConfigService.getInstance().valuesLoadedText);
+                plugin.reloadConfig();
+                player.sendMessage(ChatColor.GREEN + configService.getValuesLoadedText());
                 return true;
             }
             else {
-                player.sendMessage(ChatColor.RED + LocalConfigService.getInstance().noPermsText);
+                player.sendMessage(ChatColor.RED + configService.getNoPermsReloadText());
                 return false;
             }
         }
         else {
-            // ConfigManager.getInstance().reloadValuesFromConfig();
-            LocalConfigService.getInstance().reload();
-            System.out.println(LocalConfigService.getInstance().valuesLoadedText);
+            plugin.reloadConfig();
+            System.out.println(configService.getValuesLoadedText());
             return true;
         }
     }

@@ -5,25 +5,19 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import spoilagesystem.services.LocalConfigService;
+import spoilagesystem.config.LocalConfigService;
 
 import java.util.Collections;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class SpoiledFoodFactory {
-    private static SpoiledFoodFactory instance;
+public final class SpoiledFoodFactory {
 
-    private SpoiledFoodFactory() {
+    private final LocalConfigService configService;
 
-    }
-
-    public static SpoiledFoodFactory getInstance() {
-        if (instance == null) {
-            instance = new SpoiledFoodFactory();
-        }
-        return instance;
+    public SpoiledFoodFactory(LocalConfigService configService) {
+        this.configService = configService;
     }
 
     public ItemStack createSpoiledFood(ItemStack item) {
@@ -32,8 +26,8 @@ public class SpoiledFoodFactory {
         ItemMeta meta = spoiledFood.getItemMeta();
 
         if (meta != null) {
-            meta.setDisplayName(LocalConfigService.getInstance().spoiledFoodName);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + LocalConfigService.getInstance().spoiledFoodLore));
+            meta.setDisplayName(configService.getSpoiledFoodName());
+            meta.setLore(Collections.singletonList(ChatColor.WHITE + configService.getSpoiledFoodLore()));
         }
 
         spoiledFood.setItemMeta(meta);

@@ -1,0 +1,63 @@
+version: '3.0.0'
+text:
+  expiry-date-lore:
+  - ''
+  - '&fExpiry Date:'
+  - '&f${expiry_date}'
+  values-loaded: 'Values loaded!'
+  no-permission-reload: 'Sorry! In order to use this command, you need the following permission: ''fs.reload'''
+  spoiled-food-name: 'Spoiled Food'
+  spoiled-food-lore: 'This food has gone bad.'
+  never-spoil: 'This item will never spoil.'
+  time-left: 'This item will expire in ${time}.'
+  less-than-an-hour: 'This item will expire in less than an hour.'
+  less-than-a-day: 'This item will expire in less than a day.'
+expiry-date-format: 'MM/DD/yyyy'
+spoil-time:
+  default: PT24H
+  BREAD: PT24H
+  POTATO: PT48H
+  CARROT: PT48H
+  BEETROOT: PT48H
+  BEEF: PT24H
+  PORKCHOP: PT24H
+  CHICKEN: PT24H
+  COD: PT24H
+  SALMON: PT24H
+  MUTTON: PT24H
+  RABBIT: PT24H
+  TROPICAL_FISH: PT24H
+  PUFFERFISH: PT24H
+  MUSHROOM_STEW: PT72H
+  RABBIT_STEW: PT96H
+  BEETROOT_SOUP: PT72H
+  COOKED_BEEF: PT72H
+  COOKED_PORKCHOP: PT72H
+  COOKED_CHICKEN: PT72H
+  COOKED_SALMON: PT72H
+  COOKED_MUTTON: PT72H
+  COOKED_RABBIT: PT72H
+  COOKED_COD: PT72H
+  WHEAT: PT48H
+  HAY_BLOCK: PT48H
+  MELON: PT48H
+  PUMPKIN: PT48H
+  BROWN_MUSHROOM: PT48H
+  RED_MUSHROOM: PT48H
+  NETHER_WART: PT168H
+  MELON_SLICE: PT24H
+  CAKE: PT24H
+  PUMPKIN_PIE: PT24H
+  SUGAR: PT72H
+  EGG: PT72H
+  SUGAR_CANE: PT48H
+  APPLE: PT48H
+  COOKIE: PT94H
+  POISONOUS_POTATO: PT24H
+  CHORUS_FRUIT: PT94H
+  DRIED_KELP: PT72H
+  BAKED_POTATO: PT94H
+  SWEET_BERRIES: PT48H
+spoil-chance:
+  WHEAT: 0.3
+debug: false
