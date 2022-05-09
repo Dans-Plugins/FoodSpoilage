@@ -12,7 +12,7 @@ text:
   time-left: 'This item will expire in ${time}.'
   less-than-an-hour: 'This item will expire in less than an hour.'
   less-than-a-day: 'This item will expire in less than a day.'
-expiry-date-format: 'MM/DD/yyyy'
+expiry-date-format: 'MM/dd/yyyy'
 spoil-time:
   default: PT24H
   BREAD: PT24H
