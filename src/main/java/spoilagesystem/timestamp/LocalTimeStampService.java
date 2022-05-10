@@ -5,8 +5,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.LocalConfigService;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -67,7 +66,7 @@ public final class LocalTimeStampService {
                                     .replace(expectedLoreLine.substring(0, startIndex), "")
                                     .replace(expectedLoreLine.substring(endIndex), "");
                             try {
-                                ZonedDateTime.parse(dateText, dateFormatter);
+                                LocalDate.parse(dateText, dateFormatter);
                             } catch (DateTimeParseException exception) {
                                 return false;
                             }
@@ -104,12 +103,13 @@ public final class LocalTimeStampService {
                     int lineIndex = configService.getExpiryDateText().indexOf(line);
                     int startIndex = line.indexOf("${expiry_date}");
                     int endIndex = startIndex + "${expiry_date}".length();
-                    return ZonedDateTime.parse(
+                    return LocalDate.parse(
                             lore.get(lineIndex)
                                     .replace(line.substring(0, startIndex), "")
                                     .replace(line.substring(endIndex), ""),
                             dateFormatter
-                    );
+                    ).atTime(LocalTime.of(1, 1, 1))
+                            .atZone(ZoneId.systemDefault());
                 }).orElse(null);
             }
         }
