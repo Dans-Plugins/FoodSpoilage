@@ -19,7 +19,7 @@ dependencies {
 }
 
 group = 'KingdomProgrammers'
-version = '2.2.0-SNAPSHOT'
+version = '3.0.0-SNAPSHOT'
 description = 'FoodSpoilage'
 java.sourceCompatibility = JavaVersion.VERSION_17
 

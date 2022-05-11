@@ -5,33 +5,45 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
-
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.factories.SpoiledFoodFactory;
-import spoilagesystem.services.LocalConfigService;
-import spoilagesystem.services.LocalTimeStampService;
+import spoilagesystem.timestamp.LocalTimeStampService;
+
+import java.time.Duration;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class CraftItemEventHandler implements Listener {
+public final class CraftItemEventHandler implements Listener {
 
-    @EventHandler()
+    private final LocalConfigService configService;
+    private final LocalTimeStampService timeStampService;
+    private final SpoiledFoodFactory spoiledFoodFactory;
+
+    public CraftItemEventHandler(LocalConfigService configService, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+        this.configService = configService;
+        this.timeStampService = timeStampService;
+        this.spoiledFoodFactory = spoiledFoodFactory;
+    }
+
+    @EventHandler
     public void handle(CraftItemEvent event) {
 
         ItemStack item = event.getCurrentItem();
+        if (item == null) return;
         Material type = item.getType();
-        int time = LocalConfigService.getInstance().getTime(type);
-        if (time != 0) {
+        Duration time = configService.getTime(type);
+        if (!time.equals(Duration.ZERO)) {
             cancelIfShiftClick(event);
-            int spoilAmt = LocalConfigService.getInstance().getSpoilChance(type, item.getAmount());
+            int spoilAmt = configService.getSpoilChance(type, item.getAmount());
             if (spoilAmt > 0) {
                 item.setAmount(item.getAmount() - spoilAmt);
                 ItemStack spoiled = item.clone();
                 spoiled.setAmount(spoilAmt);
-                ItemStack spoiledFood = SpoiledFoodFactory.getInstance().createSpoiledFood(spoiled);
+                ItemStack spoiledFood = spoiledFoodFactory.createSpoiledFood(spoiled);
                 event.getWhoClicked().getInventory().addItem(spoiledFood);
             }
-            event.setCurrentItem(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
+            event.setCurrentItem(timeStampService.assignTimeStamp(item, time));
         }
     }
 

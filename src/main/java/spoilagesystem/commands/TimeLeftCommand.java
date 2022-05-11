@@ -1,43 +1,42 @@
 package spoilagesystem.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
-import spoilagesystem.services.LocalConfigService;
-import spoilagesystem.services.LocalTimeStampService;
+import spoilagesystem.config.LocalConfigService;
+import spoilagesystem.timestamp.LocalTimeStampService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class TimeLeftCommand extends AbstractPluginCommand {
+public final class TimeLeftCommand extends AbstractPluginCommand {
 
-    public TimeLeftCommand() {
-        super(new ArrayList<>(Arrays.asList("timeleft")), new ArrayList<>(Arrays.asList("fs.timeleft")));
+    private final LocalConfigService configService;
+    private final LocalTimeStampService timeStampService;
+
+    public TimeLeftCommand(LocalConfigService configService, LocalTimeStampService timeStampService) {
+        super(new ArrayList<>(List.of("timeleft")), new ArrayList<>(List.of("fs.timeleft")));
+        this.configService = configService;
+        this.timeStampService = timeStampService;
     }
 
     @Override
     public boolean execute(CommandSender sender) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return false;
         }
 
-        Player player = (Player) sender;
-
         ItemStack item = player.getInventory().getItemInMainHand();
-
-        String timeLeft = LocalTimeStampService.getInstance().getTimeLeft(item);
-
+        String timeLeft = timeStampService.getTimeLeft(item);
         if (timeLeft == null) {
             // this item will never spoil
-            player.sendMessage(LocalConfigService.getInstance().neverSpoilText);
+            player.sendMessage(configService.getNeverSpoilText());
             return true;
         }
-
         player.sendMessage(timeLeft);
         return true;
     }

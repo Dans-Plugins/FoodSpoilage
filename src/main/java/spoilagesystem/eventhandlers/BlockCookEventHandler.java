@@ -5,23 +5,32 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
+import spoilagesystem.config.LocalConfigService;
+import spoilagesystem.timestamp.LocalTimeStampService;
 
-import spoilagesystem.services.LocalConfigService;
-import spoilagesystem.services.LocalTimeStampService;
+import java.time.Duration;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public class BlockCookEventHandler implements Listener {
+public final class BlockCookEventHandler implements Listener {
 
-    @EventHandler()
+    private final LocalConfigService configService;
+    private final LocalTimeStampService timeStampService;
+
+    public BlockCookEventHandler(LocalConfigService configService, LocalTimeStampService timeStampService) {
+        this.configService = configService;
+        this.timeStampService = timeStampService;
+    }
+
+    @EventHandler
     public void handle(BlockCookEvent event) {
         ItemStack item = event.getResult();
         Material type = item.getType();
-        int time = LocalConfigService.getInstance().getTime(type);
+        Duration time = configService.getTime(type);
 
-        if (time != 0) {
-            event.setResult(LocalTimeStampService.getInstance().assignTimeStamp(item, time));
+        if (!time.equals(Duration.ZERO)) {
+            event.setResult(timeStampService.assignTimeStamp(item, time));
         }
     }
 }
