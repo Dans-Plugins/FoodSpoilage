@@ -16,11 +16,13 @@ import java.util.Optional;
  */
 public final class LocalTimeStampService {
 
+    private final FoodSpoilage plugin;
     private final LocalConfigService configService;
 
     private final DateTimeFormatter dateFormatter;
 
     public LocalTimeStampService(FoodSpoilage plugin, LocalConfigService configService) {
+        this.plugin = plugin;
         this.configService = configService;
 
         dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/DD/yyyy"));
@@ -54,7 +56,7 @@ public final class LocalTimeStampService {
                 List<String> lore = meta.getLore();
 
                 if (lore != null) {
-                    // System.out.println("Debug] Time stamp is already assigned to this item!");
+                    plugin.getLogger().fine("Timestamp is already assigned to this item!");
                     List<String> expiryDateText = configService.getExpiryDateText();
                     if (lore.size() != expiryDateText.size()) return false;
                     for (int i = 0; i < expiryDateText.size(); i++) {
@@ -79,7 +81,7 @@ public final class LocalTimeStampService {
             }
         }
 
-        // System.out.println("[Debug] Time stamp is not yet applied to this item!");
+        plugin.getLogger().fine("Time stamp is not yet applied to this item!");
         return false;
     }
 

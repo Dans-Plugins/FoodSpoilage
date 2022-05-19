@@ -40,7 +40,7 @@ public final class ReloadCommand extends AbstractPluginCommand {
         }
         else {
             plugin.reloadConfig();
-            System.out.println(configService.getValuesLoadedText());
+            plugin.getLogger().fine(configService.getValuesLoadedText());
             return true;
         }
     }
