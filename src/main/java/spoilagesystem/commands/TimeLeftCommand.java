@@ -1,31 +1,35 @@
 package spoilagesystem.commands;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import org.jetbrains.annotations.NotNull;
 import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.bukkit.ChatColor.RED;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public final class TimeLeftCommand extends AbstractPluginCommand {
+public final class TimeLeftCommand implements CommandExecutor {
 
     private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
 
     public TimeLeftCommand(LocalConfigService configService, LocalTimeStampService timeStampService) {
-        super(new ArrayList<>(List.of("timeleft")), new ArrayList<>(List.of("fs.timeleft")));
         this.configService = configService;
         this.timeStampService = timeStampService;
     }
 
     @Override
-    public boolean execute(CommandSender sender) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+        if (!sender.hasPermission("fs.timeleft")) {
+            sender.sendMessage(RED + "In order to use this command, you need one of the following permission: 'fs.timeleft'");
+            return true;
+        }
         if (!(sender instanceof Player player)) {
             return false;
         }
@@ -39,10 +43,5 @@ public final class TimeLeftCommand extends AbstractPluginCommand {
         }
         player.sendMessage(timeLeft);
         return true;
-    }
-
-    @Override
-    public boolean execute(CommandSender commandSender, String[] strings) {
-        return execute(commandSender);
     }
 }

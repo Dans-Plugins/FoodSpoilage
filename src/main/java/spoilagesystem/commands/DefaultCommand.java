@@ -1,35 +1,37 @@
 package spoilagesystem.commands;
 
-import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import org.jetbrains.annotations.NotNull;
 import spoilagesystem.FoodSpoilage;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.bukkit.ChatColor.AQUA;
+import static org.bukkit.ChatColor.RED;
 
 /**
  * @author Daniel McCoy Stephenson
  */
-public final class DefaultCommand extends AbstractPluginCommand {
+public final class DefaultCommand implements CommandExecutor {
 
     private final FoodSpoilage plugin;
 
     public DefaultCommand(FoodSpoilage plugin) {
-        super(new ArrayList<>(List.of("default")), new ArrayList<>(List.of("fs.default")));
         this.plugin = plugin;
     }
 
     @Override
-    public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + plugin.getName() + " v" + plugin.getDescription().getVersion());
-        commandSender.sendMessage(ChatColor.AQUA + "Developed by: Daniel McCoy Stephenson");
-        commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/Dans-Plugins/FoodSpoilage/wiki");
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!sender.hasPermission("fs.default")) {
+            sender.sendMessage(RED + "In order to use this command, you need one of the following permission: 'fs.default'");
+            return true;
+        }
+        sender.sendMessage(new String[] {
+                AQUA + plugin.getName() + " v" + plugin.getDescription().getVersion(),
+                AQUA + "Developed by: Daniel McCoy Stephenson",
+                AQUA + "Wiki: https://github.com/Dans-Plugins/FoodSpoilage/wiki"
+        });
         return true;
     }
 
-    @Override
-    public boolean execute(CommandSender commandSender, String[] strings) {
-        return execute(commandSender);
-    }
 }

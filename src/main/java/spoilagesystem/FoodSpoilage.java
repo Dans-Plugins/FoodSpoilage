@@ -1,13 +1,8 @@
 package spoilagesystem;
 
 import org.bstats.bukkit.Metrics;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
-import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import org.bukkit.command.PluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
-import preponderous.ponder.minecraft.bukkit.services.CommandService;
 import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
 import spoilagesystem.commands.DefaultCommand;
 import spoilagesystem.commands.HelpCommand;
@@ -18,8 +13,10 @@ import spoilagesystem.eventhandlers.*;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static org.bukkit.ChatColor.RED;
 
 import static java.util.logging.Level.FINE;
 
@@ -27,7 +24,7 @@ import static java.util.logging.Level.FINE;
  * @author Daniel McCoy Stephenson
  */
 public final class FoodSpoilage extends PonderBukkitPlugin {
-    private CommandService commandService;
+
     private LocalConfigService configService;
     private LocalTimeStampService timeStampService;
     private SpoiledFoodFactory spoiledFoodFactory;
@@ -40,31 +37,12 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         if (getConfig().getBoolean("debug", false)) {
             getLogger().setLevel(FINE);
         }
-        commandService = new CommandService(getPonder());
         configService = new LocalConfigService(this);
         timeStampService = new LocalTimeStampService(this, configService);
         spoiledFoodFactory = new SpoiledFoodFactory(configService);
         registerEventHandlers();
-        initializeCommandService();
+        initializeCommands();
         handlebStatsIntegration();
-    }
-
-    /**
-     * This method handles commands sent to the minecraft server and interprets them if the label matches one of the core commands.
-     * @param sender The sender of the command.
-     * @param cmd The command that was sent. This is unused.
-     * @param label The core command that has been invoked.
-     * @param args Arguments of the core command. Often sub-commands.
-     * @return A boolean indicating whether the execution of the command was successful.
-     */
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (args.length == 0) {
-            DefaultCommand defaultCommand = new DefaultCommand(this);
-            return defaultCommand.execute(sender);
-        }
-
-        return commandService.interpretAndExecuteCommand(sender, label, args);
     }
 
     private void handlebStatsIntegration() {
@@ -77,27 +55,39 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      */
     private void registerEventHandlers() {
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
-        ArrayList<Listener> listeners = new ArrayList<>(Arrays.asList(
+        eventHandlerRegistry.registerEventHandlers(List.of(
                 new BlockCookEventHandler(configService, timeStampService),
                 new CraftItemEventHandler(configService, timeStampService, spoiledFoodFactory),
                 new FurnaceSmeltEventHandler(configService, timeStampService),
                 new InventoryDragEventHandler(this, timeStampService, spoiledFoodFactory),
                 new ItemSpawnEventHandler(configService, timeStampService),
                 new PlayerInteractEventHandler(this, timeStampService, spoiledFoodFactory)
-        ));
-        eventHandlerRegistry.registerEventHandlers(listeners, this);
+        ), this);
     }
 
-    /**
-     * Initializes Ponder's command service with the plugin's commands.
-     */
-    private void initializeCommandService() {
-        ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
-                new HelpCommand(),
-                new TimeLeftCommand(configService, timeStampService),
-                new ReloadCommand(this, configService, timeStampService)
-        ));
-        commandService.initialize(commands, "That command wasn't found.");
+    private void initializeCommands() {
+        PluginCommand foodSpoilageCommand = getCommand("foodspoilage");
+        if (foodSpoilageCommand != null) {
+            DefaultCommand defaultCommand = new DefaultCommand(this);
+            HelpCommand helpCommand = new HelpCommand();
+            ReloadCommand reloadCommand = new ReloadCommand(this, configService);
+            TimeLeftCommand timeLeftCommand = new TimeLeftCommand(configService, timeStampService);
+            foodSpoilageCommand.setExecutor((sender, cmd, label, args) -> {
+                if (args.length < 1) {
+                    defaultCommand.onCommand(sender, cmd, label, new String[0]);
+                    return true;
+                }
+                switch (args[0].toLowerCase()) {
+                    case "help": return helpCommand.onCommand(sender, cmd, label, Arrays.stream(args).skip(1).toArray(String[]::new));
+                    case "reload": return reloadCommand.onCommand(sender, cmd, label, Arrays.stream(args).skip(1).toArray(String[]::new));
+                    case "timeleft": return timeLeftCommand.onCommand(sender, cmd, label, Arrays.stream(args).skip(1).toArray(String[]::new));
+                    default: {
+                        sender.sendMessage(RED + "That command wasn't found.");
+                        return true;
+                    }
+                }
+            });
+        }
     }
 
 }
