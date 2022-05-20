@@ -21,6 +21,8 @@ import spoilagesystem.timestamp.LocalTimeStampService;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static java.util.logging.Level.FINE;
+
 /**
  * @author Daniel McCoy Stephenson
  */
@@ -35,6 +37,9 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      */
     @Override
     public void onEnable() {
+        if (getConfig().getBoolean("debug", false)) {
+            getLogger().setLevel(FINE);
+        }
         commandService = new CommandService(getPonder());
         configService = new LocalConfigService(this);
         timeStampService = new LocalTimeStampService(this, configService);
@@ -62,14 +67,6 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         return commandService.interpretAndExecuteCommand(sender, label, args);
     }
 
-        /**
-     * Checks if debug is enabled.
-     * @return Whether debug is enabled.
-     */
-    public boolean isDebugEnabled() {
-        return getConfig().getBoolean("debug");
-    }
-
     private void handlebStatsIntegration() {
         int pluginId = 8992;
         new Metrics(this, pluginId);
@@ -84,9 +81,9 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                 new BlockCookEventHandler(configService, timeStampService),
                 new CraftItemEventHandler(configService, timeStampService, spoiledFoodFactory),
                 new FurnaceSmeltEventHandler(configService, timeStampService),
-                new InventoryDragEventHandler(timeStampService, spoiledFoodFactory),
+                new InventoryDragEventHandler(this, timeStampService, spoiledFoodFactory),
                 new ItemSpawnEventHandler(configService, timeStampService),
-                new PlayerInteractEventHandler(timeStampService, spoiledFoodFactory)
+                new PlayerInteractEventHandler(this, timeStampService, spoiledFoodFactory)
         ));
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }

@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import spoilagesystem.FoodSpoilage;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -14,11 +15,12 @@ import spoilagesystem.timestamp.LocalTimeStampService;
  */
 public final class PlayerInteractEventHandler implements Listener {
 
+    private final FoodSpoilage plugin;
     private final LocalTimeStampService timeStampService;
     private final SpoiledFoodFactory spoiledFoodFactory;
-    private boolean debug = false;
 
-    public PlayerInteractEventHandler(LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+    public PlayerInteractEventHandler(FoodSpoilage plugin, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+        this.plugin = plugin;
         this.timeStampService = timeStampService;
         this.spoiledFoodFactory = spoiledFoodFactory;
     }
@@ -32,7 +34,7 @@ public final class PlayerInteractEventHandler implements Listener {
             // if time stamped
             if (timeStampService.timeStampAssigned(item)) {
 
-                if (debug) { System.out.println("Item has timestamp!"); }
+                plugin.getLogger().fine("Item has timestamp!");
 
                 EquipmentSlot hand = event.getHand();
                 if (hand != null) {
@@ -51,11 +53,11 @@ public final class PlayerInteractEventHandler implements Listener {
                                 event.getPlayer().getInventory().setItemInOffHand(spoiledFood);
                                 break;
                             default:
-                                if (debug) { System.out.println("Unknown Hand" + hand); }
+                                plugin.getLogger().fine("Unknown Hand " + hand);
                         }
                         event.setCancelled(true);
                     } else {
-                        if (debug) { System.out.println("Time has not been reached!"); }
+                        plugin.getLogger().fine("Time has not been reached!");
                     }
                 }
                 else {

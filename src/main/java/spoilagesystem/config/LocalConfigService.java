@@ -26,10 +26,6 @@ public final class LocalConfigService {
         plugin.saveDefaultConfig();
     }
 
-    /**
-     * Use this to see the spoil-time caching in real-time (for testing purposes only).
-     */
-    private static final boolean debug = false;
     private final Random random;
 
     /**
@@ -43,9 +39,7 @@ public final class LocalConfigService {
         String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("default"));
         if (durationString == null) return Duration.ZERO;
         Duration time = Duration.parse(durationString); // Get the time from the config.
-        if (debug) {
-            System.out.println("Time from configuration for " + type.name() + ":\t" + time);
-        }
+        plugin.getLogger().fine("Time from configuration for " + type.name() + ":\t" + time);
         return time; // Return the key.
     }
 

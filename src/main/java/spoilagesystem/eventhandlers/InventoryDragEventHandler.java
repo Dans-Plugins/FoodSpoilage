@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
+import spoilagesystem.FoodSpoilage;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -13,11 +14,12 @@ import spoilagesystem.timestamp.LocalTimeStampService;
  */
 public final class InventoryDragEventHandler implements Listener {
 
+    private final FoodSpoilage plugin;
     private final LocalTimeStampService timeStampService;
     private final SpoiledFoodFactory spoiledFoodFactory;
-    private boolean debug = false;
 
-    public InventoryDragEventHandler(LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+    public InventoryDragEventHandler(FoodSpoilage plugin, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+        this.plugin = plugin;
         this.timeStampService = timeStampService;
         this.spoiledFoodFactory = spoiledFoodFactory;
     }
@@ -31,18 +33,18 @@ public final class InventoryDragEventHandler implements Listener {
             // if time stamped
             if (timeStampService.timeStampAssigned(item)) {
 
-                if (debug) { System.out.println("Item has timestamp!"); }
+                plugin.getLogger().fine("Item has timestamp!");
 
                 // if time stamp has been reached
                 if (timeStampService.timeReached(item)) {
 
-                    if (debug) { System.out.println("Time has been reached!"); }
+                    plugin.getLogger().fine("Time has been reached!");
 
                     // turn it into rotten flesh
                     event.setCursor(spoiledFoodFactory.createSpoiledFood(item));
 
                 } else {
-                    if (debug) { System.out.println("Time has not been reached!"); }
+                    plugin.getLogger().fine("Time has not been reached!");
                 }
             }
         }
