@@ -7,9 +7,17 @@ website: 'https://www.spigotmc.org/resources/food-spoilage.81507/'
 
 commands:
   foodspoilage:
-  fs:
-
+    aliases: [fs]
+    description: |
+      Food spoilage base command
+      /foodspoilage - displays plugin information
+      /foodspoilage help - shows FoodSpoilage commands
+      /foodspoilage timeleft - displays the amount of time until the item in your hand expires
+      /foodspoilage reload - reloads the config
+    usage: /<command> [help|timeleft|reload]
 permissions:
+  fs.default:
+    default: true
   fs.help:
     default: true
   fs.timeleft:

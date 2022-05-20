@@ -138,9 +138,15 @@ public final class LocalTimeStampService {
         int days = hours / 24;
 
         if (days == 0) {
-            return configService.getLessThanADay();
-        } else {
+            if (hours == 0) {
+                return configService.getLessThanAnHour();
+            } else {
+                return configService.getLessThanADay();
+            }
+        } else if (days > 0) {
             return configService.getTimeLeftText().replace("${time}", days + " days");
+        } else {
+            return configService.getNoTimeLeftText();
         }
     }
 }

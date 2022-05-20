@@ -85,34 +85,38 @@ public final class LocalConfigService {
     }
 
     public String getValuesLoadedText() {
-        return plugin.getConfig().getString("text.values-loaded");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.values-loaded"));
     }
 
     public String getNoPermsReloadText() {
-        return plugin.getConfig().getString("text.no-permission-reload");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-permission-reload"));
     }
 
     public String getSpoiledFoodName() {
-        return plugin.getConfig().getString("text.spoiled-food-name");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.spoiled-food-name"));
     }
 
     public String getSpoiledFoodLore() {
-        return plugin.getConfig().getString("text.spoiled-food-lore");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.spoiled-food-lore"));
     }
 
     public String getNeverSpoilText() {
-        return plugin.getConfig().getString("text.never-spoil");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.never-spoil"));
     }
 
     public String getTimeLeftText() {
-        return plugin.getConfig().getString("text.time-left");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.time-left"));
     }
 
     public String getLessThanAnHour() {
-        return plugin.getConfig().getString("text.less-than-an-hour");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.less-than-an-hour"));
     }
 
     public String getLessThanADay() {
-        return plugin.getConfig().getString("text.less-than-a-day");
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.less-than-a-day"));
+    }
+
+    public String getNoTimeLeftText() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
 }
