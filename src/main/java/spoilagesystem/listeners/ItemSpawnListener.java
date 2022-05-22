@@ -1,9 +1,9 @@
-package spoilagesystem.eventhandlers;
+package spoilagesystem.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
@@ -13,25 +13,26 @@ import java.time.Duration;
 /**
  * @author Daniel McCoy Stephenson
  */
-public final class FurnaceSmeltEventHandler implements Listener {
+public final class ItemSpawnListener implements Listener {
 
     private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
 
-    public FurnaceSmeltEventHandler(LocalConfigService configService, LocalTimeStampService timeStampService) {
+    public ItemSpawnListener(LocalConfigService configService, LocalTimeStampService timeStampService) {
         this.configService = configService;
         this.timeStampService = timeStampService;
     }
 
     @EventHandler
-    public void handle(FurnaceSmeltEvent event) {
+    public void onItemSpawn(ItemSpawnEvent event) {
 
-        ItemStack item = event.getResult();
+        ItemStack item = event.getEntity().getItemStack();
         Material type = item.getType();
         Duration time = configService.getTime(type);
 
-        if (!time.equals(Duration.ZERO)) {
-            event.setResult(timeStampService.assignTimeStamp(item, time));
+        // if timestamp not already assigned
+        if (!time.equals(Duration.ZERO) && !timeStampService.timeStampAssigned(item)) {
+            event.getEntity().setItemStack(timeStampService.assignTimeStamp(item, time));
         }
     }
 }

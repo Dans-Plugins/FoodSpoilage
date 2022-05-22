@@ -20,7 +20,7 @@ public final class SpoiledFoodFactory {
         this.configService = configService;
     }
 
-    public ItemStack createSpoiledFood(ItemStack item) {
+    public ItemStack createSpoiledFood(int amount) {
         ItemStack spoiledFood = new ItemStack(Material.ROTTEN_FLESH);
 
         ItemMeta meta = spoiledFood.getItemMeta();
@@ -31,7 +31,7 @@ public final class SpoiledFoodFactory {
         }
 
         spoiledFood.setItemMeta(meta);
-        spoiledFood.setAmount(item.getAmount());
+        spoiledFood.setAmount(amount);
 
         return spoiledFood;
     }

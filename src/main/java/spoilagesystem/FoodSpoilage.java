@@ -9,7 +9,7 @@ import spoilagesystem.commands.HelpCommand;
 import spoilagesystem.commands.ReloadCommand;
 import spoilagesystem.commands.TimeLeftCommand;
 import spoilagesystem.config.LocalConfigService;
-import spoilagesystem.eventhandlers.*;
+import spoilagesystem.listeners.*;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -56,12 +56,17 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private void registerEventHandlers() {
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         eventHandlerRegistry.registerEventHandlers(List.of(
-                new BlockCookEventHandler(configService, timeStampService),
-                new CraftItemEventHandler(configService, timeStampService, spoiledFoodFactory),
-                new FurnaceSmeltEventHandler(configService, timeStampService),
-                new InventoryDragEventHandler(this, timeStampService, spoiledFoodFactory),
-                new ItemSpawnEventHandler(configService, timeStampService),
-                new PlayerInteractEventHandler(this, timeStampService, spoiledFoodFactory)
+                new BlockCookListener(timeStampService),
+                new CraftItemListener(this, configService, timeStampService, spoiledFoodFactory),
+                new EntityDeathListener(timeStampService),
+                new EntityPickupItemListener(timeStampService),
+                new InventoryDragListener(this, timeStampService, spoiledFoodFactory),
+                new InventoryOpenListener(timeStampService),
+                new ItemSpawnListener(configService, timeStampService),
+                new PlayerFishListener(timeStampService),
+                new PlayerInteractListener(this, timeStampService, spoiledFoodFactory),
+                new PlayerJoinListener(timeStampService),
+                new PrepareItemCraftListener(timeStampService)
         ), this);
     }
 
