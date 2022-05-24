@@ -36,7 +36,7 @@ public final class LocalConfigService {
      * @see org.bukkit.configuration.MemorySection#getInt(String)
      */
     public Duration getTime(Material type) {
-        String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("default"));
+        String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("spoil-time.default"));
         if (durationString == null) return Duration.ZERO;
         Duration time = Duration.parse(durationString); // Get the time from the config.
         plugin.getLogger().fine("Time from configuration for " + type.name() + ":\t" + time);
@@ -44,17 +44,23 @@ public final class LocalConfigService {
     }
 
     /**
-     * Method to obtain the spoil-chance for the given material->int parameters.
+     * Determines how much of a given material should spoil, given the amount that would be produced should spoiling
+     * not have been present.
      *
-     * @param type of the item.
-     * @param qty or quantity of the item.
-     * @return spoil chance.
+     * @param type The type of the item
+     * @param qty The quantity of the item that would be produced were none of the item to spoil
+     * @return amount of the item that has spoiled
      */
-    public int getSpoilChance(Material type, int qty) {
+    public int determineSpoiledAmount(Material type, int qty) {
         double chance = plugin.getConfig().getDouble("spoil-chance." + type.toString(), 0);
         if (chance <= 0) return 0;
-        double roll = random.nextDouble();
-        return roll <= chance ? (int) (roll * qty) : 0;
+        int amountSpoiled = 0;
+        for (int i = 0; i < qty; i++) {
+            if (random.nextDouble() <= chance) {
+                amountSpoiled++;
+            }
+        }
+        return amountSpoiled;
     }
 
     /**
@@ -62,10 +68,10 @@ public final class LocalConfigService {
      *
      * @param stack to reference
      * @return spoil chance.
-     * @see #getSpoilChance(Material, int)
+     * @see #determineSpoiledAmount(Material, int)
      */
-    public int getSpoilChance(ItemStack stack) {
-        return getSpoilChance(stack.getType(), stack.getAmount());
+    public int determineSpoiledAmount(ItemStack stack) {
+        return determineSpoiledAmount(stack.getType(), stack.getAmount());
     }
 
     public void runMigrations() {

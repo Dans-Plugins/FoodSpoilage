@@ -25,7 +25,7 @@ public final class LocalTimeStampService {
         this.plugin = plugin;
         this.configService = configService;
 
-        dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/DD/yyyy"));
+        dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/dd/yyyy"));
     }
 
     public ItemStack assignTimeStamp(ItemStack item, Duration timeUntilSpoilage) {
@@ -42,6 +42,14 @@ public final class LocalTimeStampService {
             item.setItemMeta(meta);
         }
 
+        return item;
+    }
+
+    public ItemStack assignTimeStamp(ItemStack item) {
+        Duration time = configService.getTime(item.getType());
+        if (!time.equals(Duration.ZERO)) {
+            return assignTimeStamp(item, time);
+        }
         return item;
     }
 
