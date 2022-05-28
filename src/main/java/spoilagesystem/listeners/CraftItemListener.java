@@ -41,9 +41,14 @@ public final class CraftItemListener implements Listener {
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
         ItemStack item = event.getCurrentItem();
-        if (item == null) return;
+        if (item == null) {
+            return;
+        }
         Material type = item.getType();
         Duration time = configService.getTime(type);
+        if (!type.isEdible()) {
+            return;
+        }
         if (!time.equals(Duration.ZERO)) {
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);
