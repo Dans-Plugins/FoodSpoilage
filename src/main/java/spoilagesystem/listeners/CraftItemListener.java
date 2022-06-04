@@ -53,7 +53,7 @@ public final class CraftItemListener implements Listener {
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);
             List<ItemStack> results = new ArrayList<>();
-            int amount = item.getAmount();
+            int amount = amountCrafted;
             if (spoilAmt > 0) {
                 amount = amountCrafted - spoilAmt;
                 ItemStack spoiledFood = spoiledFoodFactory.createSpoiledFood(spoilAmt);
@@ -118,7 +118,7 @@ public final class CraftItemListener implements Listener {
             }
         }
         int spacesFree = 0;
-        for (int i = 0; i < Arrays.stream(event.getWhoClicked().getInventory().getStorageContents()).filter(Objects::nonNull).toList().size(); i++) {
+        for (int i = 0; i < Arrays.stream(event.getWhoClicked().getInventory().getStorageContents()).filter(Objects::isNull).toList().size(); i++) {
             spacesFree += event.getRecipe().getResult().getType().getMaxStackSize();
         }
         for (ItemStack item : event.getWhoClicked().getInventory().getStorageContents()) {
