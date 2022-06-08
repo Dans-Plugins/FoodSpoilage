@@ -1,7 +1,9 @@
 package spoilagesystem.timestamp;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.LocalConfigService;
 
@@ -10,6 +12,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
+
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+import static java.util.logging.Level.SEVERE;
+import static org.bukkit.persistence.PersistentDataType.STRING;
 
 /**
  * @author Daniel McCoy Stephenson
@@ -20,12 +26,14 @@ public final class LocalTimeStampService {
     private final LocalConfigService configService;
 
     private final DateTimeFormatter dateFormatter;
+    private final NamespacedKey expiryKey;
 
     public LocalTimeStampService(FoodSpoilage plugin, LocalConfigService configService) {
         this.plugin = plugin;
         this.configService = configService;
 
         dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/dd/yyyy"));
+        expiryKey = new NamespacedKey(plugin, "expiry");
     }
 
     public ItemStack assignTimeStamp(ItemStack item, Duration timeUntilSpoilage) {
@@ -38,6 +46,12 @@ public final class LocalTimeStampService {
                                     "${expiry_date}",
                                     getDateStringPlusTime(timeUntilSpoilage)
                             )).toList()
+            );
+
+            meta.getPersistentDataContainer().set(
+                    expiryKey,
+                    STRING,
+                    ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now().plus(timeUntilSpoilage))
             );
             item.setItemMeta(meta);
         }
@@ -54,37 +68,40 @@ public final class LocalTimeStampService {
     }
 
     private String getDateStringPlusTime(Duration time) {
-        return dateFormatter.format(ZonedDateTime.now().plus(time));
+        return dateFormatter.format(OffsetDateTime.now().plus(time));
     }
 
     public boolean timeStampAssigned(ItemStack item) {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
-            if (meta != null && meta.hasLore()) {
-                List<String> lore = meta.getLore();
+            if (meta != null) {
+                if (parseExpiryFromPersistentData(meta) != null) return true;
+                if (meta.hasLore()) {
+                    List<String> lore = meta.getLore();
 
-                if (lore != null) {
-                    plugin.getLogger().fine("Timestamp is already assigned to this item!");
-                    List<String> expiryDateText = configService.getExpiryDateText();
-                    if (lore.size() != expiryDateText.size()) return false;
-                    for (int i = 0; i < expiryDateText.size(); i++) {
-                        String expectedLoreLine = expiryDateText.get(i);
-                        if (expectedLoreLine.contains("${expiry_date}")) {
-                            int startIndex = expectedLoreLine.indexOf("${expiry_date}");
-                            int endIndex = startIndex + "${expiry_date}".length();
-                            String dateText = lore.get(i)
-                                    .replace(expectedLoreLine.substring(0, startIndex), "")
-                                    .replace(expectedLoreLine.substring(endIndex), "");
-                            try {
-                                LocalDate.parse(dateText, dateFormatter);
-                            } catch (DateTimeParseException exception) {
-                                return false;
+                    if (lore != null) {
+                        plugin.getLogger().fine("Timestamp is already assigned to this item!");
+                        List<String> expiryDateText = configService.getExpiryDateText();
+                        if (lore.size() != expiryDateText.size()) return false;
+                        for (int i = 0; i < expiryDateText.size(); i++) {
+                            String expectedLoreLine = expiryDateText.get(i);
+                            if (expectedLoreLine.contains("${expiry_date}")) {
+                                int startIndex = expectedLoreLine.indexOf("${expiry_date}");
+                                int endIndex = startIndex + "${expiry_date}".length();
+                                String dateText = lore.get(i)
+                                        .replace(expectedLoreLine.substring(0, startIndex), "")
+                                        .replace(expectedLoreLine.substring(endIndex), "");
+                                try {
+                                    LocalDate.parse(dateText, dateFormatter);
+                                } catch (DateTimeParseException exception) {
+                                    return false;
+                                }
+                            } else {
+                                if (!expectedLoreLine.equals(lore.get(i))) return false;
                             }
-                        } else {
-                            if (!expectedLoreLine.equals(lore.get(i))) return false;
                         }
+                        return true;
                     }
-                    return true;
                 }
             }
         }
@@ -94,36 +111,57 @@ public final class LocalTimeStampService {
     }
 
     public boolean timeReached(ItemStack item) {
-        ZonedDateTime timestamp = getTimeStamp(item);
+        OffsetDateTime timestamp = getTimeStamp(item);
         if (timestamp != null) {
-            return ZonedDateTime.now().isAfter(timestamp);
+            return OffsetDateTime.now().isAfter(timestamp);
         }
         return false;
     }
 
-    private ZonedDateTime getTimeStamp(ItemStack item) {
+    private OffsetDateTime getTimeStamp(ItemStack item) {
         if (timeStampAssigned(item)) {
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null) {
-                List<String> lore = meta.getLore();
-                if (lore == null) return null;
-                Optional<String> expiryLine = configService.getExpiryDateText().stream().filter(line -> line.contains("${expiry_date}")).findFirst();
-                return expiryLine.map(line -> {
-                    int lineIndex = configService.getExpiryDateText().indexOf(line);
-                    int startIndex = line.indexOf("${expiry_date}");
-                    int endIndex = startIndex + "${expiry_date}".length();
-                    return LocalDate.parse(
+                OffsetDateTime expiryFromPersistentData = parseExpiryFromPersistentData(meta);
+                if (expiryFromPersistentData != null) return expiryFromPersistentData;
+                return parseExpiryFromLore(meta);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private OffsetDateTime parseExpiryFromPersistentData(ItemMeta meta) {
+        String expiryString = meta.getPersistentDataContainer().get(expiryKey, STRING);
+        if (expiryString != null) {
+            try {
+                return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE_TIME);
+            } catch (DateTimeParseException exception) {
+                plugin.getLogger().log(SEVERE, "Failed to parse expiry from persistent data container", exception);
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private OffsetDateTime parseExpiryFromLore(ItemMeta meta) {
+        List<String> lore = meta.getLore();
+        if (lore == null) return null;
+        Optional<String> expiryLine = configService.getExpiryDateText().stream().filter(line -> line.contains("${expiry_date}")).findFirst();
+        return expiryLine.map(line -> {
+            int lineIndex = configService.getExpiryDateText().indexOf(line);
+            int startIndex = line.indexOf("${expiry_date}");
+            int endIndex = startIndex + "${expiry_date}".length();
+            return LocalDate.parse(
                             lore.get(lineIndex)
                                     .replace(line.substring(0, startIndex), "")
                                     .replace(line.substring(endIndex), ""),
                             dateFormatter
                     ).atTime(LocalTime.of(1, 1, 1))
-                            .atZone(ZoneId.systemDefault());
-                }).orElse(null);
-            }
-        }
-        return null;
+                    .atZone(ZoneId.systemDefault())
+                    .toOffsetDateTime();
+        }).orElse(null);
     }
 
     public String getTimeLeft(ItemStack item) {
@@ -135,10 +173,10 @@ public final class LocalTimeStampService {
         List<String> lore = meta.getLore();
         if (lore == null || lore.size() < 3) return null;
 
-        ZonedDateTime timestamp = getTimeStamp(item);
+        OffsetDateTime timestamp = getTimeStamp(item);
         if (timestamp == null) return null;
 
-        ZonedDateTime now = ZonedDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         Duration duration = Duration.between(now, timestamp);
         double totalSeconds = duration.getSeconds();
         int minutes = (int) totalSeconds / 60;
