@@ -18,6 +18,8 @@ public final class BlockCookListener implements Listener {
 
     @EventHandler
     public void onBlockCook(BlockCookEvent event) {
-        event.setResult(timeStampService.assignTimeStamp(event.getResult()));
+        if (event.getResult().getType().isEdible()) {
+            event.setResult(timeStampService.assignTimeStamp(event.getResult()));
+        }
     }
 }
