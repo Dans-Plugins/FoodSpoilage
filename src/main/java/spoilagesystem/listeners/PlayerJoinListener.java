@@ -1,5 +1,6 @@
 package spoilagesystem.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -20,7 +21,7 @@ public final class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
-                .filter(item -> item.getType().isEdible())
+                .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH)
                 .forEach(item -> {
                     if (!timeStampService.timeStampAssigned(item)) {
                         timeStampService.assignTimeStamp(item);
