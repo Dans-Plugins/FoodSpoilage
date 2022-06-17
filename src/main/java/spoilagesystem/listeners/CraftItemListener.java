@@ -49,6 +49,9 @@ public final class CraftItemListener implements Listener {
         if (!type.isEdible()) {
             return;
         }
+        if (type == Material.ROTTEN_FLESH) {
+            return;
+        }
         if (!time.equals(Duration.ZERO)) {
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);

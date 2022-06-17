@@ -1,5 +1,6 @@
 package spoilagesystem.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -20,7 +21,7 @@ public final class InventoryOpenListener implements Listener {
     public void onInventoryOpen(InventoryOpenEvent event) {
         Arrays.stream(event.getInventory().getContents())
                 .filter(Objects::nonNull)
-                .filter(item -> item.getType().isEdible())
+                .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH)
                 .forEach(item -> {
                     if (!timeStampService.timeStampAssigned(item)) {
                         timeStampService.assignTimeStamp(item);
@@ -28,7 +29,7 @@ public final class InventoryOpenListener implements Listener {
                 });
         Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
-                .filter(item -> item.getType().isEdible())
+                .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH)
                 .forEach(item -> {
                     if (!timeStampService.timeStampAssigned(item)) {
                         timeStampService.assignTimeStamp(item);
