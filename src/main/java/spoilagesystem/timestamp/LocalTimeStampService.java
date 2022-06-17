@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE;
 import static java.util.logging.Level.SEVERE;
 import static org.bukkit.persistence.PersistentDataType.STRING;
 
@@ -51,7 +51,7 @@ public final class LocalTimeStampService {
             meta.getPersistentDataContainer().set(
                     expiryKey,
                     STRING,
-                    ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now().plus(timeUntilSpoilage))
+                    ISO_OFFSET_DATE.format(OffsetDateTime.now().plus(timeUntilSpoilage))
             );
             item.setItemMeta(meta);
         }
@@ -136,7 +136,7 @@ public final class LocalTimeStampService {
         String expiryString = meta.getPersistentDataContainer().get(expiryKey, STRING);
         if (expiryString != null) {
             try {
-                return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE_TIME);
+                return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE);
             } catch (DateTimeParseException exception) {
                 plugin.getLogger().log(SEVERE, "Failed to parse expiry from persistent data container", exception);
             }
