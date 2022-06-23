@@ -118,7 +118,7 @@ public final class LocalTimeStampService {
         return false;
     }
 
-    private OffsetDateTime getTimeStamp(ItemStack item) {
+    public OffsetDateTime getTimeStamp(ItemStack item) {
         if (timeStampAssigned(item)) {
             ItemMeta meta = item.getItemMeta();
 

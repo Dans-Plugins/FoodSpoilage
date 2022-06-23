@@ -2,6 +2,7 @@ package spoilagesystem;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
 import spoilagesystem.commands.DefaultCommand;
@@ -9,16 +10,16 @@ import spoilagesystem.commands.HelpCommand;
 import spoilagesystem.commands.ReloadCommand;
 import spoilagesystem.commands.TimeLeftCommand;
 import spoilagesystem.config.LocalConfigService;
-import spoilagesystem.listeners.*;
 import spoilagesystem.factories.SpoiledFoodFactory;
+import spoilagesystem.listeners.*;
+import spoilagesystem.rpkit.FoodSpoilageRpkitExpiryService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.bukkit.ChatColor.RED;
-
 import static java.util.logging.Level.FINE;
+import static org.bukkit.ChatColor.RED;
 
 /**
  * @author Daniel McCoy Stephenson
@@ -43,11 +44,20 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         registerEventHandlers();
         initializeCommands();
         handlebStatsIntegration();
+        handleRpkitIntegration();
     }
 
     private void handlebStatsIntegration() {
         int pluginId = 8992;
         new Metrics(this, pluginId);
+    }
+
+    private void handleRpkitIntegration() {
+        Plugin rpkFoodLib = getServer().getPluginManager().getPlugin("rpk-food-lib-bukkit");
+        if (rpkFoodLib != null) {
+            getLogger().info("RPKit Food Lib found, enabling integration");
+            new FoodSpoilageRpkitExpiryService(this, timeStampService);
+        }
     }
 
     /**

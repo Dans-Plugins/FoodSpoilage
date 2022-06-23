@@ -10,12 +10,15 @@ repositories {
     maven { url = uri('https://oss.sonatype.org/content/groups/public/') }
     maven { url = uri('https://jitpack.io') }
     maven { url = uri('https://repo.maven.apache.org/maven2/') }
+    maven { url = uri('https://repo.rpkit.com/repository/maven-releases/') }
 }
 
 dependencies {
     implementation 'com.github.Preponderous-Software:ponder:1.1'
     implementation 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
+    implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
+    implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
 }
 
 group = 'KingdomProgrammers'
