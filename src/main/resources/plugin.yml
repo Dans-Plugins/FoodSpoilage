@@ -4,7 +4,8 @@ authors: [DanTheTechMan, Undead_Zeratul, Caibinus, Callum, alyphen]
 main: spoilagesystem.FoodSpoilage
 api-version: 1.13
 website: 'https://www.spigotmc.org/resources/food-spoilage.81507/'
-
+softdepend:
+- rpk-food-lib-bukkit
 commands:
   foodspoilage:
     aliases: [fs]
