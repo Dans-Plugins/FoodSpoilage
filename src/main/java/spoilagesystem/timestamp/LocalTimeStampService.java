@@ -133,15 +133,19 @@ public final class LocalTimeStampService {
 
     @Nullable
     private OffsetDateTime parseExpiryFromPersistentData(ItemMeta meta) {
-        String expiryString = meta.getPersistentDataContainer().get(expiryKey, STRING);
-        if (expiryString != null) {
-            try {
-                return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE);
-            } catch (DateTimeParseException exception) {
-                plugin.getLogger().log(SEVERE, "Failed to parse expiry from persistent data container", exception);
+        try {
+            String expiryString = meta.getPersistentDataContainer().get(expiryKey, STRING);
+            if (expiryString != null) {
+                try {
+                    return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE);
+                } catch (DateTimeParseException exception) {
+                    plugin.getLogger().log(SEVERE, "Failed to parse expiry from persistent data container", exception);
+                }
             }
+            return null;
+        } catch(Exception e) {
+            return null;
         }
-        return null;
     }
 
     @Nullable
