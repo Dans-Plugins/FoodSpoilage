@@ -19,11 +19,15 @@ public final class PlayerFishListener implements Listener {
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         Entity caught = event.getCaught();
-        if (caught != null) {
-            if (caught instanceof Item caughtItem) {
-                ItemStack item = caughtItem.getItemStack();
-                caughtItem.setItemStack(timeStampService.assignTimeStamp(item));
+        if (caught == null) {
+            return;
+        }
+        if (caught instanceof Item caughtItem) {
+            ItemStack item = caughtItem.getItemStack();
+            if (!item.getType().isEdible()) {
+                return;
             }
+            caughtItem.setItemStack(timeStampService.assignTimeStamp(item));
         }
     }
 
