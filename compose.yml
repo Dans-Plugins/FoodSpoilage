@@ -1,0 +1,17 @@
+services:
+  testmcserver:
+    build: .
+    image: fs-test-mc-server
+    container_name: fs-test-mc-server
+    ports:
+      - "25565:25565"
+    volumes:
+      - type: bind
+        source: ./testmcserver # note: might need to create this directory before running
+        target: /testmcserver
+    environment:
+      - MINECRAFT_VERSION=${MINECRAFT_VERSION}
+      - OPERATOR_UUID=${OPERATOR_UUID}
+      - OPERATOR_NAME=${OPERATOR_NAME}
+      - OPERATOR_LEVEL=${OPERATOR_LEVEL}
+      - OVERWRITE_EXISTING_SERVER=${OVERWRITE_EXISTING_SERVER}
