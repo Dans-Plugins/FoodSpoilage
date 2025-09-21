@@ -1,8 +1,7 @@
 FROM ubuntu:22.04
 
 # Install dependencies
-RUN apt update
-RUN DEBIAN_FRONTEND=noninteractive apt install -y wget git openjdk-21-jdk openjdk-21-jre
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y wget git openjdk-21-jdk openjdk-21-jre
 
 # Build server
 WORKDIR /testmcserver-build
