@@ -14,6 +14,12 @@ text:
   less-than-a-day: 'This item will expire in less than a day.'
   no-time-left: 'This item has expired.'
 expiry-date-format: 'MM/dd/yyyy'
+# Join processing settings to prevent packet overflow
+join-processing:
+  # Maximum number of items to process per batch when player joins
+  max-items-per-batch: 10
+  # Delay between batches in ticks (1 tick = 50ms, 20 ticks = 1 second)
+  batch-delay-ticks: 5
 spoil-time:
   default: PT24H
   BREAD: PT24H

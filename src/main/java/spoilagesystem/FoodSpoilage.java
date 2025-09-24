@@ -75,7 +75,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                 new ItemSpawnListener(configService, timeStampService),
                 new PlayerFishListener(timeStampService),
                 new PlayerInteractListener(this, timeStampService, spoiledFoodFactory),
-                new PlayerJoinListener(timeStampService),
+                new PlayerJoinListener(timeStampService, this),
                 new PrepareItemCraftListener(timeStampService)
         ), this);
     }
