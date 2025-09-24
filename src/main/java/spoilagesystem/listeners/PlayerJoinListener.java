@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Handles player join events and assigns timestamps to food items in batches to prevent 
+ * PacketPlayOutRecipeUpdate from becoming too large and causing disconnections.
+ * 
+ * This fixes issue #208 where players would be disconnected with PacketEncoder$PacketTooLargeException
+ * when the plugin tried to process all food items at once.
+ */
 public final class PlayerJoinListener implements Listener {
 
     private final LocalTimeStampService timeStampService;
@@ -26,6 +33,11 @@ public final class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        // Check if join processing is enabled
+        if (!plugin.getConfig().getBoolean("join-processing.enabled", true)) {
+            return;
+        }
+        
         // Get all food items that need timestamp assignment
         List<ItemStack> foodItems = Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
