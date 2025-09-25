@@ -19,6 +19,15 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
     implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
+    
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 group = 'DansPlugins'
