@@ -3,12 +3,20 @@
 ## Description
 A minecraft plugin to make food go bad.
 
+### Key Features
+- **Non-Persistent Expiry Lore**: When used with [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/), expiry dates are shown to players dynamically without permanently modifying items. This means items won't have leftover lore after removing the plugin.
+- **Configurable spoilage times** for different food types
+- **Automatic expiration** of food items over time
+- **Spoiled food** mechanic when items expire
+
 ## Installation
 1) You can download the plugin from [this page](https://www.spigotmc.org/resources/food-spoilage.81507/).
 
 2) Once downloaded, place the jar in the plugins folder of your server files.
 
-3) Restart your server.
+3) **(Optional but Recommended)** Install [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) to enable non-persistent expiry lore. Without ProtocolLib, expiry dates will be permanently written to items and will remain visible even after removing the plugin.
+
+4) Restart your server.
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/FoodSpoilage/wiki/Guide) (coming soon)
