@@ -27,6 +27,7 @@ public final class LocalTimeStampService {
 
     private final DateTimeFormatter dateFormatter;
     private final NamespacedKey expiryKey;
+    private boolean usePacketBasedLore = false;
 
     public LocalTimeStampService(FoodSpoilage plugin, LocalConfigService configService) {
         this.plugin = plugin;
@@ -36,16 +37,37 @@ public final class LocalTimeStampService {
         expiryKey = new NamespacedKey(plugin, "expiry");
     }
 
+    /**
+     * Sets whether to use packet-based lore injection instead of persistent lore.
+     * 
+     * @param usePacketBasedLore true to use packet-based lore, false for persistent lore
+     */
+    public void setUsePacketBasedLore(boolean usePacketBasedLore) {
+        this.usePacketBasedLore = usePacketBasedLore;
+    }
+
     public ItemStack assignTimeStamp(ItemStack item, Duration timeUntilSpoilage) {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            // Only set NBT data, not lore - lore will be injected dynamically via packets
+            // Set NBT data for expiry logic
             meta.getPersistentDataContainer().set(
                     expiryKey,
                     STRING,
                     ISO_OFFSET_DATE.format(OffsetDateTime.now().plus(timeUntilSpoilage))
             );
+            
+            // Only set lore if NOT using packet-based lore (fallback for when ProtocolLib is absent)
+            if (!usePacketBasedLore) {
+                meta.setLore(
+                        configService.getExpiryDateText().stream()
+                                .map(line -> line.replace(
+                                        "${expiry_date}",
+                                        getDateStringPlusTime(timeUntilSpoilage)
+                                )).toList()
+                );
+            }
+            
             item.setItemMeta(meta);
         }
 
