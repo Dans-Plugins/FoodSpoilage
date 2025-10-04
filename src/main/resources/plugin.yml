@@ -6,6 +6,7 @@ api-version: 1.13
 website: 'https://www.spigotmc.org/resources/food-spoilage.81507/'
 softdepend:
 - rpk-food-lib-bukkit
+- ProtocolLib
 commands:
   foodspoilage:
     aliases: [fs]

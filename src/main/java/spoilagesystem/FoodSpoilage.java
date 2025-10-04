@@ -12,6 +12,7 @@ import spoilagesystem.commands.TimeLeftCommand;
 import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.listeners.*;
+import spoilagesystem.packet.PacketLoreService;
 import spoilagesystem.rpkit.FoodSpoilageRpkitExpiryService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -45,6 +46,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         initializeCommands();
         handlebStatsIntegration();
         handleRpkitIntegration();
+        handleProtocolLibIntegration();
     }
 
     private void handlebStatsIntegration() {
@@ -57,6 +59,24 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         if (rpkFoodLib != null) {
             getLogger().info("RPKit Food Lib found, enabling integration");
             new FoodSpoilageRpkitExpiryService(this, timeStampService);
+        }
+    }
+
+    private void handleProtocolLibIntegration() {
+        Plugin protocolLib = getServer().getPluginManager().getPlugin("ProtocolLib");
+        if (protocolLib != null) {
+            getLogger().info("ProtocolLib found, enabling packet-based lore injection");
+            try {
+                PacketLoreService packetLoreService = new PacketLoreService(this, configService, timeStampService);
+                packetLoreService.registerPacketListeners();
+                getLogger().info("Packet-based lore injection enabled - expiry lore will not persist on items");
+            } catch (Exception e) {
+                getLogger().warning("Failed to enable ProtocolLib integration: " + e.getMessage());
+                getLogger().warning("Falling back to persistent lore (lore will remain on items after plugin removal)");
+            }
+        } else {
+            getLogger().warning("ProtocolLib not found - expiry lore will persist on items after plugin removal");
+            getLogger().warning("To enable non-persistent lore, install ProtocolLib: https://www.spigotmc.org/resources/protocollib.1997/");
         }
     }
 

@@ -40,14 +40,7 @@ public final class LocalTimeStampService {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setLore(
-                    configService.getExpiryDateText().stream()
-                            .map(line -> line.replace(
-                                    "${expiry_date}",
-                                    getDateStringPlusTime(timeUntilSpoilage)
-                            )).toList()
-            );
-
+            // Only set NBT data, not lore - lore will be injected dynamically via packets
             meta.getPersistentDataContainer().set(
                     expiryKey,
                     STRING,
@@ -75,7 +68,10 @@ public final class LocalTimeStampService {
         if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
+                // Check NBT data first (new method)
                 if (parseExpiryFromPersistentData(meta) != null) return true;
+                
+                // Legacy support: check lore for old items that were created before packet-based system
                 if (meta.hasLore()) {
                     List<String> lore = meta.getLore();
 
@@ -143,6 +139,34 @@ public final class LocalTimeStampService {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets the timestamp from persistent data without checking lore.
+     * Used by PacketLoreService to check for expiry without triggering lore-based logic.
+     * 
+     * @param item The item to check
+     * @return The expiry timestamp from NBT, or null if not present
+     */
+    @Nullable
+    public OffsetDateTime getTimeStampFromPersistentData(ItemStack item) {
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                return parseExpiryFromPersistentData(meta);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Formats an expiry date according to the configured date format.
+     * 
+     * @param expiry The expiry date to format
+     * @return Formatted date string
+     */
+    public String formatExpiryDate(OffsetDateTime expiry) {
+        return dateFormatter.format(expiry);
     }
 
     @Nullable
