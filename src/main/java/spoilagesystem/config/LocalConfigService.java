@@ -154,7 +154,7 @@ public final class LocalConfigService {
                 String timeModifierString = saltingSection.getString(foodTypeName + ".time-modifier", "PT0H");
                 
                 if (saltMaterialName == null) {
-                    plugin.getLogger().warning("Salt material not specified for " + foodTypeName);
+                    plugin.getLogger().warning("Invalid salting recipe configuration for " + foodTypeName + ": salt-material not specified. Expected format: 'salt-material: MATERIAL_NAME'");
                     continue;
                 }
                 
