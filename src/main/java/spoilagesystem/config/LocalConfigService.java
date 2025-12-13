@@ -7,7 +7,9 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.migration.ConfigMigration;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,13 +19,16 @@ public final class LocalConfigService {
 
     private final FoodSpoilage plugin;
     private final List<ConfigMigration> migrations;
+    private final Map<Material, SaltingRecipe> saltingRecipes;
 
     public LocalConfigService(FoodSpoilage plugin) {
         this.plugin = plugin;
         this.migrations = List.of();
         this.random = new Random();
+        this.saltingRecipes = new HashMap<>();
         runMigrations();
         plugin.saveDefaultConfig();
+        loadSaltingRecipes();
     }
 
     private final Random random;
@@ -124,5 +129,63 @@ public final class LocalConfigService {
 
     public String getNoTimeLeftText() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
+    }
+
+    /**
+     * Loads salting recipes from the configuration.
+     */
+    private void loadSaltingRecipes() {
+        saltingRecipes.clear();
+        if (!plugin.getConfig().contains("salting-recipes")) {
+            return;
+        }
+        
+        var saltingSection = plugin.getConfig().getConfigurationSection("salting-recipes");
+        if (saltingSection == null) {
+            return;
+        }
+        
+        for (String foodTypeName : saltingSection.getKeys(false)) {
+            try {
+                Material foodType = Material.valueOf(foodTypeName);
+                String saltMaterialName = saltingSection.getString(foodTypeName + ".salt-material");
+                int saltAmount = saltingSection.getInt(foodTypeName + ".salt-amount", 1);
+                String modeString = saltingSection.getString(foodTypeName + ".mode", "RESET");
+                String timeModifierString = saltingSection.getString(foodTypeName + ".time-modifier", "PT0H");
+                
+                if (saltMaterialName == null) {
+                    plugin.getLogger().warning("Salt material not specified for " + foodTypeName);
+                    continue;
+                }
+                
+                Material saltMaterial = Material.valueOf(saltMaterialName);
+                SaltingRecipe.SaltingMode mode = SaltingRecipe.SaltingMode.valueOf(modeString.toUpperCase());
+                Duration timeModifier = Duration.parse(timeModifierString);
+                
+                SaltingRecipe recipe = new SaltingRecipe(foodType, saltMaterial, saltAmount, mode, timeModifier);
+                saltingRecipes.put(foodType, recipe);
+                plugin.getLogger().fine("Loaded salting recipe for " + foodTypeName);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().warning("Invalid salting recipe configuration for " + foodTypeName + ": " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Gets the salting recipe for a given food type.
+     * 
+     * @param foodType The food material type
+     * @return The salting recipe, or null if none exists
+     */
+    public SaltingRecipe getSaltingRecipe(Material foodType) {
+        return saltingRecipes.get(foodType);
+    }
+
+    /**
+     * Reloads the configuration, including salting recipes.
+     */
+    public void reload() {
+        plugin.reloadConfig();
+        loadSaltingRecipes();
     }
 }

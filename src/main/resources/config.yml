@@ -61,4 +61,46 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
+salting-recipes:
+  # Format for each recipe:
+  # FOOD_TYPE:
+  #   salt-material: MATERIAL_NAME  # The material used for salting (e.g., SUGAR)
+  #   salt-amount: 8                # How many of the salt material are required
+  #   mode: RESET                   # RESET (resets timer to original) or EXTEND (adds time)
+  #   time-modifier: PT48H          # For RESET: ignored. For EXTEND: duration to add
+  CHICKEN:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: RESET
+    time-modifier: PT0H
+  BEEF:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: RESET
+    time-modifier: PT0H
+  PORKCHOP:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: RESET
+    time-modifier: PT0H
+  MUTTON:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: RESET
+    time-modifier: PT0H
+  RABBIT:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: RESET
+    time-modifier: PT0H
+  COD:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: EXTEND
+    time-modifier: PT48H
+  SALMON:
+    salt-material: SUGAR
+    salt-amount: 8
+    mode: EXTEND
+    time-modifier: PT48H
 debug: false

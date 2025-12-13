@@ -29,7 +29,7 @@ public final class ReloadCommand implements CommandExecutor {
             sender.sendMessage(RED + configService.getNoPermsReloadText());
             return false;
         }
-        plugin.reloadConfig();
+        configService.reload();
         sender.sendMessage(GREEN + configService.getValuesLoadedText());
         return true;
     }

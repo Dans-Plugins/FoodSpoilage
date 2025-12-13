@@ -196,4 +196,47 @@ public final class LocalTimeStampService {
             return configService.getNoTimeLeftText();
         }
     }
+
+    /**
+     * Resets the spoilage timer on an item to the original duration for its type.
+     * 
+     * @param item The item to reset the timer for
+     * @return The item with the reset timer, or the original item if it cannot be reset
+     */
+    public ItemStack resetTimeStamp(ItemStack item) {
+        Duration time = configService.getTime(item.getType());
+        if (!time.equals(Duration.ZERO)) {
+            return assignTimeStamp(item, time);
+        }
+        return item;
+    }
+
+    /**
+     * Extends the spoilage timer on an item by a specified duration.
+     * Only extends if the item has not yet spoiled.
+     * 
+     * @param item The item to extend the timer for
+     * @param extension The duration to add to the current expiry time
+     * @return The item with the extended timer, or the original item if it cannot be extended
+     */
+    public ItemStack extendTimeStamp(ItemStack item, Duration extension) {
+        if (!timeStampAssigned(item)) {
+            return item;
+        }
+
+        OffsetDateTime currentExpiry = getTimeStamp(item);
+        if (currentExpiry == null) {
+            return item;
+        }
+
+        // Calculate time until expiry
+        OffsetDateTime now = OffsetDateTime.now();
+        Duration timeUntilExpiry = Duration.between(now, currentExpiry);
+        
+        // Add the extension to the remaining time
+        Duration newTimeUntilExpiry = timeUntilExpiry.plus(extension);
+        
+        // Assign new timestamp
+        return assignTimeStamp(item, newTimeUntilExpiry);
+    }
 }
