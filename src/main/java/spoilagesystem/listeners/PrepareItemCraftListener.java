@@ -3,7 +3,6 @@ package spoilagesystem.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.ItemStack;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 public final class PrepareItemCraftListener implements Listener {
@@ -16,12 +15,9 @@ public final class PrepareItemCraftListener implements Listener {
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent event) {
-        ItemStack item = event.getInventory().getResult();
-        if (item != null) {
-            if (item.getType().isEdible()) {
-                event.getInventory().setResult(timeStampService.assignTimeStamp(item));
-            }
-        }
+        // Recipe result is intentionally not modified here to prevent creating unlimited recipe variants
+        // that would cause PacketPlayOutRecipeUpdate to exceed packet size limits.
+        // Timestamps are assigned in CraftItemListener when items are actually crafted.
     }
 
 }
