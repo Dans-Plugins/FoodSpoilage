@@ -122,6 +122,10 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.less-than-a-day"));
     }
 
+    public boolean isFurnaceOutputStackingEnabled() {
+        return plugin.getConfig().getBoolean("furnace-output-stacking", true);
+    }
+
     public String getNoTimeLeftText() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }

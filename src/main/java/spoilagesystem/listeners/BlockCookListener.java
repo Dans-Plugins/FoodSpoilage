@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 /**
@@ -13,9 +14,11 @@ import spoilagesystem.timestamp.LocalTimeStampService;
  */
 public final class BlockCookListener implements Listener {
 
+    private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
 
-    public BlockCookListener(LocalTimeStampService timeStampService) {
+    public BlockCookListener(LocalConfigService configService, LocalTimeStampService timeStampService) {
+        this.configService = configService;
         this.timeStampService = timeStampService;
     }
 
@@ -30,7 +33,8 @@ public final class BlockCookListener implements Listener {
         // only do this when the existing stack's expiry timestamp is effectively the
         // same as what would be assigned now. Otherwise, assign a fresh timestamp to
         // the new item so it spoils based on its actual cook time.
-        if (event.getBlock().getState() instanceof Furnace furnace) {
+        // This behaviour can be disabled via 'furnace-output-stacking: false' in config.yml.
+        if (configService.isFurnaceOutputStackingEnabled() && event.getBlock().getState() instanceof Furnace furnace) {
             ItemStack existingResult = furnace.getInventory().getResult();
             if (existingResult != null && existingResult.getType() == event.getResult().getType()) {
                 // Compute what timestamp would be assigned now to a freshly cooked item.
