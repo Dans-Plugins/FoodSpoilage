@@ -1,5 +1,6 @@
 package spoilagesystem.listeners;
 
+import java.time.OffsetDateTime;
 import org.bukkit.block.Furnace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,17 +25,30 @@ public final class BlockCookListener implements Listener {
             return;
         }
 
-        // If the output slot already has an item of the same type, reuse its meta so
-        // the newly cooked item can stack with what is already there.  Generating a
-        // fresh timestamp on every single cook operation causes each item to have a
-        // unique expiry value, making them incompatible with each other and causing
-        // the furnace to stop cooking after the first item in a stack.
+        // If the output slot already has an item of the same type, prefer to reuse its
+        // meta so the newly cooked item can stack with what is already there. However,
+        // only do this when the existing stack's expiry timestamp is effectively the
+        // same as what would be assigned now. Otherwise, assign a fresh timestamp to
+        // the new item so it spoils based on its actual cook time.
         if (event.getBlock().getState() instanceof Furnace furnace) {
             ItemStack existingResult = furnace.getInventory().getResult();
             if (existingResult != null && existingResult.getType() == event.getResult().getType()) {
-                ItemStack result = event.getResult().clone();
-                result.setItemMeta(existingResult.getItemMeta());
-                event.setResult(result);
+                // Compute what timestamp would be assigned now to a freshly cooked item.
+                ItemStack freshlyStamped = timeStampService.assignTimeStamp(event.getResult().clone());
+
+                OffsetDateTime existingTimeStamp = timeStampService.getTimeStamp(existingResult);
+                OffsetDateTime newTimeStamp = timeStampService.getTimeStamp(freshlyStamped);
+
+                if (existingTimeStamp != null && newTimeStamp != null && existingTimeStamp.equals(newTimeStamp)) {
+                    // Timestamps are compatible: reuse existing meta so the items stack.
+                    ItemStack result = event.getResult().clone();
+                    result.setItemMeta(existingResult.getItemMeta());
+                    event.setResult(result);
+                } else {
+                    // Timestamps differ meaningfully: keep the freshly stamped item so
+                    // it spoils according to its own cook time.
+                    event.setResult(freshlyStamped);
+                }
                 return;
             }
         }
