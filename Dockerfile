@@ -7,7 +7,9 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y wget git openjdk
 WORKDIR /testmcserver-build
 RUN wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 RUN git config --global --unset core.autocrlf || :
-RUN java -jar BuildTools.jar --rev 1.21.4
+ARG MINECRAFT_VERSION=1.21.4
+ENV MINECRAFT_VERSION=${MINECRAFT_VERSION}
+RUN java -jar BuildTools.jar --rev ${MINECRAFT_VERSION}
 
 # Copy plugin jar (built separately, not in this Dockerfile, this is to save time by avoiding rebuilding the plugin)
 COPY ./build /testmcserver-build/FoodSpoilage/build
