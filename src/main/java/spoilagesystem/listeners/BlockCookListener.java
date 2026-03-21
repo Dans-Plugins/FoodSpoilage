@@ -22,10 +22,11 @@ public final class BlockCookListener implements Listener {
      *
      * <p>The solution is to leave items in the furnace output slot completely vanilla
      * (no custom meta), so that {@code canBurn()} always sees identical items and the
-     * whole stack cooks through. Items are stamped lazily by other listeners
-     * ({@link InventoryOpenListener}, {@link PlayerJoinListener},
-     * {@link EntityPickupItemListener}, {@link ItemSpawnListener}) once they leave
-     * the furnace.</p>
+     * whole stack cooks through. Items are stamped lazily when they reach a player:
+     * {@link InventoryCloseListener} stamps the player's full inventory when they close
+     * any container (including the furnace), and {@link InventoryOpenListener},
+     * {@link PlayerJoinListener}, {@link EntityPickupItemListener}, and
+     * {@link ItemSpawnListener} cover other acquisition paths.</p>
      */
     @EventHandler
     public void onBlockCook(BlockCookEvent event) {
