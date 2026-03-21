@@ -61,5 +61,4 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
-furnace-output-stacking: true # When true, cooked items stack in the furnace output slot if they share the same expiry date. Set to false to assign a fresh timestamp to every item.
 debug: false
