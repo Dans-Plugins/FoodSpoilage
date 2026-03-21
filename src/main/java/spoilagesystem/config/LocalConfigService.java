@@ -8,7 +8,9 @@ import spoilagesystem.config.migration.ConfigMigration;
 
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -28,23 +30,36 @@ public final class LocalConfigService {
     }
 
     private final Random random;
+    private final Map<Material, Duration> timeCache = new HashMap<>();
 
     /**
      * Method to obtain the Spoilage Time for the given Material.
+     * Parses an ISO-8601 duration string (e.g. "PT24H") from the config.
+     * Returns {@link Duration#ZERO} if the value is null, "0", or malformed.
      * 
-     * @param type to obtain the spoilage time for.
-     * @return int time.
-     * @see org.bukkit.configuration.MemorySection#getInt(String)
+     * @param type the material to obtain the spoilage time for.
+     * @return the spoilage duration for the given material.
      */
     public Duration getTime(Material type) {
+        if (timeCache.containsKey(type)) return timeCache.get(type);
         String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("spoil-time.default"));
-        if (durationString == null || durationString.trim().equals("0")) return Duration.ZERO;
+        if (durationString == null) {
+            timeCache.put(type, Duration.ZERO);
+            return Duration.ZERO;
+        }
+        durationString = durationString.trim();
+        if (durationString.equals("0")) {
+            timeCache.put(type, Duration.ZERO);
+            return Duration.ZERO;
+        }
         try {
-            Duration time = Duration.parse(durationString); // Get the time from the config.
+            Duration time = Duration.parse(durationString);
             plugin.getLogger().fine("Time from configuration for " + type.name() + ":\t" + time);
-            return time; // Return the key.
+            timeCache.put(type, time);
+            return time;
         } catch (DateTimeParseException e) {
             plugin.getLogger().warning("Invalid spoil-time format for " + type.name() + ": '" + durationString + "'. Expected ISO-8601 duration (e.g. PT24H). Defaulting to zero (no spoilage).");
+            timeCache.put(type, Duration.ZERO);
             return Duration.ZERO;
         }
     }
@@ -78,6 +93,13 @@ public final class LocalConfigService {
      */
     public int determineSpoiledAmount(ItemStack stack) {
         return determineSpoiledAmount(stack.getType(), stack.getAmount());
+    }
+
+    /**
+     * Clears the cached duration values. Should be called when the config is reloaded.
+     */
+    public void clearTimeCache() {
+        timeCache.clear();
     }
 
     public void runMigrations() {
