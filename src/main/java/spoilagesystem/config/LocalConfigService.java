@@ -158,6 +158,11 @@ public final class LocalConfigService {
                     continue;
                 }
                 
+                if (saltAmount < 1 || saltAmount > 9) {
+                    plugin.getLogger().warning("Invalid salting recipe configuration for " + foodTypeName + ": salt-amount must be between 1 and 9 (got " + saltAmount + ")");
+                    continue;
+                }
+                
                 Material saltMaterial = Material.valueOf(saltMaterialName);
                 SaltingRecipe.SaltingMode mode = SaltingRecipe.SaltingMode.valueOf(modeString.toUpperCase());
                 Duration timeModifier = Duration.parse(timeModifierString);

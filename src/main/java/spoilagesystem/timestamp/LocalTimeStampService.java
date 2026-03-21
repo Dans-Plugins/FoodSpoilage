@@ -239,8 +239,18 @@ public final class LocalTimeStampService {
         OffsetDateTime now = OffsetDateTime.now();
         Duration timeUntilExpiry = Duration.between(now, currentExpiry);
         
+        // Clamp to prevent negative durations
+        if (timeUntilExpiry.isNegative()) {
+            timeUntilExpiry = Duration.ZERO;
+        }
+        
         // Add the extension to the remaining time
         Duration newTimeUntilExpiry = timeUntilExpiry.plus(extension);
+        
+        // Ensure final result is not negative
+        if (newTimeUntilExpiry.isNegative()) {
+            newTimeUntilExpiry = Duration.ZERO;
+        }
         
         // Assign new timestamp
         return assignTimeStamp(item, newTimeUntilExpiry);

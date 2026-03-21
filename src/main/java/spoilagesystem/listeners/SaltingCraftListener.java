@@ -2,6 +2,7 @@ package spoilagesystem.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.CraftingInventory;
@@ -10,6 +11,9 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.config.SaltingRecipe;
 import spoilagesystem.timestamp.LocalTimeStampService;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Handles salting recipes during crafting.
@@ -27,7 +31,7 @@ public final class SaltingCraftListener implements Listener {
         this.timeStampService = timeStampService;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPrepareItemCraft(PrepareItemCraftEvent event) {
         CraftingInventory inventory = event.getInventory();
         ItemStack result = inventory.getResult();
@@ -44,6 +48,12 @@ public final class SaltingCraftListener implements Listener {
 
         plugin.getLogger().fine("Detected salting recipe for " + recipe.getFoodType());
 
+        // Verify that the output type matches the recipe's food type
+        if (result.getType() != recipe.getFoodType()) {
+            plugin.getLogger().fine("Output type " + result.getType() + " does not match recipe food type " + recipe.getFoodType());
+            return;
+        }
+
         // Find the food item in the crafting grid
         ItemStack foodItem = findFoodItemInGrid(inventory, recipe.getFoodType());
         if (foodItem == null) {
@@ -51,11 +61,17 @@ public final class SaltingCraftListener implements Listener {
             return;
         }
 
+        // Start from the crafting result as the base salted item
+        ItemStack saltedFood = result.clone();
+
         // Check if the food item has a timestamp
         if (!timeStampService.timeStampAssigned(foodItem)) {
             plugin.getLogger().fine("Food item does not have a timestamp assigned");
-            // If no timestamp, just assign normal spoilage time
-            inventory.setResult(timeStampService.assignTimeStamp(result));
+            // If no timestamp, assign normal spoilage time as the base before applying the salting recipe
+            saltedFood = timeStampService.assignTimeStamp(saltedFood);
+            // Now apply the salting recipe to the freshly stamped item
+            saltedFood = applySaltingRecipe(saltedFood, recipe);
+            inventory.setResult(saltedFood);
             return;
         }
 
@@ -67,20 +83,68 @@ public final class SaltingCraftListener implements Listener {
             return;
         }
 
-        // Apply the salting recipe
-        ItemStack saltedFood = result.clone();
+        // Apply the salting recipe based on the input food's timestamp
+        saltedFood = applySaltingRecipeFromInput(saltedFood, foodItem, recipe);
+        inventory.setResult(saltedFood);
+    }
+
+    /**
+     * Applies the salting recipe to an item that already has a timestamp.
+     * 
+     * @param output The output item to apply the recipe to
+     * @param recipe The salting recipe to apply
+     * @return The item with the recipe applied
+     */
+    private ItemStack applySaltingRecipe(ItemStack output, SaltingRecipe recipe) {
         switch (recipe.getMode()) {
             case RESET:
                 plugin.getLogger().fine("Resetting timestamp for " + recipe.getFoodType());
-                saltedFood = timeStampService.resetTimeStamp(saltedFood);
-                break;
+                return timeStampService.resetTimeStamp(output);
             case EXTEND:
                 plugin.getLogger().fine("Extending timestamp for " + recipe.getFoodType() + " by " + recipe.getTimeModifier());
-                saltedFood = timeStampService.extendTimeStamp(saltedFood, recipe.getTimeModifier());
-                break;
+                return timeStampService.extendTimeStamp(output, recipe.getTimeModifier());
+            default:
+                return output;
         }
+    }
 
-        inventory.setResult(saltedFood);
+    /**
+     * Applies the salting recipe based on the input food's expiry time.
+     * For EXTEND mode, this computes the new expiry based on the input's remaining time.
+     * 
+     * @param output The output item to apply the recipe to
+     * @param input The input food item with the original timestamp
+     * @param recipe The salting recipe to apply
+     * @return The item with the recipe applied
+     */
+    private ItemStack applySaltingRecipeFromInput(ItemStack output, ItemStack input, SaltingRecipe recipe) {
+        switch (recipe.getMode()) {
+            case RESET:
+                plugin.getLogger().fine("Resetting timestamp for " + recipe.getFoodType());
+                return timeStampService.resetTimeStamp(output);
+            case EXTEND:
+                plugin.getLogger().fine("Extending timestamp for " + recipe.getFoodType() + " by " + recipe.getTimeModifier());
+                // Calculate the new expiry based on the input's existing expiry plus the modifier
+                OffsetDateTime inputExpiry = timeStampService.getTimeStamp(input);
+                if (inputExpiry == null) {
+                    // Fallback to normal extend if we can't get the timestamp
+                    return timeStampService.extendTimeStamp(output, recipe.getTimeModifier());
+                }
+                
+                // Compute time from now until the new expiry (input's expiry + modifier)
+                OffsetDateTime newExpiry = inputExpiry.plus(recipe.getTimeModifier());
+                OffsetDateTime now = OffsetDateTime.now();
+                Duration timeUntilNewExpiry = Duration.between(now, newExpiry);
+                
+                // Ensure we don't create a negative duration
+                if (timeUntilNewExpiry.isNegative()) {
+                    timeUntilNewExpiry = Duration.ZERO;
+                }
+                
+                return timeStampService.assignTimeStamp(output, timeUntilNewExpiry);
+            default:
+                return output;
+        }
     }
 
     /**
