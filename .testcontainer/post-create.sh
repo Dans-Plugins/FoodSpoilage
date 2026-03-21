@@ -77,10 +77,17 @@ manage_plugin_dependencies() {
 
     if [ "${!enabled_var}" = "true" ]; then
         log "${plugin_name} enabled. Copying plugin JAR..."
-        cp "$RESOURCES_DIR"/${plugin_name}-*.jar "$SERVER_DIR"/plugins
+        if compgen -G "$RESOURCES_DIR/${plugin_name}-*.jar" > /dev/null; then
+            cp "$RESOURCES_DIR"/${plugin_name}-*.jar "$SERVER_DIR"/plugins
+        else
+            log "ERROR: ${plugin_name} is enabled but no matching JAR found in $RESOURCES_DIR (pattern: ${plugin_name}-*.jar)."
+            exit 1
+        fi
     elif [ "${!enabled_var}" = "false" ]; then
         log "${plugin_name} disabled. Removing plugin JAR if it exists..."
-        rm -f "$SERVER_DIR"/plugins/${plugin_name}-*.jar
+        if compgen -G "$SERVER_DIR/plugins/${plugin_name}-*.jar" > /dev/null; then
+            rm -f "$SERVER_DIR"/plugins/${plugin_name}-*.jar
+        fi
     fi
 }
 
@@ -91,7 +98,7 @@ start_server() {
     log "To reload FoodSpoilage plugin after rebuilding, use: /serverutils reload FoodSpoilage"
     log "To unload: /serverutils unload FoodSpoilage"
     log "To load: /serverutils load FoodSpoilage"
-    java -jar "$SERVER_DIR"/spigot-"${MINECRAFT_VERSION}".jar
+    exec java -jar "$SERVER_DIR"/spigot-"${MINECRAFT_VERSION}".jar
 }
 
 # Main Process

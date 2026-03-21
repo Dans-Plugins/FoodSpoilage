@@ -22,7 +22,7 @@ fi
 
 # Copy the new plugin jar to the server
 echo "Copying new plugin jar to test server..."
-LATEST_JAR=$(find build/libs -name "FoodSpoilage-*.jar" -type f -print -quit)
+LATEST_JAR=$(find build/libs -name "FoodSpoilage-*.jar" -type f -printf '%T@ %p\n' | sort -nr | head -n1 | cut -d' ' -f2-)
 
 if [ -z "$LATEST_JAR" ]; then
     echo "Error: No plugin jar found in build/libs"
@@ -33,7 +33,7 @@ docker cp "$LATEST_JAR" "$CONTAINER_ID":/testmcserver/plugins/
 
 # Execute the reload command via ServerUtils
 echo "Reloading FoodSpoilage plugin..."
-docker exec "$CONTAINER_ID" /bin/bash -c "echo 'serverutils reload FoodSpoilage' >> /tmp/reload_command"
+docker exec "$CONTAINER_ID" /bin/bash -c "printf 'serverutils reload FoodSpoilage\n' > /proc/1/fd/0"
 echo "Plugin reload initiated. Check server console for confirmation."
 
 echo ""

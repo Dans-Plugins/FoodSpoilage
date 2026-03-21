@@ -1,6 +1,9 @@
 services:
   testmcserver:
-    build: .
+    build:
+      context: .
+      args:
+        MINECRAFT_VERSION: ${MINECRAFT_VERSION}
     image: fs-test-mc-server
     container_name: fs-test-mc-server
     ports:
