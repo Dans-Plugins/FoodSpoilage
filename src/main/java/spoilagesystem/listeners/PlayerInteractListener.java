@@ -27,7 +27,7 @@ public final class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getPlayer().hasPermission("fs.bypass")) {
+        if (event.getPlayer().hasPermission("fs.bypass.spoilage")) {
             return;
         }
 

@@ -27,7 +27,7 @@ public final class InventoryDragListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass")) {
+        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass.spoilage")) {
             return;
         }
 

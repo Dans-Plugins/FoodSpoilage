@@ -31,7 +31,7 @@ public final class InventoryCloseListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass")) {
+        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

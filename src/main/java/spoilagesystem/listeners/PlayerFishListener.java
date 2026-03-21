@@ -18,7 +18,7 @@ public final class PlayerFishListener implements Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
-        if (event.getPlayer().hasPermission("fs.bypass")) {
+        if (event.getPlayer().hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

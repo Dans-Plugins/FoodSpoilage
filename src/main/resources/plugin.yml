@@ -27,3 +27,10 @@ permissions:
     default: op
   fs.bypass:
     default: false
+    children:
+      fs.bypass.spoilage: true
+      fs.bypass.timestamp: true
+  fs.bypass.spoilage:
+    default: false
+  fs.bypass.timestamp:
+    default: false

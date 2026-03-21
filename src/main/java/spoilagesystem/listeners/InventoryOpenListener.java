@@ -22,7 +22,7 @@ public final class InventoryOpenListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
-        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass")) {
+        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

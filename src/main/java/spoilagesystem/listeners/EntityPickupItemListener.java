@@ -18,7 +18,7 @@ public final class EntityPickupItemListener implements Listener {
 
     @EventHandler
     public void onEntityPickupItem(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player player && player.hasPermission("fs.bypass")) {
+        if (event.getEntity() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

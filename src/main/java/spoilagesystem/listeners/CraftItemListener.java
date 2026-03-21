@@ -42,7 +42,7 @@ public final class CraftItemListener implements Listener {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass")) {
+        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

@@ -19,7 +19,7 @@ public final class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("fs.bypass")) {
+        if (event.getPlayer().hasPermission("fs.bypass.timestamp")) {
             return;
         }
 
