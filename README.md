@@ -38,8 +38,15 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/FoodSpoi
 | Callum            | Fixed some bugs and implemented a caching system for food spoilage times |
 | alyphen           | Migrated the project to gradle, refactored services                      |
 
-## License
-GPL3
+
+## 📄 License
+
+This project is licensed under the **Apache License 2.0** — see the [LICENSE](LICENSE) file for details.
+
+### Why Apache 2.0?
+We chose Apache 2.0 because it’s **permissive** like MIT but also includes an **explicit grant of patent rights** from contributors to users.  
+This is useful for projects that may involve patented technology, ensuring that both individual and corporate contributors can collaborate without fear of future patent disputes.  
+It’s a popular choice for **large-scale, collaborative, and enterprise-oriented** projects where legal clarity is essential.
 
 ## Project Status
 This project is in active development.
