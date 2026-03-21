@@ -18,6 +18,10 @@ public final class PlayerFishListener implements Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
+        if (event.getPlayer().hasPermission("fs.bypass")) {
+            return;
+        }
+
         Entity caught = event.getCaught();
         if (caught == null) {
             return;

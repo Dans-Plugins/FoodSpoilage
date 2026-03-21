@@ -1,6 +1,7 @@
 package spoilagesystem.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -21,6 +22,10 @@ public final class InventoryOpenListener implements Listener {
 
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent event) {
+        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass")) {
+            return;
+        }
+
         // Stamp edible items in the opened inventory, but skip the furnace result slot.
         // Stamping the furnace output would add minecraft:custom_data (PDC) to the item,
         // causing the furnace's canBurn() check to fail in Minecraft 1.20.5+ because the

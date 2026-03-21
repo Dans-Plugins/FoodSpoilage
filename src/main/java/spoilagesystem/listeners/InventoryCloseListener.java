@@ -1,6 +1,7 @@
 package spoilagesystem.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -30,6 +31,10 @@ public final class InventoryCloseListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass")) {
+            return;
+        }
+
         Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
                 .forEach(this::stampIfNeeded);

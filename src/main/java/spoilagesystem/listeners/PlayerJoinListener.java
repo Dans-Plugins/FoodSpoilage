@@ -19,6 +19,10 @@ public final class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        if (event.getPlayer().hasPermission("fs.bypass")) {
+            return;
+        }
+
         Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
                 .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH)

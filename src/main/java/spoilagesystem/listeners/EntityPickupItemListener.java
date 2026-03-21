@@ -1,6 +1,7 @@
 package spoilagesystem.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -17,6 +18,10 @@ public final class EntityPickupItemListener implements Listener {
 
     @EventHandler
     public void onEntityPickupItem(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player player && player.hasPermission("fs.bypass")) {
+            return;
+        }
+
         ItemStack itemStack = event.getItem().getItemStack();
         if (itemStack.getType().isEdible() && itemStack.getType() != Material.ROTTEN_FLESH) {
             if (!timeStampService.timeStampAssigned(itemStack)) {

@@ -10,6 +10,8 @@ import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +42,10 @@ public final class CraftItemListener implements Listener {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
+        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass")) {
+            return;
+        }
+
         ItemStack item = event.getCurrentItem();
         if (item == null) {
             return;

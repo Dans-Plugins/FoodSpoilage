@@ -25,3 +25,5 @@ permissions:
     default: true
   fs.reload:
     default: op
+  fs.bypass:
+    default: false
