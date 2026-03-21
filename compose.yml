@@ -1,0 +1,19 @@
+services:
+  testmcserver:
+    build:
+      context: .
+      args:
+        MINECRAFT_VERSION: ${MINECRAFT_VERSION}
+    image: fs-test-mc-server
+    container_name: fs-test-mc-server
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./testmcserver:/testmcserver
+    environment:
+      - MINECRAFT_VERSION=${MINECRAFT_VERSION}
+      - OPERATOR_UUID=${OPERATOR_UUID}
+      - OPERATOR_NAME=${OPERATOR_NAME}
+      - OPERATOR_LEVEL=${OPERATOR_LEVEL}
+      - OVERWRITE_EXISTING_SERVER=${OVERWRITE_EXISTING_SERVER}
+      - SERVERUTILS_ENABLED=${SERVERUTILS_ENABLED}
