@@ -106,30 +106,39 @@ public final class PacketLoreService {
             return originalItem;
         }
         
-        // Only inject lore if there's NBT data but no lore already
+        // Only inject lore if there's NBT expiry data
         OffsetDateTime expiry = timeStampService.getTimeStampFromPersistentData(originalItem);
         if (expiry == null) {
             return originalItem;
         }
-        
-        // Check if lore already exists (old items or legacy behavior)
-        if (meta.hasLore()) {
+
+        String expiryDateString = timeStampService.formatExpiryDate(expiry);
+        List<String> expiryLoreLines = configService.getExpiryDateText().stream()
+                .map(line -> line.replace("${expiry_date}", expiryDateString))
+                .toList();
+
+        // Build the combined lore, appending expiry lines to any existing lore
+        List<String> existingLore = meta.hasLore() ? meta.getLore() : null;
+
+        // If expiry lore is already present (e.g. legacy persistent lore), skip injection
+        if (existingLore != null && existingLore.containsAll(expiryLoreLines)) {
             return originalItem;
         }
-        
-        // Create a copy and inject the lore
+
+        // Create a copy and inject or merge the expiry lore
         ItemStack modifiedItem = originalItem.clone();
         ItemMeta modifiedMeta = modifiedItem.getItemMeta();
-        
+
         if (modifiedMeta != null) {
-            String expiryDateString = timeStampService.formatExpiryDate(expiry);
-            List<String> lore = configService.getExpiryDateText().stream()
-                    .map(line -> line.replace("${expiry_date}", expiryDateString))
-                    .toList();
-            modifiedMeta.setLore(lore);
+            List<String> combinedLore = new ArrayList<>();
+            if (existingLore != null) {
+                combinedLore.addAll(existingLore);
+            }
+            combinedLore.addAll(expiryLoreLines);
+            modifiedMeta.setLore(combinedLore);
             modifiedItem.setItemMeta(modifiedMeta);
         }
-        
+
         return modifiedItem;
     }
 }
