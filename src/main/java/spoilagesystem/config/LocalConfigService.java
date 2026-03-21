@@ -7,6 +7,7 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.migration.ConfigMigration;
 
 import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Random;
 
@@ -37,10 +38,15 @@ public final class LocalConfigService {
      */
     public Duration getTime(Material type) {
         String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("spoil-time.default"));
-        if (durationString == null) return Duration.ZERO;
-        Duration time = Duration.parse(durationString); // Get the time from the config.
-        plugin.getLogger().fine("Time from configuration for " + type.name() + ":\t" + time);
-        return time; // Return the key.
+        if (durationString == null || durationString.trim().equals("0")) return Duration.ZERO;
+        try {
+            Duration time = Duration.parse(durationString); // Get the time from the config.
+            plugin.getLogger().fine("Time from configuration for " + type.name() + ":\t" + time);
+            return time; // Return the key.
+        } catch (DateTimeParseException e) {
+            plugin.getLogger().warning("Invalid spoil-time format for " + type.name() + ": '" + durationString + "'. Expected ISO-8601 duration (e.g. PT24H). Defaulting to zero (no spoilage).");
+            return Duration.ZERO;
+        }
     }
 
     /**
