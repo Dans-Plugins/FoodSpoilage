@@ -30,7 +30,6 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private LocalConfigService configService;
     private LocalTimeStampService timeStampService;
     private SpoiledFoodFactory spoiledFoodFactory;
-    private boolean usePacketBasedLore = false;
 
     /**
      * This runs when the server starts.
@@ -65,12 +64,11 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
 
     private void handleProtocolLibIntegration() {
         Plugin protocolLib = getServer().getPluginManager().getPlugin("ProtocolLib");
-        if (protocolLib != null) {
+        if (protocolLib != null && protocolLib.isEnabled()) {
             getLogger().info("ProtocolLib found, enabling packet-based lore injection");
             try {
                 PacketLoreService packetLoreService = new PacketLoreService(this, configService, timeStampService);
                 packetLoreService.registerPacketListeners();
-                usePacketBasedLore = true;
                 timeStampService.setUsePacketBasedLore(true);
                 getLogger().info("Packet-based lore injection enabled - expiry lore will not persist on items");
             } catch (Exception e) {

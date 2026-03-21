@@ -18,6 +18,9 @@ COPY ./build /testmcserver-build/FoodSpoilage/build
 COPY ./.testcontainer /resources
 RUN chmod +x /resources/post-create.sh
 
+# Download ProtocolLib into resources/jars so it's available to manage_plugin_dependencies
+RUN wget -O /resources/jars/ProtocolLib-latest.jar https://github.com/dmulloy2/ProtocolLib/releases/latest/download/ProtocolLib.jar
+
 # Run server
 WORKDIR /testmcserver
 EXPOSE 25565

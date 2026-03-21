@@ -113,6 +113,7 @@ fi
 
 # Manage plugins
 manage_plugin_dependencies "ServerUtils" "SERVERUTILS_ENABLED"
+manage_plugin_dependencies "ProtocolLib" "PROTOCOLLIB_ENABLED"
 
 # Start Server
 start_server
