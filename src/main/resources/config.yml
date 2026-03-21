@@ -61,4 +61,9 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
+# When true, items in the furnace output slot are stamped with an expiry date
+# immediately when cooked. This works correctly on older versions of Minecraft,
+# but on 1.20.5+ it will cause furnaces to stall after cooking one item.
+# When false (the default), items are stamped lazily when they reach a player.
+timestamp-furnace-output: false
 debug: false
