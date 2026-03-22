@@ -105,6 +105,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         if (edibleMaterials.isEmpty()) return;
 
         NamespacedKey key = new NamespacedKey(this, "waxing");
+        // Result is a placeholder; WaxingCraftListener overrides it via PrepareItemCraftEvent
         ShapelessRecipe recipe = new ShapelessRecipe(key, new ItemStack(edibleMaterials.get(0)));
         recipe.addIngredient(new RecipeChoice.MaterialChoice(waxMaterial));
         recipe.addIngredient(new RecipeChoice.MaterialChoice(edibleMaterials));

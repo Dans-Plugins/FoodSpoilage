@@ -102,9 +102,10 @@ public final class WaxingCraftListener implements Listener {
             }
             inv.setMatrix(newMatrix);
 
-            event.getWhoClicked().getInventory().addItem(result.clone())
-                    .values().forEach(overflow -> event.getWhoClicked().getWorld()
-                            .dropItem(event.getWhoClicked().getLocation(), overflow));
+            var crafter = event.getWhoClicked();
+            crafter.getInventory().addItem(result.clone())
+                    .values().forEach(overflow -> crafter.getWorld()
+                            .dropItem(crafter.getLocation(), overflow));
         }
     }
 }
