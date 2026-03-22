@@ -63,6 +63,10 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     }
 
     private void handleProtocolLibIntegration() {
+        if (!configService.isProtocolLibIntegrationEnabled()) {
+            getLogger().info("ProtocolLib integration is disabled in config - using persistent lore");
+            return;
+        }
         Plugin protocolLib = getServer().getPluginManager().getPlugin("ProtocolLib");
         if (protocolLib != null && protocolLib.isEnabled()) {
             getLogger().info("ProtocolLib found, enabling packet-based lore injection");

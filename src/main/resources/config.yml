@@ -62,3 +62,4 @@ spoil-time:
 spoil-chance:
   WHEAT: 0.3
 debug: false
+enable-protocollib-integration: true
