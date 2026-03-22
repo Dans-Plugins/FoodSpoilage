@@ -31,11 +31,13 @@ public final class LocalConfigService {
 
     private final Random random;
     private final Map<Material, Duration> timeCache = new HashMap<>();
+    private Duration defaultSpoilTimeCache = null;
 
     /**
      * Method to obtain the Spoilage Time for the given Material.
      * Parses an ISO-8601 duration string (e.g. "PT24H") from the config.
-     * Returns {@link Duration#ZERO} if the value is null, "0", or malformed.
+     * Returns {@link Duration#ZERO} if the value is null or "0".
+     * Falls back to "spoil-time.default" if the value is malformed.
      * 
      * @param type the material to obtain the spoilage time for.
      * @return the spoilage duration for the given material.
@@ -58,8 +60,38 @@ public final class LocalConfigService {
             timeCache.put(type, time);
             return time;
         } catch (DateTimeParseException e) {
-            plugin.getLogger().warning("Invalid spoil-time format for " + type.name() + ": '" + durationString + "'. Expected ISO-8601 duration (e.g. PT24H). Defaulting to zero (no spoilage).");
-            timeCache.put(type, Duration.ZERO);
+            Duration fallback = getDefaultSpoilTime();
+            plugin.getLogger().warning("Invalid spoil-time format for " + type.name() + ": '" + durationString + "'. Expected ISO-8601 duration (e.g. PT24H). Falling back to spoil-time.default (" + fallback + ").");
+            timeCache.put(type, fallback);
+            return fallback;
+        }
+    }
+
+    /**
+     * Parses the "spoil-time.default" config value as the fallback duration.
+     * Returns {@link Duration#ZERO} if the default value is null, "0", or itself malformed.
+     * Result is cached and cleared alongside the time cache on config reload.
+     * 
+     * @return the default spoilage duration from the config.
+     */
+    private Duration getDefaultSpoilTime() {
+        if (defaultSpoilTimeCache != null) return defaultSpoilTimeCache;
+        String defaultStr = plugin.getConfig().getString("spoil-time.default");
+        if (defaultStr == null) {
+            defaultSpoilTimeCache = Duration.ZERO;
+            return Duration.ZERO;
+        }
+        defaultStr = defaultStr.trim();
+        if (defaultStr.equals("0")) {
+            defaultSpoilTimeCache = Duration.ZERO;
+            return Duration.ZERO;
+        }
+        try {
+            defaultSpoilTimeCache = Duration.parse(defaultStr);
+            return defaultSpoilTimeCache;
+        } catch (DateTimeParseException e) {
+            plugin.getLogger().warning("Invalid spoil-time.default format: '" + defaultStr + "'. Expected ISO-8601 duration (e.g. PT24H). Using zero (no spoilage).");
+            defaultSpoilTimeCache = Duration.ZERO;
             return Duration.ZERO;
         }
     }
@@ -100,6 +132,7 @@ public final class LocalConfigService {
      */
     public void clearTimeCache() {
         timeCache.clear();
+        defaultSpoilTimeCache = null;
     }
 
     public void runMigrations() {

@@ -14,6 +14,8 @@ text:
   less-than-a-day: 'This item will expire in less than a day.'
   no-time-left: 'This item has expired.'
 expiry-date-format: 'MM/dd/yyyy'
+# ISO-8601 durations (e.g. PT24H = 24 hours, PT48H = 48 hours). Use 0 for no spoilage.
+# "default" is used as the fallback when a material's value is missing or malformed.
 spoil-time:
   default: PT24H
   BREAD: PT24H
