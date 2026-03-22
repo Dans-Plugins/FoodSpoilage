@@ -10,6 +10,7 @@ import spoilagesystem.config.LocalConfigService;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public final class LocalTimeStampService {
 
     private final DateTimeFormatter dateFormatter;
     private final NamespacedKey expiryKey;
+    private final NamespacedKey waxedKey;
 
     public LocalTimeStampService(FoodSpoilage plugin, LocalConfigService configService) {
         this.plugin = plugin;
@@ -34,6 +36,7 @@ public final class LocalTimeStampService {
 
         dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/dd/yyyy"));
         expiryKey = new NamespacedKey(plugin, "expiry");
+        waxedKey = new NamespacedKey(plugin, "waxed");
     }
 
     public ItemStack assignTimeStamp(ItemStack item, Duration timeUntilSpoilage) {
@@ -195,5 +198,30 @@ public final class LocalTimeStampService {
         } else {
             return configService.getNoTimeLeftText();
         }
+    }
+
+    public boolean isWaxed(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return false;
+        ItemMeta meta = item.getItemMeta();
+        return meta != null && meta.getPersistentDataContainer().has(waxedKey, STRING);
+    }
+
+    public ItemStack applyWax(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+
+        boolean hadExpiry = meta.getPersistentDataContainer().has(expiryKey, STRING);
+        meta.getPersistentDataContainer().remove(expiryKey);
+        meta.getPersistentDataContainer().set(waxedKey, STRING, "true");
+
+        List<String> newLore = new ArrayList<>();
+        if (!hadExpiry && meta.hasLore() && meta.getLore() != null) {
+            newLore.addAll(meta.getLore());
+        }
+        newLore.addAll(configService.getWaxedFoodLore());
+        meta.setLore(newLore);
+
+        item.setItemMeta(meta);
+        return item;
     }
 }

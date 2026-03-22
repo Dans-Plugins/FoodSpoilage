@@ -31,6 +31,12 @@ public final class PlayerInteractListener implements Listener {
 
         if (item != null) {
 
+            // if waxed, prevent consumption
+            if (timeStampService.isWaxed(item)) {
+                event.setCancelled(true);
+                return;
+            }
+
             // if time stamped
             if (timeStampService.timeStampAssigned(item)) {
 

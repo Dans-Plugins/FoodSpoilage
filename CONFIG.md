@@ -9,6 +9,8 @@ The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/con
 | `version` | The version of the configuration file | `3.0.0` |
 | `debug` | Enable debug logging | `false` |
 | `expiry-date-format` | The date format used for expiry dates displayed in item lore | `MM/dd/yyyy` |
+| `enable-waxing` | Enable the waxing feature, allowing players to craft food with a wax material to make it non-perishable but inedible | `true` |
+| `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient | `HONEYCOMB` |
 
 ## Text Customization
 
@@ -26,6 +28,7 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 | `text.less-than-an-hour` | Message shown when an item expires in less than an hour | `This item will expire in less than an hour.` |
 | `text.less-than-a-day` | Message shown when an item expires in less than a day | `This item will expire in less than a day.` |
 | `text.no-time-left` | Message shown when an item has already expired | `This item has expired.` |
+| `text.waxed-food-lore` | The lore lines added to waxed food items. | `['', '&fWaxed', '&7This item will not spoil but cannot be eaten.']` |
 
 ## Spoil Times
 
@@ -101,3 +104,16 @@ The `spoil-chance` section allows you to define a probability (0.0 to 1.0) that 
 | Key | Description | Default |
 |-----|-------------|---------|
 | `spoil-chance.WHEAT` | Chance that wheat will spoil | `0.3` (30%) |
+
+## Waxing
+
+The waxing feature allows players to preserve food items by combining them with a wax material (default: honeycomb) in a crafting grid. Waxed food will never spoil but cannot be eaten, making it ideal for preserving sentimental "lore items".
+
+To wax a food item, place it alongside a honeycomb (or the configured `wax-material`) in any crafting grid. The result will be a waxed version of the food item that:
+- Will never receive an expiry timestamp
+- Cannot be consumed (eating is prevented)
+- Displays the configured `text.waxed-food-lore` on the item
+
+If the food item has not yet been stamped with an expiry date, any existing custom lore (e.g., from lore items) is preserved alongside the waxed lore.
+
+The feature can be disabled by setting `enable-waxing: false` in the config.

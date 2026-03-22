@@ -30,6 +30,11 @@ public final class InventoryDragListener implements Listener {
 
         if (item != null) {
 
+            // skip waxed items
+            if (timeStampService.isWaxed(item)) {
+                return;
+            }
+
             // if time stamped
             if (timeStampService.timeStampAssigned(item)) {
 

@@ -18,7 +18,8 @@ public final class EntityPickupItemListener implements Listener {
     @EventHandler
     public void onEntityPickupItem(EntityPickupItemEvent event) {
         ItemStack itemStack = event.getItem().getItemStack();
-        if (itemStack.getType().isEdible() && itemStack.getType() != Material.ROTTEN_FLESH) {
+        if (itemStack.getType().isEdible() && itemStack.getType() != Material.ROTTEN_FLESH
+                && !timeStampService.isWaxed(itemStack)) {
             if (!timeStampService.timeStampAssigned(itemStack)) {
                 event.getItem().setItemStack(timeStampService.assignTimeStamp(itemStack));
             }
