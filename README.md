@@ -11,11 +11,12 @@ A minecraft plugin to make food go bad.
 ## Usage
 
 ### Documentation
-- [Commands Reference](COMMANDS.md) - Complete list of all commands
-- [Configuration Guide](CONFIG.md) - Detailed config options
+- [User Guide](USER_GUIDE.md) – Getting started and common scenarios
+- [Commands Reference](COMMANDS.md) – Complete list of all commands
+- [Configuration Guide](CONFIG.md) – Detailed configuration options
 
 ### Wiki & Additional Resources
-- [User Guide](https://github.com/Dans-Plugins/FoodSpoilage/wiki/Guide)
+- [Wiki Guide](https://github.com/Dans-Plugins/FoodSpoilage/wiki/Guide)
 - [FAQ](https://github.com/Dans-Plugins/FoodSpoilage/wiki/FAQ)
 
 ## Support
@@ -31,18 +32,22 @@ Please fill out a bug report [here](https://github.com/Dans-Plugins/FoodSpoilage
 - [Notes for Developers](https://github.com/Dans-Plugins/FoodSpoilage/wiki/Developer-Notes)
 
 ## Testing
-To build the plugin, you can use the following command:
+
+### Unit Tests
 
 Linux:
+
 ```bash
-./gradlew clean build
-```
-Windows:
-```cmd
-.\gradlew.bat clean build
+./gradlew clean test
 ```
 
-If you see BUILD SUCCESSFUL, then the build has passed.
+Windows:
+
+```cmd
+.\gradlew.bat clean test
+```
+
+If you see `BUILD SUCCESSFUL`, the tests have passed.
 
 ## Development
 ### Test Server with Plugin Hot-Reloading
@@ -77,7 +82,10 @@ This significantly speeds up the development cycle by eliminating the need for f
 ./down.sh
 ```
 
-## Authors and acknowledgement
+## Authors and Acknowledgement
+
+### Developers
+
 | Name              | Main Contributions                                                       |
 |-------------------|--------------------------------------------------------------------------|
 | Daniel Stephenson | Creator                                                                  |
@@ -85,6 +93,11 @@ This significantly speeds up the development cycle by eliminating the need for f
 | Caibinus          | Fixed some bugs                                                          |
 | Callum            | Fixed some bugs and implemented a caching system for food spoilage times |
 | alyphen           | Migrated the project to gradle, refactored services                      |
+
+### Translators
+
+| Name | Language(s) |
+|------|-------------|
 
 ## License
 
