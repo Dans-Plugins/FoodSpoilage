@@ -43,16 +43,12 @@ Work items are organized into milestones, which represent a specific version of 
 8. Open a pull request against `develop`, link the related issue with `#<number>`.
 9. Address review feedback.
 
-### Language Files
-
-Update `src/main/resources/lang/` for any user-facing string changes. If you are adding a new language, create a new file there.
-
 ## Testing
 
-Run the unit tests with:
+Run the build to verify your changes compile correctly:
 
-Linux: `./gradlew clean test`  
-Windows: `.\gradlew.bat clean test`
+Linux: `./gradlew clean build`  
+Windows: `.\gradlew.bat clean build`
 
 For manual testing, start a local Spigot server:
 

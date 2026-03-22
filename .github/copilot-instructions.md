@@ -9,7 +9,6 @@ making any changes.
 - Language: Java
 - Build tool: Gradle (Groovy DSL)
 - Target platform: Spigot / Paper
-- Test framework: JUnit 5
 
 ## Project Structure
 
@@ -20,15 +19,13 @@ making any changes.
   - `timestamp/` – Timestamp assignment and lookup service
   - `FoodSpoilage.java` – Main plugin class, registers commands and listeners
 - `src/main/resources/` – `plugin.yml` and `config.yml`
-- `src/test/java/` – Unit tests
 
 ## Coding Conventions
 
-- All user-facing strings are sourced from `config.yml` via `LocalConfigService`; never hard-code messages in Java.
+- Prefer sourcing new or updated user-facing strings from `config.yml` via `LocalConfigService`; existing hard-coded messages may be refactored over time.
 - Spoilage and timestamp logic is gated on `Material#isEdible()` — non-edible materials are ignored.
 - Spoil durations are stored as ISO-8601 `java.time.Duration` strings (e.g. `PT24H`) in `config.yml`.
 - Follow the existing package structure when adding new classes.
-- The waxing and salting features can be toggled via `enable-waxing` and `enable-salting` config keys.
 
 ## Contribution Workflow
 

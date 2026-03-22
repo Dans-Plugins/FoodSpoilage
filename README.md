@@ -33,21 +33,21 @@ Please fill out a bug report [here](https://github.com/Dans-Plugins/FoodSpoilage
 
 ## Testing
 
-### Unit Tests
+### Build
 
 Linux:
 
 ```bash
-./gradlew clean test
+./gradlew clean build
 ```
 
 Windows:
 
 ```cmd
-.\gradlew.bat clean test
+.\gradlew.bat clean build
 ```
 
-If you see `BUILD SUCCESSFUL`, the tests have passed.
+If you see `BUILD SUCCESSFUL`, the build has passed.
 
 ## Development
 ### Test Server with Plugin Hot-Reloading
