@@ -207,10 +207,9 @@ public final class LocalTimeStampService {
     }
 
     public ItemStack applyWax(ItemStack item) {
+        boolean hadExpiry = timeStampAssigned(item);
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
-
-        boolean hadExpiry = meta.getPersistentDataContainer().has(expiryKey, STRING);
         meta.getPersistentDataContainer().remove(expiryKey);
         meta.getPersistentDataContainer().set(waxedKey, STRING, "true");
 

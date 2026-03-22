@@ -1,6 +1,7 @@
 package spoilagesystem;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
@@ -106,12 +107,18 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
 
         NamespacedKey key = new NamespacedKey(this, "waxing");
         // Result is a placeholder; WaxingCraftListener overrides it via PrepareItemCraftEvent
-        ShapelessRecipe recipe = new ShapelessRecipe(key, new ItemStack(edibleMaterials.get(0)));
+        ItemStack placeholderResult = new ItemStack(edibleMaterials.get(0));
+        var placeholderMeta = placeholderResult.getItemMeta();
+        if (placeholderMeta != null) {
+            placeholderMeta.setDisplayName(ChatColor.RESET + "Waxed Food (varies)");
+            placeholderResult.setItemMeta(placeholderMeta);
+        }
+        ShapelessRecipe recipe = new ShapelessRecipe(key, placeholderResult);
         recipe.addIngredient(new RecipeChoice.MaterialChoice(waxMaterial));
         recipe.addIngredient(new RecipeChoice.MaterialChoice(edibleMaterials));
         getServer().addRecipe(recipe);
 
-        listeners.add(new WaxingCraftListener(configService, timeStampService, waxMaterial));
+        listeners.add(new WaxingCraftListener(configService, timeStampService, waxMaterial, key));
     }
 
     private void initializeCommands() {
