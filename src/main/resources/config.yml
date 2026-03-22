@@ -61,6 +61,7 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
+enable-salting: true  # Set to false to disable salting recipes
 salting-recipes:
   # Format for each recipe:
   # FOOD_TYPE:

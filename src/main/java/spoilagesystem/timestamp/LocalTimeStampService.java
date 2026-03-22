@@ -224,19 +224,21 @@ public final class LocalTimeStampService {
             return item;
         }
 
-        // Check if the food has already spoiled
-        if (timeReached(item)) {
-            plugin.getLogger().fine("Cannot extend timestamp - food has already spoiled");
-            return item;
-        }
-
+        // Retrieve current expiry timestamp once
         OffsetDateTime currentExpiry = getTimeStamp(item);
         if (currentExpiry == null) {
             return item;
         }
 
-        // Calculate time until expiry
         OffsetDateTime now = OffsetDateTime.now();
+
+        // Check if the food has already spoiled
+        if (!currentExpiry.isAfter(now)) {
+            plugin.getLogger().fine("Cannot extend timestamp - food has already spoiled");
+            return item;
+        }
+
+        // Calculate time until expiry
         Duration timeUntilExpiry = Duration.between(now, currentExpiry);
         
         // Clamp to prevent negative durations

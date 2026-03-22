@@ -39,9 +39,14 @@ public final class SaltingCraftListener implements Listener {
         if (result == null || result.getType() == Material.AIR) {
             return;
         }
+        
+        // Check if salting is enabled
+        if (!configService.isSaltingEnabled()) {
+            return;
+        }
 
         // Check if this is a salting recipe
-        SaltingRecipe recipe = checkForSaltingRecipe(inventory);
+        SaltingRecipe recipe = checkForSaltingRecipe(inventory, result.getType());
         if (recipe == null) {
             return;
         }
@@ -149,58 +154,46 @@ public final class SaltingCraftListener implements Listener {
 
     /**
      * Checks if the crafting grid matches a salting recipe.
-     * A salting recipe consists of 1 food item and N salt material items.
+     * Uses the result type to determine which recipe to check, avoiding conflicts
+     * when the salt material itself has a salting recipe configured.
      * 
      * @param inventory The crafting inventory
+     * @param resultType The type of the crafting result
      * @return The matching salting recipe, or null if none matches
      */
-    private SaltingRecipe checkForSaltingRecipe(CraftingInventory inventory) {
+    private SaltingRecipe checkForSaltingRecipe(CraftingInventory inventory, Material resultType) {
+        // Get the recipe for the result type
+        SaltingRecipe recipe = configService.getSaltingRecipe(resultType);
+        if (recipe == null) {
+            return null;
+        }
+        
         ItemStack[] matrix = inventory.getMatrix();
         
-        // Count items by type
-        Material foodType = null;
-        Material saltType = null;
+        // Count how many of the food type and salt material we have
         int foodCount = 0;
         int saltCount = 0;
-
+        
         for (ItemStack item : matrix) {
             if (item == null || item.getType() == Material.AIR) {
                 continue;
             }
             
-            // Check if this could be a food item with a salting recipe
-            SaltingRecipe recipe = configService.getSaltingRecipe(item.getType());
-            if (recipe != null) {
-                if (foodType == null) {
-                    foodType = item.getType();
-                    foodCount++;
-                } else if (foodType == item.getType()) {
-                    foodCount++;
-                } else {
-                    // Multiple different food types - not a salting recipe
-                    return null;
-                }
+            if (item.getType() == recipe.getFoodType()) {
+                foodCount++;
+            } else if (item.getType() == recipe.getSaltMaterial()) {
+                saltCount++;
             } else {
-                if (saltType == null) {
-                    saltType = item.getType();
-                    saltCount++;
-                } else if (saltType == item.getType()) {
-                    saltCount++;
-                } else {
-                    // Multiple different salt types - not a salting recipe
-                    return null;
-                }
+                // Found an item that's neither the expected food nor salt
+                return null;
             }
         }
-
+        
         // Check if we have exactly 1 food item and the correct amount of salt
-        if (foodType != null && foodCount == 1 && saltType != null) {
-            SaltingRecipe recipe = configService.getSaltingRecipe(foodType);
-            if (recipe != null && recipe.getSaltMaterial() == saltType && saltCount == recipe.getSaltAmount()) {
-                return recipe;
-            }
+        if (foodCount == 1 && saltCount == recipe.getSaltAmount()) {
+            return recipe;
         }
-
+        
         return null;
     }
 

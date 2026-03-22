@@ -132,10 +132,26 @@ public final class LocalConfigService {
     }
 
     /**
+     * Checks if salting recipes are enabled.
+     * 
+     * @return true if salting is enabled, false otherwise
+     */
+    public boolean isSaltingEnabled() {
+        return plugin.getConfig().getBoolean("enable-salting", true);
+    }
+
+    /**
      * Loads salting recipes from the configuration.
      */
     private void loadSaltingRecipes() {
         saltingRecipes.clear();
+        
+        // Check if salting is enabled
+        if (!isSaltingEnabled()) {
+            plugin.getLogger().info("Salting recipes are disabled in config");
+            return;
+        }
+        
         if (!plugin.getConfig().contains("salting-recipes")) {
             return;
         }
@@ -165,7 +181,20 @@ public final class LocalConfigService {
                 
                 Material saltMaterial = Material.valueOf(saltMaterialName);
                 SaltingRecipe.SaltingMode mode = SaltingRecipe.SaltingMode.valueOf(modeString.toUpperCase());
-                Duration timeModifier = Duration.parse(timeModifierString);
+                Duration timeModifier;
+                
+                try {
+                    timeModifier = Duration.parse(timeModifierString);
+                } catch (java.time.format.DateTimeParseException e) {
+                    plugin.getLogger().warning("Invalid salting recipe configuration for " + foodTypeName + ": invalid time-modifier format '" + timeModifierString + "' (expected ISO-8601 duration like PT24H)");
+                    continue;
+                }
+                
+                // Validate time-modifier for EXTEND mode
+                if (mode == SaltingRecipe.SaltingMode.EXTEND && timeModifier.isNegative()) {
+                    plugin.getLogger().warning("Invalid salting recipe configuration for " + foodTypeName + ": time-modifier must be non-negative for EXTEND mode (got " + timeModifierString + ")");
+                    continue;
+                }
                 
                 SaltingRecipe recipe = new SaltingRecipe(foodType, saltMaterial, saltAmount, mode, timeModifier);
                 saltingRecipes.put(foodType, recipe);
