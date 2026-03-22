@@ -42,10 +42,6 @@ public final class CraftItemListener implements Listener {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
-        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
-            return;
-        }
-
         ItemStack item = event.getCurrentItem();
         if (item == null) {
             return;
@@ -59,18 +55,22 @@ public final class CraftItemListener implements Listener {
             return;
         }
         if (!time.equals(Duration.ZERO)) {
+            Player player = event.getWhoClicked() instanceof Player p ? p : null;
+            boolean bypassSpoilage = player != null && player.hasPermission("fs.bypass.spoilage");
+            boolean bypassTimestamp = player != null && player.hasPermission("fs.bypass.timestamp");
+
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);
             List<ItemStack> results = new ArrayList<>();
             int amount = amountCrafted;
-            if (spoilAmt > 0) {
+            if (spoilAmt > 0 && !bypassSpoilage) {
                 amount = amountCrafted - spoilAmt;
                 ItemStack spoiledFood = spoiledFoodFactory.createSpoiledFood(spoilAmt);
                 results.add(spoiledFood);
             }
             if (amount > 0) {
                 item.setAmount(amount);
-                results.add(timeStampService.assignTimeStamp(item));
+                results.add(bypassTimestamp ? item : timeStampService.assignTimeStamp(item));
             }
             if (event.isShiftClick()) {
                 event.setCancelled(true);
