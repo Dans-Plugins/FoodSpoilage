@@ -6,19 +6,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 public final class PlayerFishListener implements Listener {
 
+    private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
 
-    public PlayerFishListener(LocalTimeStampService timeStampService) {
+    public PlayerFishListener(LocalConfigService configService, LocalTimeStampService timeStampService) {
+        this.configService = configService;
         this.timeStampService = timeStampService;
     }
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
-        if (event.getPlayer().hasPermission("fs.bypass.timestamp")) {
+        if (configService.isBypassPermissionsEnabled() && event.getPlayer().hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

@@ -125,4 +125,8 @@ public final class LocalConfigService {
     public String getNoTimeLeftText() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
+
+    public boolean isBypassPermissionsEnabled() {
+        return plugin.getConfig().getBoolean("enable-bypass-permissions", false);
+    }
 }

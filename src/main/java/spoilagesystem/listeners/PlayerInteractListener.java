@@ -7,6 +7,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -16,18 +17,20 @@ import spoilagesystem.timestamp.LocalTimeStampService;
 public final class PlayerInteractListener implements Listener {
 
     private final FoodSpoilage plugin;
+    private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
     private final SpoiledFoodFactory spoiledFoodFactory;
 
-    public PlayerInteractListener(FoodSpoilage plugin, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+    public PlayerInteractListener(FoodSpoilage plugin, LocalConfigService configService, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
         this.plugin = plugin;
+        this.configService = configService;
         this.timeStampService = timeStampService;
         this.spoiledFoodFactory = spoiledFoodFactory;
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getPlayer().hasPermission("fs.bypass.spoilage")) {
+        if (configService.isBypassPermissionsEnabled() && event.getPlayer().hasPermission("fs.bypass.spoilage")) {
             return;
         }
 

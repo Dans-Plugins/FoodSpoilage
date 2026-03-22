@@ -56,8 +56,9 @@ public final class CraftItemListener implements Listener {
         }
         if (!time.equals(Duration.ZERO)) {
             Player player = event.getWhoClicked() instanceof Player p ? p : null;
-            boolean bypassSpoilage = player != null && player.hasPermission("fs.bypass.spoilage");
-            boolean bypassTimestamp = player != null && player.hasPermission("fs.bypass.timestamp");
+            boolean bypassEnabled = configService.isBypassPermissionsEnabled();
+            boolean bypassSpoilage = bypassEnabled && player != null && player.hasPermission("fs.bypass.spoilage");
+            boolean bypassTimestamp = bypassEnabled && player != null && player.hasPermission("fs.bypass.timestamp");
 
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);

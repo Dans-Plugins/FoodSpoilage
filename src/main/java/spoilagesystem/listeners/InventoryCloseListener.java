@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 import java.util.Arrays;
@@ -13,9 +14,11 @@ import java.util.Objects;
 
 public final class InventoryCloseListener implements Listener {
 
+    private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
 
-    public InventoryCloseListener(LocalTimeStampService timeStampService) {
+    public InventoryCloseListener(LocalConfigService configService, LocalTimeStampService timeStampService) {
+        this.configService = configService;
         this.timeStampService = timeStampService;
     }
 
@@ -31,7 +34,7 @@ public final class InventoryCloseListener implements Listener {
      */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
+        if (configService.isBypassPermissionsEnabled() && event.getPlayer() instanceof Player player && player.hasPermission("fs.bypass.timestamp")) {
             return;
         }
 

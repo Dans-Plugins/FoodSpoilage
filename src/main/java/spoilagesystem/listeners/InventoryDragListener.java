@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -16,18 +17,20 @@ import spoilagesystem.timestamp.LocalTimeStampService;
 public final class InventoryDragListener implements Listener {
 
     private final FoodSpoilage plugin;
+    private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
     private final SpoiledFoodFactory spoiledFoodFactory;
 
-    public InventoryDragListener(FoodSpoilage plugin, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
+    public InventoryDragListener(FoodSpoilage plugin, LocalConfigService configService, LocalTimeStampService timeStampService, SpoiledFoodFactory spoiledFoodFactory) {
         this.plugin = plugin;
+        this.configService = configService;
         this.timeStampService = timeStampService;
         this.spoiledFoodFactory = spoiledFoodFactory;
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        if (event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass.spoilage")) {
+        if (configService.isBypassPermissionsEnabled() && event.getWhoClicked() instanceof Player player && player.hasPermission("fs.bypass.spoilage")) {
             return;
         }
 

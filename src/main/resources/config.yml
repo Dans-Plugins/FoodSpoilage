@@ -61,4 +61,5 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
+enable-bypass-permissions: false
 debug: false
