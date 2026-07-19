@@ -1,10 +1,8 @@
 package spoilagesystem.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;
-import org.bukkit.inventory.ItemStack;
 import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
@@ -39,10 +37,6 @@ public final class BlockCookListener implements Listener {
         if (!configService.isTimestampFurnaceOutput()) {
             return;
         }
-        ItemStack result = event.getResult();
-        if (result.getType().isEdible() && result.getType() != Material.ROTTEN_FLESH
-                && !timeStampService.timeStampAssigned(result)) {
-            timeStampService.assignTimeStamp(result);
-        }
+        timeStampService.stampIfEligible(event.getResult());
     }
 }
