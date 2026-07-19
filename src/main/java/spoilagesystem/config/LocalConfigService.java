@@ -125,4 +125,8 @@ public final class LocalConfigService {
     public String getNoTimeLeftText() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
+
+    public boolean isTimestampFurnaceOutput() {
+        return plugin.getConfig().getBoolean("timestamp-furnace-output", false);
+    }
 }
