@@ -126,7 +126,6 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
 
-<<<<<<< HEAD
     public boolean isWaxingEnabled() {
         return plugin.getConfig().getBoolean("enable-waxing", true);
     }
@@ -139,9 +138,9 @@ public final class LocalConfigService {
         return plugin.getConfig().getStringList("text.waxed-food-lore").stream()
                 .map(line -> ChatColor.translateAlternateColorCodes('&', line))
                 .toList();
-=======
+    }
+
     public boolean isTimestampFurnaceOutput() {
         return plugin.getConfig().getBoolean("timestamp-furnace-output", false);
->>>>>>> origin/develop
     }
 }

@@ -72,13 +72,8 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      */
     private void registerEventHandlers() {
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
-<<<<<<< HEAD
         List<org.bukkit.event.Listener> listeners = new ArrayList<>(List.of(
-                new BlockCookListener(),
-=======
-        eventHandlerRegistry.registerEventHandlers(List.of(
                 new BlockCookListener(configService, timeStampService),
->>>>>>> origin/develop
                 new CraftItemListener(this, configService, timeStampService, spoiledFoodFactory),
                 new EntityDeathListener(timeStampService),
                 new EntityPickupItemListener(timeStampService),

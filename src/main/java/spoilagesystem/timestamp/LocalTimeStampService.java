@@ -80,7 +80,7 @@ public final class LocalTimeStampService {
      */
     public boolean isStampable(ItemStack item) {
         return item != null && item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
-                && !timeStampAssigned(item);
+                && !timeStampAssigned(item) && !isWaxed(item);
     }
 
     /**
