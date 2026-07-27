@@ -1,5 +1,6 @@
 package spoilagesystem.timestamp;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -68,6 +69,29 @@ public final class LocalTimeStampService {
             return assignTimeStamp(item, time);
         }
         return item;
+    }
+
+    /**
+     * Determines whether an item is eligible to be stamped with an expiry timestamp:
+     * it must be edible, not rotten flesh, and not already stamped.
+     *
+     * @param item to check, may be null
+     * @return true if the item should be stamped
+     */
+    public boolean isStampable(ItemStack item) {
+        return item != null && item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
+                && !timeStampAssigned(item);
+    }
+
+    /**
+     * Stamps the item with an expiry timestamp if it is {@link #isStampable(ItemStack)}.
+     *
+     * @param item to stamp, may be null
+     */
+    public void stampIfEligible(ItemStack item) {
+        if (isStampable(item)) {
+            assignTimeStamp(item);
+        }
     }
 
     private String getDateStringPlusTime(Duration time) {
