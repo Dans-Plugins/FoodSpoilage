@@ -36,18 +36,20 @@ public final class LocalConfigService {
     /**
      * Method to obtain the Spoilage Time for the given Material.
      * Parses an ISO-8601 duration string (e.g. "PT24H") from the config.
-     * Returns {@link Duration#ZERO} if the value is null or "0".
-     * Falls back to "spoil-time.default" if the value is malformed.
+     * Returns {@link Duration#ZERO} if the value is "0".
+     * Falls back to "spoil-time.default" if the value is missing or malformed.
      * 
      * @param type the material to obtain the spoilage time for.
      * @return the spoilage duration for the given material.
      */
     public Duration getTime(Material type) {
         if (timeCache.containsKey(type)) return timeCache.get(type);
-        String durationString = plugin.getConfig().getString("spoil-time." + type.toString(), plugin.getConfig().getString("spoil-time.default"));
+        String path = "spoil-time." + type.toString();
+        String durationString = plugin.getConfig().getString(path);
         if (durationString == null) {
-            timeCache.put(type, Duration.ZERO);
-            return Duration.ZERO;
+            Duration fallback = getDefaultSpoilTime();
+            timeCache.put(type, fallback);
+            return fallback;
         }
         durationString = durationString.trim();
         if (durationString.equals("0")) {
