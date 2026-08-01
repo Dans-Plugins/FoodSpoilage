@@ -27,6 +27,9 @@ public final class PlayerFishListener implements Listener {
             if (!item.getType().isEdible()) {
                 return;
             }
+            if (timeStampService.isWaxed(item)) {
+                return;
+            }
             caughtItem.setItemStack(timeStampService.assignTimeStamp(item));
         }
     }

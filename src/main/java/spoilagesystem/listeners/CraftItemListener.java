@@ -44,6 +44,9 @@ public final class CraftItemListener implements Listener {
         if (item == null) {
             return;
         }
+        if (timeStampService.isWaxed(item)) {
+            return;
+        }
         Material type = item.getType();
         Duration time = configService.getTime(type);
         if (!type.isEdible()) {

@@ -13,6 +13,10 @@ text:
   less-than-an-hour: 'This item will expire in less than an hour.'
   less-than-a-day: 'This item will expire in less than a day.'
   no-time-left: 'This item has expired.'
+  waxed-food-lore:
+  - ''
+  - '&fWaxed'
+  - '&7This item will not spoil but cannot be eaten.'
 expiry-date-format: 'MM/dd/yyyy'
 spoil-time:
   default: PT24H
@@ -61,6 +65,8 @@ spoil-time:
   SWEET_BERRIES: PT48H
 spoil-chance:
   WHEAT: 0.3
+enable-waxing: true
+wax-material: HONEYCOMB
 # When true, items in the furnace output slot are stamped with an expiry date
 # immediately when cooked. This works correctly on older versions of Minecraft,
 # but on 1.20.5+ it will cause furnaces to stall after cooking one item.

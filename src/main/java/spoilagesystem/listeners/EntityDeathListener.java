@@ -24,7 +24,8 @@ public final class EntityDeathListener implements Listener {
         if (event.getEntity() instanceof Player) return;
         List<ItemStack> newDrops = new ArrayList<>();
         for (ItemStack drop : event.getDrops()) {
-            if (drop.getType().isEdible() && drop.getType() != Material.ROTTEN_FLESH) {
+            if (drop.getType().isEdible() && drop.getType() != Material.ROTTEN_FLESH
+                    && !timeStampService.isWaxed(drop)) {
                 newDrops.add(timeStampService.assignTimeStamp(drop));
             } else {
                 newDrops.add(drop);

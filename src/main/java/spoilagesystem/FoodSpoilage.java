@@ -1,7 +1,13 @@
 package spoilagesystem;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.tools.EventHandlerRegistry;
@@ -15,6 +21,7 @@ import spoilagesystem.listeners.*;
 import spoilagesystem.rpkit.FoodSpoilageRpkitExpiryService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,7 +72,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      */
     private void registerEventHandlers() {
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
-        eventHandlerRegistry.registerEventHandlers(List.of(
+        List<org.bukkit.event.Listener> listeners = new ArrayList<>(List.of(
                 new BlockCookListener(configService, timeStampService),
                 new CraftItemListener(this, configService, timeStampService, spoiledFoodFactory),
                 new EntityDeathListener(timeStampService),
@@ -77,7 +84,42 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                 new PlayerFishListener(timeStampService),
                 new PlayerInteractListener(this, timeStampService, spoiledFoodFactory),
                 new PlayerJoinListener(timeStampService)
-        ), this);
+        ));
+        registerWaxingRecipe(listeners);
+        eventHandlerRegistry.registerEventHandlers(listeners, this);
+    }
+
+    private void registerWaxingRecipe(List<org.bukkit.event.Listener> listeners) {
+        if (!configService.isWaxingEnabled()) return;
+
+        Material waxMaterial = Material.matchMaterial(configService.getWaxMaterialName());
+        if (waxMaterial == null) {
+            getLogger().warning("Waxing material not found: " + configService.getWaxMaterialName() + ". Waxing feature disabled.");
+            return;
+        }
+
+        List<Material> edibleMaterials = Arrays.stream(Material.values())
+                .filter(Material::isEdible)
+                .filter(m -> m != Material.ROTTEN_FLESH)
+                .filter(m -> m != waxMaterial)
+                .toList();
+
+        if (edibleMaterials.isEmpty()) return;
+
+        NamespacedKey key = new NamespacedKey(this, "waxing");
+        // Result is a placeholder; WaxingCraftListener overrides it via PrepareItemCraftEvent
+        ItemStack placeholderResult = new ItemStack(edibleMaterials.get(0));
+        var placeholderMeta = placeholderResult.getItemMeta();
+        if (placeholderMeta != null) {
+            placeholderMeta.setDisplayName(ChatColor.RESET + "Waxed Food (varies)");
+            placeholderResult.setItemMeta(placeholderMeta);
+        }
+        ShapelessRecipe recipe = new ShapelessRecipe(key, placeholderResult);
+        recipe.addIngredient(new RecipeChoice.MaterialChoice(waxMaterial));
+        recipe.addIngredient(new RecipeChoice.MaterialChoice(edibleMaterials));
+        getServer().addRecipe(recipe);
+
+        listeners.add(new WaxingCraftListener(configService, timeStampService, waxMaterial, key));
     }
 
     private void initializeCommands() {

@@ -21,7 +21,8 @@ public final class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Arrays.stream(event.getPlayer().getInventory().getContents())
                 .filter(Objects::nonNull)
-                .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH)
+                .filter(item -> item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
+                        && !timeStampService.isWaxed(item))
                 .forEach(item -> {
                     if (!timeStampService.timeStampAssigned(item)) {
                         timeStampService.assignTimeStamp(item);

@@ -126,6 +126,20 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
 
+    public boolean isWaxingEnabled() {
+        return plugin.getConfig().getBoolean("enable-waxing", true);
+    }
+
+    public String getWaxMaterialName() {
+        return plugin.getConfig().getString("wax-material", "HONEYCOMB");
+    }
+
+    public List<String> getWaxedFoodLore() {
+        return plugin.getConfig().getStringList("text.waxed-food-lore").stream()
+                .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                .toList();
+    }
+
     public boolean isTimestampFurnaceOutput() {
         return plugin.getConfig().getBoolean("timestamp-furnace-output", false);
     }

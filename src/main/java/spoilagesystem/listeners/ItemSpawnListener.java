@@ -31,7 +31,8 @@ public final class ItemSpawnListener implements Listener {
         Duration time = configService.getTime(type);
 
         // if timestamp not already assigned
-        if (!time.equals(Duration.ZERO) && !timeStampService.timeStampAssigned(item) && type.isEdible()) {
+        if (!time.equals(Duration.ZERO) && !timeStampService.timeStampAssigned(item) && type.isEdible()
+                && !timeStampService.isWaxed(item)) {
             event.getEntity().setItemStack(timeStampService.assignTimeStamp(item, time));
         }
     }

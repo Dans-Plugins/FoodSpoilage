@@ -37,7 +37,7 @@ public final class InventoryCloseListener implements Listener {
 
     private void stampIfNeeded(ItemStack item) {
         if (item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
-                && !timeStampService.timeStampAssigned(item)) {
+                && !timeStampService.timeStampAssigned(item) && !timeStampService.isWaxed(item)) {
             timeStampService.assignTimeStamp(item);
         }
     }

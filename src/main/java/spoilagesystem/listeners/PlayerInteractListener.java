@@ -3,6 +3,7 @@ package spoilagesystem.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,6 +24,13 @@ public final class PlayerInteractListener implements Listener {
         this.plugin = plugin;
         this.timeStampService = timeStampService;
         this.spoiledFoodFactory = spoiledFoodFactory;
+    }
+
+    @EventHandler
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+        if (timeStampService.isWaxed(event.getItem())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
