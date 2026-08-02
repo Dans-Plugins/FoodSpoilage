@@ -32,7 +32,7 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 
 ## Spoil Times
 
-Spoil times are defined under the `spoil-time` key using [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format (e.g., `PT24H` for 24 hours, `PT48H` for 48 hours).
+Spoil times are defined under the `spoil-time` key using [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format (e.g., `PT24H` for 24 hours, `PT48H` for 48 hours). A value of `0` means the item never spoils. Any value that is missing or cannot be parsed as an ISO-8601 duration (and is not `0`) also falls back to no spoilage rather than causing an error.
 
 A `default` value is used for any food item not explicitly listed.
 
