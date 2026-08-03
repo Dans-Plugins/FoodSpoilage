@@ -195,12 +195,6 @@ public final class LocalTimeStampService {
     public String getTimeLeft(ItemStack item) {
         if (!timeStampAssigned(item)) return null;
 
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return null;
-
-        List<String> lore = meta.getLore();
-        if (lore == null || lore.size() < 3) return null;
-
         OffsetDateTime timestamp = getTimeStamp(item);
         if (timestamp == null) return null;
 
