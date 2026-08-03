@@ -11,6 +11,7 @@ The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/con
 | `expiry-date-format` | The date format used for expiry dates displayed in item lore | `MM/dd/yyyy` |
 | `enable-waxing` | Enable the waxing feature, allowing players to craft food with a wax material to make it non-perishable but inedible | `true` |
 | `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient | `HONEYCOMB` |
+| `timestamp-furnace-output` | Stamp items in the furnace output slot with an expiry date immediately when cooked. This works correctly on older versions of Minecraft, but on 1.20.5+ it causes furnaces to stall after cooking one item, since Minecraft will not continue cooking while custom data is present on the output slot. When left at the default, items are instead stamped lazily the next time they reach a player (inventory close/open, pickup, item spawn, or player join). | `false` |
 
 ## Text Customization
 
