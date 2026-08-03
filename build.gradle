@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation 'com.github.Preponderous-Software:ponder:1.1'
-    implementation 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
     implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
