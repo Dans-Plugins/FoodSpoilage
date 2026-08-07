@@ -1,4 +1,5 @@
-# Contributing Document
+# Contributing
+
 ## Thank You
 Thank you for being interested in contributing to the project! It wouldn't be where it is today without the help of the community. This document will help you get started with contributing to the project.
 
@@ -31,32 +32,28 @@ Work items are tracked as GitHub issues. You can find a full list of issues [her
 Work items are organized into milestones, which represent a specific version of the plugin. You can find the milestones [here](https://github.com/Dans-Plugins/FoodSpoilage/milestones).
 
 ## Making Changes
-- Before you start working on something, make sure there is an issue for it. If there isn't, create one.
-- Create a new branch for your changes using `git checkout -b <branch-name>`. Make sure to name your branch something that is related to the issue you are working on.
-- Make your changes to the code.
-- Test your changes to make sure they work as expected. [More information on testing can be found here](#testing).
-- When you are finished, commit your changes using `git commit -m "Your commit message here"`.
-- Push your changes to your fork using `git push origin <branch-name>`.
-- Open a pull request on the original repository. Make sure to include a description of your changes and link the related issue using #(number).
-- Wait for your pull request to be reviewed. If there are any changes that need to be made, make them and push the changes to your fork. Your pull request will be updated automatically.
-- Once your pull request has been reviewed and approved, it will be merged.
+
+1. Make sure an issue exists for the work. If not, create one.
+2. Switch to `develop`: `git checkout develop`
+3. Create a branch: `git checkout -b <branch-name>`
+4. Make your changes.
+5. Test your changes (see [Testing](#testing)).
+6. Commit: `git commit -m "Description of changes"`
+7. Push: `git push origin <branch-name>`
+8. Open a pull request against `develop`, link the related issue with `#<number>`.
+9. Address review feedback.
 
 ## Testing
-At this time, there are no unit tests due to a difficulty mocking Spigot. However, you can test your changes by running the plugin on a Spigot server.
 
-### Running a Spigot server with Docker
-If you don't have Docker installed, you can download it [here](https://www.docker.com/products/docker-desktop).
+Run the build to verify your changes compile correctly:
 
-To run a Spigot server with Docker, you can use the following command:
+Linux: `./gradlew clean build`  
+Windows: `.\gradlew.bat clean build`
+
+For manual testing, start a local Spigot server:
+
 ```bash
 docker compose up
-```
-
-This will start a Spigot server on your local machine. You can connect to it using the IP `localhost` and the port `25565`.
-
-If you make changes to the code, you can deploy the latest changes by rebuilding the Docker image:
-```bash
-docker compose up --build
 ```
 
 ## Questions
