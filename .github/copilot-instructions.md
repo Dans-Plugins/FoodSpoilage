@@ -13,9 +13,11 @@ making any changes.
 ## Project Structure
 
 - `src/main/java/spoilagesystem/` – Plugin source code
-  - `commands/` – Command executors (e.g. `HelpCommand`, `ReloadCommand`, `TimeleftCommand`)
-  - `config/` – Configuration service (`LocalConfigService`)
+  - `commands/` – Command executors (`DefaultCommand`, `HelpCommand`, `ReloadCommand`, `TimeLeftCommand`)
+  - `config/` – Configuration service (`LocalConfigService`), with `config/migration/` holding config version migrations
+  - `factories/` – Item factories (`SpoiledFoodFactory`)
   - `listeners/` – Bukkit event listeners (crafting, inventory, player interactions)
+  - `rpkit/` – Optional RPKit integration (`FoodSpoilageRpkitExpiryService`)
   - `timestamp/` – Timestamp assignment and lookup service
   - `FoodSpoilage.java` – Main plugin class, registers commands and listeners
 - `src/main/resources/` – `plugin.yml` and `config.yml`
@@ -30,5 +32,5 @@ making any changes.
 ## Contribution Workflow
 
 - Branch from `develop` for all changes.
-- Open a pull request against `develop`, not `main`.
+- Open a pull request against `develop`, not `master`.
 - Reference the related GitHub issue in every pull request description.
