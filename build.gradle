@@ -13,6 +13,12 @@ repositories {
     maven { url = uri('https://repo.rpkit.com/repository/maven-releases/') }
 }
 
+configurations.all {
+    // spigot-api 1.14.1 pulls in net.md-5:bungeecord-chat:1.13-SNAPSHOT, which Spigot's snapshot
+    // repository no longer hosts. Pin to the oldest release still published to Maven Central.
+    resolutionStrategy.force 'net.md-5:bungeecord-chat:1.16-R0.1'
+}
+
 dependencies {
     implementation 'com.github.Preponderous-Software:ponder:1.1'
     implementation 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
