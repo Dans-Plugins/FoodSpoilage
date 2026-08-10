@@ -15,7 +15,13 @@ repositories {
 
 dependencies {
     implementation 'com.github.Preponderous-Software:ponder:1.1'
-    implementation 'org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT'
+    // Provided by the server at runtime, so it is kept off the runtime classpath that
+    // shadowJar resolves. Its transitive net.md-5:bungeecord-chat:1.13-SNAPSHOT is no
+    // longer downloadable from any configured repository, so it is excluded outright;
+    // no source file in this project references the net.md_5.bungee API.
+    compileOnly('org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT') {
+        exclude group: 'net.md-5', module: 'bungeecord-chat'
+    }
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
     implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
