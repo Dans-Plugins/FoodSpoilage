@@ -47,6 +47,17 @@ shadowJar {
         include(dependency('org.bstats:bstats-bukkit'))
         include(dependency('org.bstats:bstats-base'))
     }
+    // ponder 1.1 is published as a fat jar that carries JUnit 4 and Hamcrest inside it, so the
+    // dependency allow-list above cannot filter them out. Nothing in this plugin touches a test
+    // framework at runtime, and leaving these unrelocated would put org.junit and org.hamcrest on
+    // the shared server classpath alongside every other plugin's.
+    exclude 'org/junit/**'
+    exclude 'junit/**'
+    exclude 'org/hamcrest/**'
+    exclude 'LICENSE-junit.txt'
+    // ponder's own test class is the sole consumer of the JUnit classes removed above; shipping it
+    // without them would leave a class whose references cannot be resolved.
+    exclude 'preponderous/ponder/tests/**'
     relocate 'preponderous.ponder', 'spoilagesystem.shadow.preponderous.ponder'
     relocate 'org.intellij', 'spoilagesystem.shadow.org.intellij'
     relocate 'org.jetbrains', 'spoilagesystem.shadow.org.jetbrains'
