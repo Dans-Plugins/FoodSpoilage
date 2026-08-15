@@ -1,6 +1,20 @@
 # Configuration Guide
 
-The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/config.yml`. Changes to the configuration file can be applied in-game using `/fs reload`.
+The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/config.yml`. Most changes to the configuration file can be applied in-game using `/fs reload`.
+
+## Applying Changes
+
+Three settings are read once while the plugin is starting up, and `/fs reload` reports success without applying them:
+
+| Key | Why a restart is needed |
+|-----|-------------------------|
+| `debug` | The logger's level is set during plugin startup. |
+| `expiry-date-format` | The date formatter is built during plugin startup and then reused. |
+| `wax-material` | The waxing recipe is registered during plugin startup using the material named at that time. |
+
+Turning `enable-waxing` on or off also has no effect on whether the waxing recipe is registered until the server restarts; see the [Waxing](#waxing) section.
+
+Every other key — including all `text.*` messages, `spoil-time`, `spoil-chance` and `timestamp-furnace-output` — is read fresh each time it is used and does take effect on `/fs reload`.
 
 ## General Options
 
@@ -41,6 +55,14 @@ A `default` value is used for any food item not explicitly listed.
 |-----|-------------|---------|
 | `spoil-time.default` | Default spoil time for unlisted food items | `PT24H` (24 hours) |
 
+### Only edible materials can spoil
+
+A `spoil-time` entry takes effect only for materials that Bukkit reports as edible — that is, materials a player can actually eat. Rotten flesh is excluded as well, and waxed items are skipped. An entry for any other material is accepted by the configuration parser but never acted on, because every code path that stamps an item with an expiry date checks edibility first.
+
+Eleven of the entries shipped in the default configuration name materials that are **not** edible, and therefore have no effect: `WHEAT`, `HAY_BLOCK`, `MELON`, `PUMPKIN`, `BROWN_MUSHROOM`, `RED_MUSHROOM`, `NETHER_WART`, `CAKE`, `SUGAR`, `EGG` and `SUGAR_CANE`. They are listed in the table below for completeness, and are marked accordingly. Whether they should be removed from the default configuration or the edibility restriction relaxed is tracked in [#257](https://github.com/Dans-Plugins/FoodSpoilage/issues/257).
+
+The one exception is the optional RPKit integration: when `rpk-food-lib-bukkit` is installed, expiry dates requested through RPKit are applied without the edibility check.
+
 ### Configured Food Items
 
 | Item | Spoil Time | Duration |
@@ -68,19 +90,19 @@ A `default` value is used for any food item not explicitly listed.
 | `COOKED_MUTTON` | `PT72H` | 72 hours |
 | `COOKED_RABBIT` | `PT72H` | 72 hours |
 | `COOKED_COD` | `PT72H` | 72 hours |
-| `WHEAT` | `PT48H` | 48 hours |
-| `HAY_BLOCK` | `PT48H` | 48 hours |
-| `MELON` | `PT48H` | 48 hours |
-| `PUMPKIN` | `PT48H` | 48 hours |
-| `BROWN_MUSHROOM` | `PT48H` | 48 hours |
-| `RED_MUSHROOM` | `PT48H` | 48 hours |
-| `NETHER_WART` | `PT168H` | 168 hours (7 days) |
+| `WHEAT` | `PT48H` | 48 hours (no effect — not edible) |
+| `HAY_BLOCK` | `PT48H` | 48 hours (no effect — not edible) |
+| `MELON` | `PT48H` | 48 hours (no effect — not edible) |
+| `PUMPKIN` | `PT48H` | 48 hours (no effect — not edible) |
+| `BROWN_MUSHROOM` | `PT48H` | 48 hours (no effect — not edible) |
+| `RED_MUSHROOM` | `PT48H` | 48 hours (no effect — not edible) |
+| `NETHER_WART` | `PT168H` | 168 hours (7 days) (no effect — not edible) |
 | `MELON_SLICE` | `PT24H` | 24 hours |
-| `CAKE` | `PT24H` | 24 hours |
+| `CAKE` | `PT24H` | 24 hours (no effect — not edible) |
 | `PUMPKIN_PIE` | `PT24H` | 24 hours |
-| `SUGAR` | `PT72H` | 72 hours |
-| `EGG` | `PT72H` | 72 hours |
-| `SUGAR_CANE` | `PT48H` | 48 hours |
+| `SUGAR` | `PT72H` | 72 hours (no effect — not edible) |
+| `EGG` | `PT72H` | 72 hours (no effect — not edible) |
+| `SUGAR_CANE` | `PT48H` | 48 hours (no effect — not edible) |
 | `APPLE` | `PT48H` | 48 hours |
 | `COOKIE` | `PT94H` | 94 hours |
 | `POISONOUS_POTATO` | `PT24H` | 24 hours |
@@ -90,7 +112,7 @@ A `default` value is used for any food item not explicitly listed.
 | `SWEET_BERRIES` | `PT48H` | 48 hours |
 
 ### Adding Custom Food Items
-You can add spoil times for any Minecraft material by adding entries under `spoil-time`. Use the [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name as the key.
+You can add spoil times for any edible Minecraft material by adding entries under `spoil-time`. Use the [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name as the key. Entries for materials that are not edible are accepted but have no effect — see [Only edible materials can spoil](#only-edible-materials-can-spoil).
 
 Example:
 ```yaml
@@ -100,21 +122,27 @@ spoil-time:
 
 ## Spoil Chance
 
-The `spoil-chance` section allows you to define a probability (0.0 to 1.0) that individual items of a given type will spoil when their timer expires. If not specified for a material, the spoil chance is 0 (no random spoilage).
+The `spoil-chance` section defines the probability (0.0 to 1.0) that each unit of a food item is **already spoiled at the moment it is crafted**. It is not a second chance applied when an item's expiry timer runs out — an item whose timer expires always spoils.
+
+When a player crafts a food item that has a non-zero spoil time, the roll is made once per unit produced. Units that fail the roll are replaced with `Spoiled Food` (named and described by `text.spoiled-food-name` and `text.spoiled-food-lore`); the remainder are stamped with an expiry date as usual. Crafting is the only path that consults `spoil-chance`; food obtained by cooking, fishing, mob drops, or picking items up is never randomly spoiled.
+
+If a material has no `spoil-chance` entry, its chance is 0 and none of its crafted output is spoiled. There is no `spoil-chance.default` key.
+
+Because the roll happens on the crafting path, it is subject to the same edibility restriction described above.
 
 | Key | Description | Default |
 |-----|-------------|---------|
-| `spoil-chance.WHEAT` | Chance that wheat will spoil | `0.3` (30%) |
+| `spoil-chance.WHEAT` | Chance that each crafted wheat is spoiled. `WHEAT` is not edible, so this shipped entry currently has no effect (see [#257](https://github.com/Dans-Plugins/FoodSpoilage/issues/257)). | `0.3` (30%) |
 
 ## Waxing
 
 The waxing feature allows players to preserve food items by combining them with a wax material (default: honeycomb) in a crafting grid. Waxed food will never spoil but cannot be eaten, making it ideal for preserving sentimental "lore items".
 
-To wax a food item, place it alongside a honeycomb (or the configured `wax-material`) in any crafting grid. The result will be a waxed version of the food item that:
+To wax a food item, place it alongside a honeycomb (or the configured `wax-material`) in any crafting grid. Rotten flesh cannot be waxed, and neither can an item that has already been waxed. The result will be a waxed version of the food item that:
 - Will never receive an expiry timestamp
 - Cannot be consumed (eating is prevented)
 - Displays the configured `text.waxed-food-lore` on the item
 
 If the food item has not yet been stamped with an expiry date, any existing custom lore (e.g., from lore items) is preserved alongside the waxed lore.
 
-The feature can be disabled by setting `enable-waxing: false` in the config.
+The feature can be disabled by setting `enable-waxing: false` in the config. The waxing recipe is registered while the plugin is starting up, so this setting — and `wax-material` — should be changed with the server stopped rather than through `/fs reload`. Toggling `enable-waxing` at runtime is currently known to misbehave; this is tracked in [#259](https://github.com/Dans-Plugins/FoodSpoilage/issues/259).
