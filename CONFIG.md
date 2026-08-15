@@ -12,9 +12,9 @@ Three settings are read once while the plugin is starting up, and `/fs reload` r
 | `expiry-date-format` | The date formatter is built during plugin startup and then reused. |
 | `wax-material` | The waxing recipe is registered during plugin startup using the material named at that time. |
 
-Turning `enable-waxing` on or off also has no effect on whether the waxing recipe is registered until the server restarts; see the [Waxing](#waxing) section.
+`enable-waxing` is a partial case. Its value is re-read whenever a player uses a crafting grid, so switching it off does stop the plugin from producing waxed food after a reload — but the recipe itself is registered only at startup, so it is neither removed when the setting is switched off nor added when it is switched on. Change it with the server stopped; see the [Waxing](#waxing) section.
 
-Every other key — including all `text.*` messages, `spoil-time`, `spoil-chance` and `timestamp-furnace-output` — is read fresh each time it is used and does take effect on `/fs reload`.
+Every remaining key — all `text.*` messages, `spoil-time`, `spoil-chance` and `timestamp-furnace-output` — is read fresh each time it is used and does take effect on `/fs reload`.
 
 ## General Options
 
