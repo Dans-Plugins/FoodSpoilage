@@ -37,6 +37,8 @@ After editing `plugins/FoodSpoilage/config.yml`:
 /fs reload
 ```
 
+A few settings — `debug`, `expiry-date-format`, `wax-material` and, in part, `enable-waxing` — are read only while the plugin is starting up. `/fs reload` reports success without applying them, so change those with the server stopped. See [Applying Changes](CONFIG.md#applying-changes) for the full list.
+
 ## Permissions
 
 | Permission    | Description                              | Default  |

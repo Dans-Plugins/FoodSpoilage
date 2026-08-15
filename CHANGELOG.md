@@ -19,3 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `DateTimeParseException` crash when a `spoil-time` value was `0` or otherwise not a valid ISO-8601 duration; such values now fall back to no spoilage.
 - `/fs timeleft` incorrectly reporting that an item will never spoil when `text.expiry-date-lore` was configured as empty.
 - JUnit 4 and Hamcrest classes, carried in from the `ponder` fat jar, were being shipped unrelocated inside the plugin jar and placed on the shared server classpath; they are now excluded along with `ponder`'s own bundled test class, which also reduces the jar from roughly 581 KB to 155 KB.
+- `CONFIG.md` described `spoil-chance` as the probability that an item spoils when its timer expires. It is in fact rolled once per unit at craft time, replacing the affected units with `Spoiled Food`; the section has been rewritten to match.
+- `CONFIG.md` claimed that all configuration changes can be applied with `/fs reload`. `debug`, `expiry-date-format` and `wax-material` are read only during startup, and the restriction is now documented.
+- `CONFIG.md` presented all 43 default `spoil-time` entries as active. Eleven of them name materials that Bukkit does not report as edible and are therefore never acted on; they are now marked as such.
