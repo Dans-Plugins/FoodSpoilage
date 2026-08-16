@@ -1,6 +1,7 @@
 package spoilagesystem.listeners;
 
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -59,15 +60,18 @@ public final class CraftItemListener implements Listener {
             int amountCrafted = getAmountCrafted(event);
             int spoilAmt = configService.determineSpoiledAmount(type, amountCrafted);
             List<ItemStack> results = new ArrayList<>();
+            ItemStack spoiledFood = null;
+            ItemStack freshFood = null;
             int amount = amountCrafted;
             if (spoilAmt > 0) {
                 amount = amountCrafted - spoilAmt;
-                ItemStack spoiledFood = spoiledFoodFactory.createSpoiledFood(spoilAmt);
+                spoiledFood = spoiledFoodFactory.createSpoiledFood(spoilAmt);
                 results.add(spoiledFood);
             }
             if (amount > 0) {
                 item.setAmount(amount);
-                results.add(timeStampService.assignTimeStamp(item));
+                freshFood = timeStampService.assignTimeStamp(item);
+                results.add(freshFood);
             }
             if (event.isShiftClick()) {
                 event.setCancelled(true);
@@ -86,15 +90,30 @@ public final class CraftItemListener implements Listener {
                     }
                 }
                 event.getInventory().setMatrix(newMatrixItems);
-                event.getWhoClicked().getInventory().addItem(results.toArray(ItemStack[]::new)).values()
-                        .forEach(droppedItem -> event.getWhoClicked().getWorld().dropItem(
-                                event.getWhoClicked().getLocation(),
-                                droppedItem
-                        ));
+                giveOrDrop(event.getWhoClicked(), results.toArray(ItemStack[]::new));
             } else {
-                results.stream().findAny().ifPresent(event::setCurrentItem);
+                // The result slot holds a single stack, so when the craft is partially spoiled the
+                // fresh portion is left there and the spoiled portion is delivered separately.
+                // Without this the second stack was silently discarded.
+                ItemStack resultSlotItem = freshFood != null ? freshFood : spoiledFood;
+                if (resultSlotItem == null) {
+                    return;
+                }
+                event.setCurrentItem(resultSlotItem);
+                if (freshFood != null && spoiledFood != null) {
+                    giveOrDrop(event.getWhoClicked(), spoiledFood);
+                }
             }
         }
+    }
+
+    /**
+     * Gives the supplied stacks to the crafter, dropping at their feet whatever the inventory
+     * cannot hold. This mirrors how the rest of the plugin handles a full inventory.
+     */
+    private void giveOrDrop(HumanEntity crafter, ItemStack... items) {
+        crafter.getInventory().addItem(items).values()
+                .forEach(overflow -> crafter.getWorld().dropItem(crafter.getLocation(), overflow));
     }
 
     private int getAmountCrafted(CraftItemEvent event) {

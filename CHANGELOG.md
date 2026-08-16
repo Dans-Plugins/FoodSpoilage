@@ -13,9 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `USER_GUIDE.md` covering prerequisites, first steps, common scenarios and permissions.
 - `COMMANDS.md`, `CONFIG.md` and `CONTRIBUTING.md` documentation, plus a restructured `README.md`.
 - `Build` and `Release` GitHub Actions workflows, and `.github/copilot-instructions.md`.
+- A JUnit 5 and Mockito test source set, covering how `CraftItemListener` delivers craft results.
 
 ### Fixed
 
+- A craft that was only partially spoiled and taken with an ordinary click handed the player just one of the two resulting stacks, silently destroying the other. The unspoiled remainder is now left in the result slot and the spoiled portion is added to the player's inventory, or dropped at their feet when there is no room.
 - `DateTimeParseException` crash when a `spoil-time` value was `0` or otherwise not a valid ISO-8601 duration; such values now fall back to no spoilage.
 - `/fs timeleft` incorrectly reporting that an item will never spoil when `text.expiry-date-lore` was configured as empty.
 - JUnit 4 and Hamcrest classes, carried in from the `ponder` fat jar, were being shipped unrelocated inside the plugin jar and placed on the shared server classpath; they are now excluded along with `ponder`'s own bundled test class, which also reduces the jar from roughly 581 KB to 155 KB.
