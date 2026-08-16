@@ -25,6 +25,19 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
     implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
+
+    // The Spigot API is compileOnly above, so it is repeated here to put it on the test classpath.
+    testImplementation('org.spigotmc:spigot-api:1.14.1-R0.1-SNAPSHOT') {
+        exclude group: 'net.md-5', module: 'bungeecord-chat'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    // Mockito 5 defaults to the inline mock maker, which the plugin's final service classes need.
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 group = 'DansPlugins'

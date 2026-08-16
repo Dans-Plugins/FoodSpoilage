@@ -50,6 +50,8 @@ Run the build to verify your changes compile correctly:
 Linux: `./gradlew clean build`  
 Windows: `.\gradlew.bat clean build`
 
+The automated tests live in `src/test/java` and are executed as part of that build; they can also be run on their own with `./gradlew test`.
+
 For manual testing, start a local Spigot server:
 
 ```bash
