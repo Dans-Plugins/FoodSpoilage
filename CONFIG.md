@@ -6,7 +6,7 @@ The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/con
 
 Every key listed on this page takes effect on `/fs reload`; no key requires the server to be restarted.
 
-`enable-waxing` and `wax-material` are applied by unregistering the waxing recipe and registering it again from the new values. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect.
+`enable-waxing` and `wax-material` are applied by unregistering the waxing recipe and registering it again from the new values. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect. Should a server implementation refuse to unregister the recipe, a warning naming these two keys is written to the console and a restart is needed for them; nothing else about the reload is affected.
 
 Configuration file migrations, driven by the `version` key, are the one exception: they run only while the plugin is starting up.
 

@@ -41,6 +41,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private LocalTimeStampService timeStampService;
     private SpoiledFoodFactory spoiledFoodFactory;
     private NamespacedKey waxingRecipeKey;
+    private boolean waxingRecipeRegistered;
 
     /**
      * This runs when the server starts.
@@ -115,7 +116,9 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      * both {@code enable-waxing} and {@code wax-material} take effect without a server restart.
      */
     private void refreshWaxingRecipe() {
-        removeWaxingRecipe();
+        // Re-registering on top of a recipe that could not be removed would leave two recipes
+        // sharing one key, so the old one staying put means this one is left alone.
+        if (!removeWaxingRecipe()) return;
 
         if (!configService.isWaxingEnabled()) return;
 
@@ -144,20 +147,34 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         recipe.addIngredient(new RecipeChoice.MaterialChoice(waxMaterial));
         recipe.addIngredient(new RecipeChoice.MaterialChoice(edibleMaterials));
         getServer().addRecipe(recipe);
+        waxingRecipeRegistered = true;
     }
 
     /**
-     * Drops the waxing recipe from the server's recipe list if it is present. Server#removeRecipe
-     * is not part of the Spigot API version this plugin builds against, so the recipe iterator is
-     * used instead.
+     * Drops the waxing recipe from the server's recipe list, if this plugin put it there. Server
+     * #removeRecipe is not part of the Spigot API version this plugin builds against, so the recipe
+     * iterator is used instead; a server implementation whose iterator does not support removal is
+     * reported rather than allowed to abort the reload.
+     *
+     * @return true when the recipe is known not to be registered afterwards
      */
-    private void removeWaxingRecipe() {
-        Iterator<Recipe> recipes = getServer().recipeIterator();
-        while (recipes.hasNext()) {
-            Recipe recipe = recipes.next();
-            if (recipe instanceof Keyed keyed && keyed.getKey().equals(waxingRecipeKey)) {
-                recipes.remove();
+    private boolean removeWaxingRecipe() {
+        if (!waxingRecipeRegistered) return true;
+
+        try {
+            Iterator<Recipe> recipes = getServer().recipeIterator();
+            while (recipes.hasNext()) {
+                Recipe recipe = recipes.next();
+                if (recipe instanceof Keyed keyed && keyed.getKey().equals(waxingRecipeKey)) {
+                    recipes.remove();
+                }
             }
+            waxingRecipeRegistered = false;
+            return true;
+        } catch (UnsupportedOperationException | IllegalStateException exception) {
+            getLogger().warning("Could not unregister the waxing recipe on this server implementation: "
+                    + exception + ". Restart the server for a change to enable-waxing or wax-material to take full effect.");
+            return false;
         }
     }
 
