@@ -16,6 +16,11 @@ import java.util.Random;
  */
 public final class LocalConfigService {
 
+    /**
+     * Pattern used for expiry dates when {@code expiry-date-format} is absent from the config.
+     */
+    public static final String DEFAULT_EXPIRY_DATE_FORMAT = "MM/dd/yyyy";
+
     private final FoodSpoilage plugin;
     private final List<ConfigMigration> migrations;
 
@@ -135,12 +140,29 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-time-left"));
     }
 
+    public boolean isDebugEnabled() {
+        return plugin.getConfig().getBoolean("debug", false);
+    }
+
+    public String getExpiryDateFormat() {
+        return plugin.getConfig().getString("expiry-date-format", DEFAULT_EXPIRY_DATE_FORMAT);
+    }
+
     public boolean isWaxingEnabled() {
         return plugin.getConfig().getBoolean("enable-waxing", true);
     }
 
     public String getWaxMaterialName() {
         return plugin.getConfig().getString("wax-material", "HONEYCOMB");
+    }
+
+    /**
+     * Resolves the configured {@code wax-material} name to a {@link Material}.
+     *
+     * @return the configured waxing material, or null when the name does not match one
+     */
+    public Material getWaxMaterial() {
+        return Material.matchMaterial(getWaxMaterialName());
     }
 
     public List<String> getWaxedFoodLore() {

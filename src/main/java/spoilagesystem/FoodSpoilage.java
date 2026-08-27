@@ -2,9 +2,11 @@ package spoilagesystem;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
+import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.ItemStack;
@@ -23,9 +25,11 @@ import spoilagesystem.timestamp.LocalTimeStampService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static java.util.logging.Level.FINE;
+import static java.util.logging.Level.INFO;
 import static org.bukkit.ChatColor.RED;
 
 /**
@@ -36,22 +40,37 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private LocalConfigService configService;
     private LocalTimeStampService timeStampService;
     private SpoiledFoodFactory spoiledFoodFactory;
+    private NamespacedKey waxingRecipeKey;
 
     /**
      * This runs when the server starts.
      */
     @Override
     public void onEnable() {
-        if (getConfig().getBoolean("debug", false)) {
-            getLogger().setLevel(FINE);
-        }
         configService = new LocalConfigService(this);
         timeStampService = new LocalTimeStampService(this, configService);
         spoiledFoodFactory = new SpoiledFoodFactory(configService);
+        waxingRecipeKey = new NamespacedKey(this, "waxing");
+        applyLogLevel();
         registerEventHandlers();
+        refreshWaxingRecipe();
         initializeCommands();
         handlebStatsIntegration();
         handleRpkitIntegration();
+    }
+
+    /**
+     * Re-reads the configuration from disk and applies the settings that would otherwise stay at
+     * the values captured while the plugin was starting up.
+     */
+    public void reload() {
+        reloadConfig();
+        applyLogLevel();
+        refreshWaxingRecipe();
+    }
+
+    private void applyLogLevel() {
+        getLogger().setLevel(configService.isDebugEnabled() ? FINE : INFO);
     }
 
     private void handlebStatsIntegration() {
@@ -83,16 +102,24 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                 new ItemSpawnListener(configService, timeStampService),
                 new PlayerFishListener(timeStampService),
                 new PlayerInteractListener(this, timeStampService, spoiledFoodFactory),
-                new PlayerJoinListener(timeStampService)
+                new PlayerJoinListener(timeStampService),
+                // Registered whether or not waxing is currently enabled, so that the feature can be
+                // switched on with /fs reload; the listener consults the config on every event.
+                new WaxingCraftListener(configService, timeStampService, waxingRecipeKey)
         ));
-        registerWaxingRecipe(listeners);
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
 
-    private void registerWaxingRecipe(List<org.bukkit.event.Listener> listeners) {
+    /**
+     * Unregisters the waxing recipe and registers it again from the current configuration, so that
+     * both {@code enable-waxing} and {@code wax-material} take effect without a server restart.
+     */
+    private void refreshWaxingRecipe() {
+        removeWaxingRecipe();
+
         if (!configService.isWaxingEnabled()) return;
 
-        Material waxMaterial = Material.matchMaterial(configService.getWaxMaterialName());
+        Material waxMaterial = configService.getWaxMaterial();
         if (waxMaterial == null) {
             getLogger().warning("Waxing material not found: " + configService.getWaxMaterialName() + ". Waxing feature disabled.");
             return;
@@ -106,7 +133,6 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
 
         if (edibleMaterials.isEmpty()) return;
 
-        NamespacedKey key = new NamespacedKey(this, "waxing");
         // Result is a placeholder; WaxingCraftListener overrides it via PrepareItemCraftEvent
         ItemStack placeholderResult = new ItemStack(edibleMaterials.get(0));
         var placeholderMeta = placeholderResult.getItemMeta();
@@ -114,12 +140,25 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
             placeholderMeta.setDisplayName(ChatColor.RESET + "Waxed Food (varies)");
             placeholderResult.setItemMeta(placeholderMeta);
         }
-        ShapelessRecipe recipe = new ShapelessRecipe(key, placeholderResult);
+        ShapelessRecipe recipe = new ShapelessRecipe(waxingRecipeKey, placeholderResult);
         recipe.addIngredient(new RecipeChoice.MaterialChoice(waxMaterial));
         recipe.addIngredient(new RecipeChoice.MaterialChoice(edibleMaterials));
         getServer().addRecipe(recipe);
+    }
 
-        listeners.add(new WaxingCraftListener(configService, timeStampService, waxMaterial, key));
+    /**
+     * Drops the waxing recipe from the server's recipe list if it is present. Server#removeRecipe
+     * is not part of the Spigot API version this plugin builds against, so the recipe iterator is
+     * used instead.
+     */
+    private void removeWaxingRecipe() {
+        Iterator<Recipe> recipes = getServer().recipeIterator();
+        while (recipes.hasNext()) {
+            Recipe recipe = recipes.next();
+            if (recipe instanceof Keyed keyed && keyed.getKey().equals(waxingRecipeKey)) {
+                recipes.remove();
+            }
+        }
     }
 
     private void initializeCommands() {

@@ -25,22 +25,29 @@ public final class WaxingCraftListener implements Listener {
 
     private final LocalConfigService configService;
     private final LocalTimeStampService timeStampService;
-    private final Material waxMaterial;
     private final NamespacedKey waxingKey;
 
-    public WaxingCraftListener(LocalConfigService configService, LocalTimeStampService timeStampService, Material waxMaterial, NamespacedKey waxingKey) {
+    public WaxingCraftListener(LocalConfigService configService, LocalTimeStampService timeStampService, NamespacedKey waxingKey) {
         this.configService = configService;
         this.timeStampService = timeStampService;
-        this.waxMaterial = waxMaterial;
         this.waxingKey = waxingKey;
     }
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent event) {
-        if (!configService.isWaxingEnabled()) return;
         if (!(event.getRecipe() instanceof ShapelessRecipe shapeless) || !shapeless.getKey().equals(waxingKey)) return;
 
         CraftingInventory inv = event.getInventory();
+
+        // The recipe's own result is only a placeholder, so a disabled feature has to clear it
+        // rather than leave it craftable. This matters between a reload that turns the feature off
+        // and the recipe being unregistered.
+        Material waxMaterial = configService.getWaxMaterial();
+        if (!configService.isWaxingEnabled() || waxMaterial == null) {
+            inv.setResult(null);
+            return;
+        }
+
         ItemStack[] matrix = inv.getMatrix();
 
         ItemStack foodItem = null;
@@ -65,8 +72,11 @@ public final class WaxingCraftListener implements Listener {
 
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
-        if (!configService.isWaxingEnabled()) return;
         if (!(event.getRecipe() instanceof ShapelessRecipe shapeless) || !shapeless.getKey().equals(waxingKey)) return;
+        if (!configService.isWaxingEnabled()) {
+            event.setCancelled(true);
+            return;
+        }
 
         ItemStack result = event.getCurrentItem();
         if (result == null || !timeStampService.isWaxed(result)) return;

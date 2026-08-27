@@ -27,17 +27,44 @@ public final class LocalTimeStampService {
     private final FoodSpoilage plugin;
     private final LocalConfigService configService;
 
-    private final DateTimeFormatter dateFormatter;
     private final NamespacedKey expiryKey;
     private final NamespacedKey waxedKey;
+
+    private String dateFormatterPattern;
+    private DateTimeFormatter dateFormatter;
 
     public LocalTimeStampService(FoodSpoilage plugin, LocalConfigService configService) {
         this.plugin = plugin;
         this.configService = configService;
 
-        dateFormatter = DateTimeFormatter.ofPattern(plugin.getConfig().getString("expiry-date-format", "MM/dd/yyyy"));
         expiryKey = new NamespacedKey(plugin, "expiry");
         waxedKey = new NamespacedKey(plugin, "waxed");
+    }
+
+    /**
+     * Supplies the formatter for the configured {@code expiry-date-format}, rebuilding it whenever
+     * the configured pattern has changed since the last call. Reading the pattern on each use is
+     * what lets {@code /fs reload} apply a new format without a server restart.
+     *
+     * @return the formatter for the currently configured pattern
+     */
+    private DateTimeFormatter dateFormatter() {
+        String pattern = configService.getExpiryDateFormat();
+        if (!pattern.equals(dateFormatterPattern)) {
+            dateFormatter = buildDateFormatter(pattern);
+            dateFormatterPattern = pattern;
+        }
+        return dateFormatter;
+    }
+
+    private DateTimeFormatter buildDateFormatter(String pattern) {
+        try {
+            return DateTimeFormatter.ofPattern(pattern);
+        } catch (IllegalArgumentException exception) {
+            plugin.getLogger().warning("Invalid expiry-date-format: '" + pattern + "'. Expected a java.time pattern (e.g. "
+                    + LocalConfigService.DEFAULT_EXPIRY_DATE_FORMAT + "). Falling back to the default.");
+            return DateTimeFormatter.ofPattern(LocalConfigService.DEFAULT_EXPIRY_DATE_FORMAT);
+        }
     }
 
     public ItemStack assignTimeStamp(ItemStack item, Duration timeUntilSpoilage) {
@@ -95,7 +122,7 @@ public final class LocalTimeStampService {
     }
 
     private String getDateStringPlusTime(Duration time) {
-        return dateFormatter.format(OffsetDateTime.now().plus(time));
+        return dateFormatter().format(OffsetDateTime.now().plus(time));
     }
 
     public boolean timeStampAssigned(ItemStack item) {
@@ -119,7 +146,7 @@ public final class LocalTimeStampService {
                                         .replace(expectedLoreLine.substring(0, startIndex), "")
                                         .replace(expectedLoreLine.substring(endIndex), "");
                                 try {
-                                    LocalDate.parse(dateText, dateFormatter);
+                                    LocalDate.parse(dateText, dateFormatter());
                                 } catch (DateTimeParseException exception) {
                                     return false;
                                 }
@@ -185,7 +212,7 @@ public final class LocalTimeStampService {
                             lore.get(lineIndex)
                                     .replace(line.substring(0, startIndex), "")
                                     .replace(line.substring(endIndex), ""),
-                            dateFormatter
+                            dateFormatter()
                     ).atTime(LocalTime.of(1, 1, 1))
                     .atZone(ZoneId.systemDefault())
                     .toOffsetDateTime();

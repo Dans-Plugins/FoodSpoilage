@@ -1,20 +1,14 @@
 # Configuration Guide
 
-The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/config.yml`. Most changes to the configuration file can be applied in-game using `/fs reload`.
+The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/config.yml`. Changes to the configuration file can be applied in-game using `/fs reload`.
 
 ## Applying Changes
 
-Three settings are read once while the plugin is starting up, and `/fs reload` reports success without applying them:
+Every key listed on this page takes effect on `/fs reload`; no key requires the server to be restarted.
 
-| Key | Why a restart is needed |
-|-----|-------------------------|
-| `debug` | The logger's level is set during plugin startup. |
-| `expiry-date-format` | The date formatter is built during plugin startup and then reused. |
-| `wax-material` | The waxing recipe is registered during plugin startup using the material named at that time. |
+`enable-waxing` and `wax-material` are applied by unregistering the waxing recipe and registering it again from the new values. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect.
 
-`enable-waxing` is a partial case. Its value is re-read whenever a player uses a crafting grid, so switching it off does stop the plugin from producing waxed food after a reload — but the recipe itself is registered only at startup, so it is neither removed when the setting is switched off nor added when it is switched on. Change it with the server stopped; see the [Waxing](#waxing) section.
-
-Every remaining key — all `text.*` messages, `spoil-time`, `spoil-chance` and `timestamp-furnace-output` — is read fresh each time it is used and does take effect on `/fs reload`.
+Configuration file migrations, driven by the `version` key, are the one exception: they run only while the plugin is starting up.
 
 ## General Options
 
@@ -145,4 +139,4 @@ To wax a food item, place it alongside a honeycomb (or the configured `wax-mater
 
 If the food item has not yet been stamped with an expiry date, any existing custom lore (e.g., from lore items) is preserved alongside the waxed lore.
 
-The feature can be disabled by setting `enable-waxing: false` in the config. The waxing recipe is registered while the plugin is starting up, so this setting — and `wax-material` — should be changed with the server stopped rather than through `/fs reload`. Toggling `enable-waxing` at runtime is currently known to misbehave; this is tracked in [#259](https://github.com/Dans-Plugins/FoodSpoilage/issues/259).
+The feature can be disabled by setting `enable-waxing: false` in the config. This setting and `wax-material` are both applied by `/fs reload`, which unregisters the waxing recipe and registers it again from the current configuration; see [Applying Changes](#applying-changes) for the one caveat.
