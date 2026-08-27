@@ -17,7 +17,8 @@ import java.util.Random;
 public final class LocalConfigService {
 
     /**
-     * Pattern used for expiry dates when {@code expiry-date-format} is absent from the config.
+     * Pattern used for expiry dates when {@code expiry-date-format} is absent from the config, and
+     * the fallback used when the configured pattern cannot be parsed.
      */
     public static final String DEFAULT_EXPIRY_DATE_FORMAT = "MM/dd/yyyy";
 
