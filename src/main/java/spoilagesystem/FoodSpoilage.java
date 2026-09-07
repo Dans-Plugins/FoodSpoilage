@@ -130,7 +130,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
 
         List<Material> edibleMaterials = Arrays.stream(Material.values())
                 .filter(Material::isEdible)
-                .filter(m -> m != Material.ROTTEN_FLESH)
+                .filter(m -> m != configService.getSpoiledFoodMaterial())
                 .filter(m -> m != waxMaterial)
                 .toList();
 

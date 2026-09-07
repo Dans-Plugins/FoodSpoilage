@@ -29,6 +29,14 @@
 
 See [CONFIG.md](CONFIG.md#waxing) for the full description of this feature.
 
+### Changing what food spoils into
+
+1. Set `spoiled-food-material` in the configuration to any obtainable material name — for example `POISONOUS_POTATO` instead of the default `ROTTEN_FLESH`.
+2. Run `/fs reload`.
+3. Food that spoils from then on becomes the new item. Food that had already spoiled keeps whatever it turned into at the time.
+
+Note that the configured material never spoils itself, so moving away from `ROTTEN_FLESH` leaves rotten flesh spoiling like any other food. See [What food spoils into](CONFIG.md#what-food-spoils-into).
+
 ### Reloading the configuration
 
 After editing `plugins/FoodSpoilage/config.yml`:

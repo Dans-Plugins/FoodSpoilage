@@ -1,6 +1,5 @@
 package spoilagesystem.timestamp;
 
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -99,14 +98,26 @@ public final class LocalTimeStampService {
     }
 
     /**
+     * Determines whether an item is made of the configured {@code spoiled-food-material}. Spoilage
+     * is a one-way trip, so what food spoils into is never itself given an expiry date; were it
+     * stamped, it would spoil again into another stack of itself.
+     *
+     * @param item to check, may be null
+     * @return true if the item is the product of spoilage
+     */
+    public boolean isSpoiledFoodMaterial(ItemStack item) {
+        return item != null && item.getType() == configService.getSpoiledFoodMaterial();
+    }
+
+    /**
      * Determines whether an item is eligible to be stamped with an expiry timestamp:
-     * it must be edible, not rotten flesh, and not already stamped.
+     * it must be edible, not the configured spoiled-food material, and not already stamped.
      *
      * @param item to check, may be null
      * @return true if the item should be stamped
      */
     public boolean isStampable(ItemStack item) {
-        return item != null && item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
+        return item != null && item.getType().isEdible() && !isSpoiledFoodMaterial(item)
                 && !timeStampAssigned(item) && !isWaxed(item);
     }
 

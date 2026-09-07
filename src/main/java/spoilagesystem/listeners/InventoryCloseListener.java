@@ -1,6 +1,5 @@
 package spoilagesystem.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -36,7 +35,7 @@ public final class InventoryCloseListener implements Listener {
     }
 
     private void stampIfNeeded(ItemStack item) {
-        if (item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH
+        if (item.getType().isEdible() && !timeStampService.isSpoiledFoodMaterial(item)
                 && !timeStampService.timeStampAssigned(item) && !timeStampService.isWaxed(item)) {
             timeStampService.assignTimeStamp(item);
         }

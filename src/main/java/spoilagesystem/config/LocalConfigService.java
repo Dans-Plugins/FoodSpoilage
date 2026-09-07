@@ -22,6 +22,12 @@ public final class LocalConfigService {
      */
     public static final String DEFAULT_EXPIRY_DATE_FORMAT = "MM/dd/yyyy";
 
+    /**
+     * Material food turns into when {@code spoiled-food-material} is absent from the config, and
+     * the fallback used when the configured name does not resolve to an obtainable item.
+     */
+    public static final Material DEFAULT_SPOILED_FOOD_MATERIAL = Material.ROTTEN_FLESH;
+
     private final FoodSpoilage plugin;
     private final List<ConfigMigration> migrations;
 
@@ -34,6 +40,9 @@ public final class LocalConfigService {
     }
 
     private final Random random;
+
+    private String spoiledFoodMaterialName;
+    private Material spoiledFoodMaterial;
 
     /**
      * Method to obtain the Spoilage Time for the given Material.
@@ -164,6 +173,44 @@ public final class LocalConfigService {
      */
     public Material getWaxMaterial() {
         return Material.matchMaterial(getWaxMaterialName());
+    }
+
+    public String getSpoiledFoodMaterialName() {
+        return plugin.getConfig().getString("spoiled-food-material", DEFAULT_SPOILED_FOOD_MATERIAL.name());
+    }
+
+    /**
+     * Resolves the configured {@code spoiled-food-material} name to a {@link Material}. Unlike
+     * {@code wax-material}, which simply disables waxing when it cannot be resolved, spoiled food
+     * has to be made of something, so an unusable name falls back to
+     * {@link #DEFAULT_SPOILED_FOOD_MATERIAL} rather than returning null.
+     *
+     * <p>The resolved material is cached against the name it came from, so that the warning below
+     * is written once per configured value instead of on every item that spoils, while a new value
+     * supplied through {@code /fs reload} is still picked up.</p>
+     *
+     * @return the material spoiled food is made of, never null
+     */
+    public Material getSpoiledFoodMaterial() {
+        String name = getSpoiledFoodMaterialName();
+        if (!name.equals(spoiledFoodMaterialName)) {
+            spoiledFoodMaterial = resolveSpoiledFoodMaterial(name);
+            spoiledFoodMaterialName = name;
+        }
+        return spoiledFoodMaterial;
+    }
+
+    private Material resolveSpoiledFoodMaterial(String name) {
+        Material material = Material.matchMaterial(name);
+        // A material that is not an item (a block-only material such as WATER) cannot be put in an
+        // ItemStack, so it is rejected here rather than being allowed to throw on the spoilage path.
+        if (material == null || !material.isItem()) {
+            plugin.getLogger().warning("Invalid spoiled-food-material: '" + name
+                    + "'. Expected an obtainable Bukkit material name (e.g. "
+                    + DEFAULT_SPOILED_FOOD_MATERIAL.name() + "). Falling back to the default.");
+            return DEFAULT_SPOILED_FOOD_MATERIAL;
+        }
+        return material;
     }
 
     public List<String> getWaxedFoodLore() {
