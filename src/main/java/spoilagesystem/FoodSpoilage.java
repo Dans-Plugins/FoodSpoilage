@@ -128,9 +128,11 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
             return;
         }
 
+        Material spoiledFoodMaterial = configService.getSpoiledFoodMaterial();
+
         List<Material> edibleMaterials = Arrays.stream(Material.values())
                 .filter(Material::isEdible)
-                .filter(m -> m != Material.ROTTEN_FLESH)
+                .filter(m -> m != spoiledFoodMaterial)
                 .filter(m -> m != waxMaterial)
                 .toList();
 
@@ -173,7 +175,8 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
             return true;
         } catch (UnsupportedOperationException | IllegalStateException exception) {
             getLogger().warning("Could not unregister the waxing recipe on this server implementation: "
-                    + exception + ". Restart the server for a change to enable-waxing or wax-material to take full effect.");
+                    + exception + ". Restart the server for a change to enable-waxing, wax-material or"
+                    + " spoiled-food-material to take full effect.");
             return false;
         }
     }

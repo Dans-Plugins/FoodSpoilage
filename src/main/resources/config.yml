@@ -67,6 +67,10 @@ spoil-chance:
   WHEAT: 0.3
 enable-waxing: true
 wax-material: HONEYCOMB
+# The item food turns into once it spoils. Any obtainable Bukkit material name is accepted; a name
+# that cannot be resolved falls back to ROTTEN_FLESH and logs a warning. Whichever material is set
+# here is itself never given an expiry date, so spoiled food does not spoil a second time.
+spoiled-food-material: ROTTEN_FLESH
 # When true, items in the furnace output slot are stamped with an expiry date
 # immediately when cooked. This works correctly on older versions of Minecraft,
 # but on 1.20.5+ it will cause furnaces to stall after cooking one item.

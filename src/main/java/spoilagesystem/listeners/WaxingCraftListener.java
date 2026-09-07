@@ -53,7 +53,8 @@ public final class WaxingCraftListener implements Listener {
         ItemStack foodItem = null;
         for (ItemStack item : matrix) {
             if (item == null || item.getType() == AIR) continue;
-            if (item.getType() != waxMaterial && item.getType().isEdible() && item.getType() != Material.ROTTEN_FLESH) {
+            if (item.getType() != waxMaterial && item.getType().isEdible()
+                    && item.getType() != configService.getSpoiledFoodMaterial()) {
                 foodItem = item;
                 break;
             }

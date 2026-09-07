@@ -53,7 +53,7 @@ public final class CraftItemListener implements Listener {
         if (!type.isEdible()) {
             return;
         }
-        if (type == Material.ROTTEN_FLESH) {
+        if (type == configService.getSpoiledFoodMaterial()) {
             return;
         }
         if (!time.equals(Duration.ZERO)) {

@@ -1,5 +1,6 @@
 package spoilagesystem.timestamp;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -15,6 +16,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
@@ -84,6 +86,30 @@ public class LocalTimeStampServiceTest {
 
         assertTrue(lastLoreLine().matches("\\d{2}/\\d{2}/\\d{4}"),
                 "expected a fallback to MM/dd/yyyy, got: " + lastLoreLine());
+    }
+
+    /**
+     * Whatever {@code spoiled-food-material} names is the product of spoilage, so it must not be
+     * stamped itself — a stamped product would spoil again into another stack of itself.
+     */
+    @Test
+    void theConfiguredSpoiledFoodMaterialIsNotStampable() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.POISONOUS_POTATO);
+        when(item.getType()).thenReturn(Material.POISONOUS_POTATO);
+
+        assertFalse(service.isStampable(item));
+    }
+
+    /**
+     * Reconfiguring the material has to release the previous one, or the food an operator moved
+     * away from would stay permanently unspoilable.
+     */
+    @Test
+    void aMaterialNoLongerConfiguredAsSpoiledFoodBecomesStampable() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.POISONOUS_POTATO);
+        when(item.getType()).thenReturn(Material.ROTTEN_FLESH);
+
+        assertTrue(service.isStampable(item));
     }
 
     /**

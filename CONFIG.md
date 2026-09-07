@@ -6,7 +6,7 @@ The configuration file for Food Spoilage is located at `plugins/FoodSpoilage/con
 
 Every key listed on this page takes effect on `/fs reload`; no key requires the server to be restarted.
 
-`enable-waxing` and `wax-material` are applied by unregistering the waxing recipe and registering it again from the new values. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect. Should a server implementation refuse to unregister the recipe, a warning naming these two keys is written to the console and a restart is needed for them; nothing else about the reload is affected.
+`enable-waxing`, `wax-material` and `spoiled-food-material` are applied by unregistering the waxing recipe and registering it again from the new values — the third of these because the material food spoils into is excluded from the recipe's ingredients. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect. Should a server implementation refuse to unregister the recipe, a warning naming the waxing keys is written to the console and a restart is needed for them; nothing else about the reload is affected, and `spoiled-food-material` still takes effect everywhere outside the recipe.
 
 Configuration file migrations, driven by the `version` key, are the one exception: they run only while the plugin is starting up.
 
@@ -19,6 +19,7 @@ Configuration file migrations, driven by the `version` key, are the one exceptio
 | `expiry-date-format` | The date format used for expiry dates displayed in item lore | `MM/dd/yyyy` |
 | `enable-waxing` | Enable the waxing feature, allowing players to craft food with a wax material to make it non-perishable but inedible | `true` |
 | `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient | `HONEYCOMB` |
+| `spoiled-food-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name food turns into once it spoils. See [What food spoils into](#what-food-spoils-into). | `ROTTEN_FLESH` |
 | `timestamp-furnace-output` | Stamp items in the furnace output slot with an expiry date immediately when cooked. This works correctly on older versions of Minecraft, but on 1.20.5+ it causes furnaces to stall after cooking one item, since Minecraft will not continue cooking while custom data is present on the output slot. When left at the default, items are instead stamped lazily the next time they reach a player (inventory close/open, pickup, item spawn, or player join). | `false` |
 
 ## Text Customization
@@ -51,7 +52,7 @@ A `default` value is used for any food item not explicitly listed.
 
 ### Only edible materials can spoil
 
-A `spoil-time` entry takes effect only for materials that Bukkit reports as edible — that is, materials a player can actually eat. Rotten flesh is excluded as well, and waxed items are skipped. An entry for any other material is accepted by the configuration parser but never acted on, because every code path that stamps an item with an expiry date checks edibility first.
+A `spoil-time` entry takes effect only for materials that Bukkit reports as edible — that is, materials a player can actually eat. Whatever `spoiled-food-material` is set to is excluded as well, and waxed items are skipped. An entry for any other material is accepted by the configuration parser but never acted on, because every code path that stamps an item with an expiry date checks edibility first.
 
 Eleven of the entries shipped in the default configuration name materials that are **not** edible, and therefore have no effect: `WHEAT`, `HAY_BLOCK`, `MELON`, `PUMPKIN`, `BROWN_MUSHROOM`, `RED_MUSHROOM`, `NETHER_WART`, `CAKE`, `SUGAR`, `EGG` and `SUGAR_CANE`. They are listed in the table below for completeness, and are marked accordingly. Whether they should be removed from the default configuration or the edibility restriction relaxed is tracked in [#257](https://github.com/Dans-Plugins/FoodSpoilage/issues/257).
 
@@ -128,11 +129,25 @@ Because the roll happens on the crafting path, it is subject to the same edibili
 |-----|-------------|---------|
 | `spoil-chance.WHEAT` | Chance that each crafted wheat is spoiled. `WHEAT` is not edible, so this shipped entry currently has no effect (see [#257](https://github.com/Dans-Plugins/FoodSpoilage/issues/257)). | `0.3` (30%) |
 
+## What food spoils into
+
+When an item's expiry date is reached — or when a crafted unit loses its `spoil-chance` roll — it is replaced with a stack of `spoiled-food-material`, named and described by `text.spoiled-food-name` and `text.spoiled-food-lore`. The default is `ROTTEN_FLESH`.
+
+Any obtainable [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name may be used. A name that matches no material, or that names a block which cannot be held as an item, is rejected: a warning is written to the console and `ROTTEN_FLESH` is used instead.
+
+```yaml
+spoiled-food-material: POISONOUS_POTATO
+```
+
+Whichever material is configured here is itself excluded from spoilage — it is never given an expiry date, never randomly spoiled on the crafting path, and cannot be waxed. Were the product of spoilage stamped, it would spoil again into another stack of itself. One consequence is worth noting: setting this key to something other than `ROTTEN_FLESH` means rotten flesh is no longer excluded, so it will spoil like any other edible item unless its `spoil-time` is set to `0`.
+
+A single material applies to every food. Spoiling different foods into different items is not supported; it is tracked in [#265](https://github.com/Dans-Plugins/FoodSpoilage/issues/265).
+
 ## Waxing
 
 The waxing feature allows players to preserve food items by combining them with a wax material (default: honeycomb) in a crafting grid. Waxed food will never spoil but cannot be eaten, making it ideal for preserving sentimental "lore items".
 
-To wax a food item, place it alongside a honeycomb (or the configured `wax-material`) in any crafting grid. Rotten flesh cannot be waxed, and neither can an item that has already been waxed. The result will be a waxed version of the food item that:
+To wax a food item, place it alongside a honeycomb (or the configured `wax-material`) in any crafting grid. The configured `spoiled-food-material` cannot be waxed, and neither can an item that has already been waxed. The result will be a waxed version of the food item that:
 - Will never receive an expiry timestamp
 - Cannot be consumed (eating is prevented)
 - Displays the configured `text.waxed-food-lore` on the item

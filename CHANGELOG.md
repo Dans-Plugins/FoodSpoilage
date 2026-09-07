@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- `spoiled-food-material` config option setting which item food turns into once it spoils, defaulting to `ROTTEN_FLESH` so that existing servers are unaffected. A name that matches no material, or that names a block which cannot be held as an item, falls back to the default and logs a warning. Whichever material is configured is itself excluded from spoilage and from waxing, in place of the previously hard-coded rotten flesh exclusion.
 - Waxing feature: food combined with a wax material (`HONEYCOMB` by default) in a crafting grid becomes non-perishable but inedible, controlled by the `enable-waxing`, `wax-material` and `text.waxed-food-lore` config keys.
 - `timestamp-furnace-output` config option to re-enable stamping of furnace output items on Minecraft versions where it does not stall the furnace.
 - `USER_GUIDE.md` covering prerequisites, first steps, common scenarios and permissions.
