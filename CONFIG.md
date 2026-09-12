@@ -8,7 +8,7 @@ Every key listed on this page takes effect on `/fs reload`; no key requires the 
 
 `enable-waxing`, `wax-material` and `spoiled-food-material` are applied by unregistering the waxing recipe and registering it again from the new values — the third of these because the material food spoils into is excluded from the recipe's ingredients. What a crafting grid produces changes immediately, but Minecraft sends the recipe list to a client when it connects, so a player who is already online may keep seeing a stale entry in their recipe book until they reconnect. Should a server implementation refuse to unregister the recipe, a warning naming the waxing keys is written to the console and a restart is needed for them; nothing else about the reload is affected, and `spoiled-food-material` still takes effect everywhere outside the recipe.
 
-Configuration file migrations, driven by the `version` key, are the one exception: they run only while the plugin is starting up.
+Configuration file migrations, driven by the `version` key, are one exception: they run only while the plugin is starting up. The `usage-reporting` keys are the other: the reporting client is built once, when the plugin is enabled, so a change to them takes effect on the next server restart. Rebuilding it on `/fs reload` would mean waiting for any report still in flight, and the reload command's own report is in flight at exactly that moment.
 
 ## General Options
 
@@ -21,6 +21,22 @@ Configuration file migrations, driven by the `version` key, are the one exceptio
 | `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient | `HONEYCOMB` |
 | `spoiled-food-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name food turns into once it spoils. See [What food spoils into](#what-food-spoils-into). | `ROTTEN_FLESH` |
 | `timestamp-furnace-output` | Stamp items in the furnace output slot with an expiry date immediately when cooked. This works correctly on older versions of Minecraft, but on 1.20.5+ it causes furnaces to stall after cooking one item, since Minecraft will not continue cooking while custom data is present on the output slot. When left at the default, items are instead stamped lazily the next time they reach a player (inventory close/open, pickup, item spawn, or player join). | `false` |
+| `usage-reporting.enabled` | Whether the plugin reports usage events (see [Usage reporting](#usage-reporting)). Set to `false` to turn it off. | `true` |
+| `usage-reporting.endpoint` | The trace server events are sent to. | `https://trace.danielstephenson.dev` |
+| `usage-reporting.key` | Identifies this plugin to the trace server so reports are attributed to it. Not a secret: it ships in the default config and can only report as FoodSpoilage. Empty means reporting is off regardless of `enabled`. | the plugin's key |
+
+## Usage reporting
+
+When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
+author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
+plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
+`command`), and either the plugin version or the command name — nothing about players, the world, or
+the server. Sending happens off the main thread, never delays a tick, and is dropped silently if the
+server cannot be reached. Set `usage-reporting.enabled` to `false` to turn it off.
+
+The block is read through Bukkit's bundled defaults, so a server upgraded from a version before it
+existed — whose `config.yml` is never rewritten — reports exactly as a fresh installation does until
+the block is added to the file and `enabled` set to `false`.
 
 ## Text Customization
 

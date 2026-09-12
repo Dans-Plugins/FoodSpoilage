@@ -45,7 +45,7 @@ After editing `plugins/FoodSpoilage/config.yml`:
 /fs reload
 ```
 
-Every configuration key is applied by this command; no setting requires the server to be restarted. See [Applying Changes](CONFIG.md#applying-changes) for the one caveat, which concerns the waxing recipe and players who are already online.
+Every configuration key is applied by this command except the `usage-reporting` block, which is read once at startup. See [Applying Changes](CONFIG.md#applying-changes) for that and for the one caveat concerning the waxing recipe and players who are already online.
 
 ## Permissions
 

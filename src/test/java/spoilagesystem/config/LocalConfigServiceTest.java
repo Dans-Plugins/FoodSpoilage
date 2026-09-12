@@ -11,13 +11,18 @@ import spoilagesystem.FoodSpoilage;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link LocalConfigService}, covering how the configured {@code spoiled-food-material}
- * is resolved.
+ * is resolved and how the {@code usage-reporting} block is read.
  */
 public class LocalConfigServiceTest {
 
@@ -95,6 +100,46 @@ public class LocalConfigServiceTest {
         configure("POISONOUS_POTATO");
 
         assertEquals(Material.POISONOUS_POTATO, service.getSpoiledFoodMaterial());
+    }
+
+    /**
+     * A server upgraded from before usage reporting has no usage-reporting block in its
+     * config.yml. Bukkit's one-argument getters fall through to the jar's defaults; the
+     * two-argument ones would return their fallback and turn reporting off on every existing
+     * installation.
+     */
+    @Test
+    void usageReportingReadsThroughToTheBundledDefaultsWhenTheFileHasNoBlock() {
+        when(config.getBoolean("usage-reporting.enabled")).thenReturn(true);
+        when(config.getString("usage-reporting.endpoint")).thenReturn("https://trace.danielstephenson.dev");
+        when(config.getString("usage-reporting.key")).thenReturn("bundled-key");
+
+        assertTrue(service.isUsageReportingEnabled());
+        assertEquals("https://trace.danielstephenson.dev", service.getUsageReportingEndpoint());
+        assertEquals("bundled-key", service.getUsageReportingKey());
+        verify(config, never()).getString(eq("usage-reporting.key"), anyString());
+        verify(config, never()).getString(eq("usage-reporting.endpoint"), anyString());
+        verify(config, never()).getBoolean(eq("usage-reporting.enabled"), anyBoolean());
+    }
+
+    @Test
+    void usageReportingIsOffWithNoKeyAnywhere() {
+        when(config.getString("usage-reporting.key")).thenReturn(null);
+        when(config.getString("usage-reporting.endpoint")).thenReturn(null);
+
+        assertEquals("", service.getUsageReportingKey(), "no key anywhere must read as off, not as null");
+        assertEquals(LocalConfigService.DEFAULT_USAGE_REPORTING_ENDPOINT, service.getUsageReportingEndpoint());
+    }
+
+    @Test
+    void usageReportingReadsTheConfiguredValues() {
+        when(config.getBoolean("usage-reporting.enabled")).thenReturn(false);
+        when(config.getString("usage-reporting.endpoint")).thenReturn("http://localhost:8080");
+        when(config.getString("usage-reporting.key")).thenReturn("abc");
+
+        assertFalse(service.isUsageReportingEnabled());
+        assertEquals("http://localhost:8080", service.getUsageReportingEndpoint());
+        assertEquals("abc", service.getUsageReportingKey());
     }
 
     private void configure(String materialName) {

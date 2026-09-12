@@ -77,3 +77,19 @@ spoiled-food-material: ROTTEN_FLESH
 # When false (the default), items are stamped lazily when they reach a player.
 timestamp-furnace-output: false
 debug: false
+
+# Usage reporting. When the plugin is enabled, and each time one of its
+# commands is used, a small event (plugin name, event name, plugin version)
+# is sent to the author's trace server so it is known which plugins are
+# actually in use. Nothing about players or the server is included. Sending
+# happens off the main thread, never blocks a tick, and is dropped silently
+# if the server cannot be reached. Set enabled to false to turn it off.
+usage-reporting:
+  enabled: true
+  endpoint: https://trace.danielstephenson.dev
+  # The key identifies this plugin to the trace server, so reports are
+  # attributed to FoodSpoilage and can be revoked as a group if they are ever
+  # abused. It is not a secret -- it ships in this file on every server that
+  # runs the plugin -- and it cannot do anything except report as this
+  # plugin. Empty means reporting is off regardless of the switch above.
+  key: "3n4mWbsEz0vZ8Pkt9-Zp14fEGWBbGi6-yjXDhtu4xvA"
