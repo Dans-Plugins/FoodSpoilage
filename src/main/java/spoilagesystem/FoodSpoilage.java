@@ -22,9 +22,11 @@ import spoilagesystem.factories.SpoiledFoodFactory;
 import spoilagesystem.listeners.*;
 import spoilagesystem.rpkit.FoodSpoilageRpkitExpiryService;
 import spoilagesystem.timestamp.LocalTimeStampService;
+import spoilagesystem.trace.TraceClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +45,10 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private NamespacedKey waxingRecipeKey;
     private boolean waxingRecipeRegistered;
 
+    // A no-op until the config has been read, so a command arriving before
+    // onEnable() finishes has something safe to report to.
+    private TraceClient trace = TraceClient.disabled();
+
     /**
      * This runs when the server starts.
      */
@@ -58,6 +64,28 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         initializeCommands();
         handlebStatsIntegration();
         handleRpkitIntegration();
+        handleUsageReporting();
+    }
+
+    /**
+     * This runs when the server stops or the plugin is disabled.
+     */
+    @Override
+    public void onDisable() {
+        trace.close();
+    }
+
+    /**
+     * Builds the usage-reporting client from the configuration and sends the {@code startup}
+     * event; see the {@code usage-reporting} block in config.yml.
+     */
+    private void handleUsageReporting() {
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+                .key(configService.getUsageReportingKey())
+                .enabled(configService.isUsageReportingEnabled())
+                .logger(getLogger())
+                .build();
+        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
     }
 
     /**
@@ -189,6 +217,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
             ReloadCommand reloadCommand = new ReloadCommand(this, configService);
             TimeLeftCommand timeLeftCommand = new TimeLeftCommand(configService, timeStampService);
             foodSpoilageCommand.setExecutor((sender, cmd, label, args) -> {
+                trace.report("command", null, Collections.singletonMap("name", cmd.getName()));
                 if (args.length < 1) {
                     defaultCommand.onCommand(sender, cmd, label, new String[0]);
                     return true;
