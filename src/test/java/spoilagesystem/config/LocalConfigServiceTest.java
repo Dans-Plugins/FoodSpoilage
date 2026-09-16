@@ -2,17 +2,21 @@ package spoilagesystem.config;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import spoilagesystem.FoodSpoilage;
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -140,6 +144,43 @@ public class LocalConfigServiceTest {
         assertFalse(service.isUsageReportingEnabled());
         assertEquals("http://localhost:8080", service.getUsageReportingEndpoint());
         assertEquals("abc", service.getUsageReportingKey());
+    }
+
+    /**
+     * A server upgraded from before usage reporting keeps a config.yml without the block, and
+     * {@code saveDefaultConfig()} never rewrites an existing file. The block has to be written so
+     * the opt-out is visible, with the bundled values rather than new literals. A real
+     * {@link YamlConfiguration} is used here because the point is that {@code isSet} answers for
+     * the file alone while the defaults are registered on it.
+     */
+    @Test
+    void theUsageReportingBlockIsWrittenToDiskWhenTheFileLacksIt() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("version", "3.0.0");
+        YamlConfiguration bundled = YamlConfiguration.loadConfiguration(new InputStreamReader(
+                getClass().getResourceAsStream("/config.yml"), StandardCharsets.UTF_8));
+        onDisk.setDefaults(bundled);
+        when(plugin.getConfig()).thenReturn(onDisk);
+        assertFalse(onDisk.isSet("usage-reporting"), "the file itself must start without the block");
+
+        service.ensureUsageReportingBlockOnDisk();
+
+        assertEquals(bundled.get("usage-reporting.enabled"), onDisk.get("usage-reporting.enabled"));
+        assertEquals(bundled.get("usage-reporting.endpoint"), onDisk.get("usage-reporting.endpoint"));
+        assertEquals(bundled.get("usage-reporting.key"), onDisk.get("usage-reporting.key"));
+        assertTrue(onDisk.isSet("usage-reporting.key"));
+        verify(plugin).saveConfig();
+    }
+
+    /** A file that already carries the block -- including one where enabled is false -- is never rewritten. */
+    @Test
+    void aFileThatAlreadyHasTheUsageReportingBlockIsLeftAlone() {
+        when(config.isSet("usage-reporting")).thenReturn(true);
+
+        service.ensureUsageReportingBlockOnDisk();
+
+        verify(config, never()).set(anyString(), any());
+        verify(plugin, never()).saveConfig();
     }
 
     private void configure(String materialName) {

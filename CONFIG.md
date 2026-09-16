@@ -32,11 +32,21 @@ author's [trace](https://github.com/Stephenson-Software/trace-client-java) serve
 plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
 `command`), and either the plugin version or the command name — nothing about players, the world, or
 the server. Sending happens off the main thread, never delays a tick, and is dropped silently if the
-server cannot be reached. Set `usage-reporting.enabled` to `false` to turn it off.
+server cannot be reached. The plugin says on the console at every start whether reporting is on.
 
-The block is read through Bukkit's bundled defaults, so a server upgraded from a version before it
-existed — whose `config.yml` is never rewritten — reports exactly as a fresh installation does until
-the block is added to the file and `enabled` set to `false`.
+To turn it off, in order of precedence:
+
+- the environment variable `TRACE_USAGE_REPORTING=off` (or `DO_NOT_TRACK=1`) turns it off for every
+  program in the server process;
+- `enabled: false` in `plugins/trace/config.yml` turns it off for every plugin on the server that
+  reports to trace — the file is created with `enabled: true` by the first such plugin to start and
+  is never turned back on by a plugin;
+- `usage-reporting.enabled: false` in this plugin's `config.yml` turns it off for FoodSpoilage alone.
+
+A server upgraded from a version before the block existed keeps a `config.yml` without it; the plugin
+writes the block with the bundled values on the next start so the switch is visible, and until then
+reads the bundled defaults for any key the file lacks. Details:
+https://github.com/Stephenson-Software/trace#usage-reporting
 
 ## Text Customization
 

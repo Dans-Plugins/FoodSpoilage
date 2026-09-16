@@ -76,15 +76,28 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     }
 
     /**
-     * Builds the usage-reporting client from the configuration and sends the {@code startup}
-     * event; see the {@code usage-reporting} block in config.yml.
+     * Builds the usage-reporting client from the configuration, says on the console whether
+     * reporting is on and how to turn it off, and sends the {@code startup} event; see the
+     * {@code usage-reporting} block in config.yml. The server-wide switch in
+     * {@code plugins/trace/config.yml} is created by the client if absent and honoured if it says
+     * {@code enabled: false}.
      */
     private void handleUsageReporting() {
         trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
+                .serverWideConfig(getDataFolder().getParentFile())
                 .logger(getLogger())
                 .build();
+        if (trace.isEnabled()) {
+            getLogger().info("Usage reporting is on: " + getName() + " sends its name, version and command names to"
+                    + " https://trace.danielstephenson.dev - nothing about players or the server. Turn it off with"
+                    + " usage-reporting.enabled: false in this plugin's config.yml, or for every plugin with"
+                    + " enabled: false in plugins/trace/config.yml."
+                    + " Details: https://github.com/Stephenson-Software/trace#usage-reporting");
+        } else {
+            getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
+        }
         trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
     }
 
