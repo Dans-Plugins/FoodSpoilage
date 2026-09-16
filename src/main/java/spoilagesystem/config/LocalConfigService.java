@@ -2,6 +2,8 @@ package spoilagesystem.config;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.migration.ConfigMigration;
@@ -47,6 +49,7 @@ public final class LocalConfigService {
         this.random = new Random();
         runMigrations();
         plugin.saveDefaultConfig();
+        ensureUsageReportingBlockOnDisk();
     }
 
     private final Random random;
@@ -106,6 +109,28 @@ public final class LocalConfigService {
      */
     public int determineSpoiledAmount(ItemStack stack) {
         return determineSpoiledAmount(stack.getType(), stack.getAmount());
+    }
+
+    /**
+     * Writes the {@code usage-reporting} block into config.yml when the file on disk lacks it, so
+     * that the opt-out is visible on a server upgraded from a version before the block existed.
+     * {@code saveDefaultConfig()} never touches an existing file, and the migration list is gated
+     * on the config {@code version}, which such a server may hold at any earlier value; checking
+     * for the block itself is what covers every upgraded installation. The values written are the
+     * bundled defaults, not new literals, so the file says exactly what the jar says.
+     *
+     * <p>{@code isSet} is deliberate: unlike {@code contains} it ignores the bundled defaults and
+     * answers only for the file on disk.</p>
+     */
+    void ensureUsageReportingBlockOnDisk() {
+        FileConfiguration config = plugin.getConfig();
+        if (config.isSet("usage-reporting")) return;
+        Configuration defaults = config.getDefaults();
+        if (defaults == null) return;
+        for (String key : List.of(USAGE_REPORTING_ENABLED_KEY, USAGE_REPORTING_ENDPOINT_KEY, USAGE_REPORTING_KEY_KEY)) {
+            config.set(key, defaults.get(key));
+        }
+        plugin.saveConfig();
     }
 
     public void runMigrations() {
@@ -233,13 +258,13 @@ public final class LocalConfigService {
         return plugin.getConfig().getBoolean("timestamp-furnace-output", false);
     }
 
-    // The one-argument getters, deliberately. saveDefaultConfig() never touches a
-    // config.yml that already exists, so a server upgraded from a version before
-    // usage reporting has no usage-reporting block on disk. Bukkit registers the
-    // jar's config.yml as the defaults for that file, and the one-argument
-    // getters fall through to them -- but the two-argument getters return their
-    // explicit fallback instead, which for the key would be "" and would turn
-    // reporting off on every existing installation. Verified against
+    // The one-argument getters, deliberately. Bukkit registers the jar's config.yml
+    // as the defaults for the file on disk, and the one-argument getters fall
+    // through to them for any key the file lacks -- the two-argument getters
+    // return their explicit fallback instead, which for the key would be "" and
+    // would read as "off". ensureUsageReportingBlockOnDisk() writes the block for
+    // an upgraded server, so on a normal enable the file has the keys; the
+    // fall-through only matters if that write failed. Verified against
     // YamlConfiguration, not assumed.
 
     public boolean isUsageReportingEnabled() {
