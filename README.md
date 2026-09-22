@@ -47,7 +47,7 @@ Windows:
 .\gradlew.bat clean build
 ```
 
-If you see `BUILD SUCCESSFUL`, the build has passed.
+If you see `BUILD SUCCESSFUL`, the build has passed. The build also runs the JUnit tests in `src/test/java`; they can be run on their own with `./gradlew test`.
 
 ## Development
 ### Test Server with Plugin Hot-Reloading

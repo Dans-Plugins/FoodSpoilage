@@ -19,8 +19,14 @@ making any changes.
   - `listeners/` – Bukkit event listeners (crafting, inventory, player interactions)
   - `rpkit/` – Optional RPKit integration (`FoodSpoilageRpkitExpiryService`)
   - `timestamp/` – Timestamp assignment and lookup service
+  - `trace/` – Vendored usage-reporting client (`TraceClient`)
   - `FoodSpoilage.java` – Main plugin class, registers commands and listeners
 - `src/main/resources/` – `plugin.yml` and `config.yml`
+- `src/test/java/spoilagesystem/` – JUnit 5 and Mockito tests, mirroring the main-source packages
+  - `config/` – `LocalConfigServiceTest`
+  - `listeners/` – `CraftItemListenerTest`, `WaxingCraftListenerTest`
+  - `timestamp/` – `LocalTimeStampServiceTest`
+  - `trace/` – `TraceClientTest`
 
 ## Coding Conventions
 
@@ -28,6 +34,7 @@ making any changes.
 - Spoilage and timestamp logic is gated on `Material#isEdible()` — non-edible materials are ignored.
 - Spoil durations are stored as ISO-8601 `java.time.Duration` strings (e.g. `PT24H`) in `config.yml`.
 - Follow the existing package structure when adding new classes.
+- Changes to behaviour are expected to come with JUnit coverage under `src/test/java`, placed in the package of the class under test. The tests run as part of `./gradlew clean build` (or on their own with `./gradlew test`).
 
 ## Contribution Workflow
 
