@@ -72,6 +72,8 @@ Spoil times are defined under the `spoil-time` key using [ISO 8601 duration](htt
 
 A `default` value is used for any food item not explicitly listed.
 
+An expiry is recorded as a date only, so that the same food stamped on the same day still stacks. The spoil time decides which date that is, and the item spoils at 01:01:01 server time on it — so `PT24H` means "at the start of tomorrow", not "exactly 24 hours from now", and a spoil time shorter than a day can land on a date whose 01:01:01 has already passed, spoiling the item as soon as it is next checked.
+
 | Key | Description | Default |
 |-----|-------------|---------|
 | `spoil-time.default` | Default spoil time for unlisted food items | `PT24H` (24 hours) |

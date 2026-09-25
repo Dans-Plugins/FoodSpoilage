@@ -1,6 +1,7 @@
 package spoilagesystem.timestamp;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -13,11 +14,18 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.LocalConfigService;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static org.bukkit.persistence.PersistentDataType.STRING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -110,6 +118,43 @@ public class LocalTimeStampServiceTest {
         when(item.getType()).thenReturn(Material.ROTTEN_FLESH);
 
         assertTrue(service.isStampable(item));
+    }
+
+    /**
+     * The expiry kept in persistent data is what lets an item spoil when its lore carries no date,
+     * as it does when {@code text.expiry-date-lore} is configured empty; it has to be readable back.
+     */
+    @Test
+    void anExpiryStampedWithoutLoreIsReadBackFromPersistentData() {
+        when(configService.getExpiryDateText()).thenReturn(List.of());
+
+        service.assignTimeStamp(item, ONE_DAY);
+        rereadStoredExpiry();
+
+        assertTrue(service.timeStampAssigned(item));
+        assertNotNull(service.getTimeStamp(item));
+    }
+
+    /**
+     * The stored value carries a date and an offset but no time, and is read as 01:01:01 on that
+     * date at that offset — the time the lore fallback has always assumed.
+     */
+    @Test
+    void aStoredExpiryIsReadAtTheTimeOfDayTheLoreFallbackAssumes() {
+        when(item.hasItemMeta()).thenReturn(true);
+        when(persistentDataContainer.get(any(NamespacedKey.class), eq(STRING))).thenReturn("2026-09-26+02:00");
+
+        assertEquals(OffsetDateTime.of(2026, 9, 26, 1, 1, 1, 0, ZoneOffset.ofHours(2)), service.getTimeStamp(item));
+    }
+
+    /**
+     * Makes the value written to persistent data by the last stamp readable from the mocked item.
+     */
+    private void rereadStoredExpiry() {
+        ArgumentCaptor<String> stored = ArgumentCaptor.forClass(String.class);
+        verify(persistentDataContainer).set(any(NamespacedKey.class), eq(STRING), stored.capture());
+        when(persistentDataContainer.get(any(NamespacedKey.class), eq(STRING))).thenReturn(stored.getValue());
+        when(item.hasItemMeta()).thenReturn(true);
     }
 
     /**

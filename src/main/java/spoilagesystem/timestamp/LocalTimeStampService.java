@@ -10,6 +10,7 @@ import spoilagesystem.config.LocalConfigService;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,12 @@ import static org.bukkit.persistence.PersistentDataType.STRING;
  * @author Daniel McCoy Stephenson
  */
 public final class LocalTimeStampService {
+
+    /**
+     * Expiry dates are stored and displayed without a time of day, so that food stamped on the
+     * same date stacks; an item is treated as expiring at this time on its expiry date.
+     */
+    private static final LocalTime EXPIRY_TIME_OF_DAY = LocalTime.of(1, 1, 1);
 
     private final FoodSpoilage plugin;
     private final LocalConfigService configService;
@@ -201,7 +208,11 @@ public final class LocalTimeStampService {
         String expiryString = meta.getPersistentDataContainer().get(expiryKey, STRING);
         if (expiryString != null) {
             try {
-                return OffsetDateTime.parse(expiryString, ISO_OFFSET_DATE);
+                // The value is a date and an offset with no time, from which OffsetDateTime#parse
+                // cannot build a result, so the two are read separately and given the time of day
+                // that the lore fallback assumes.
+                TemporalAccessor parsed = ISO_OFFSET_DATE.parse(expiryString);
+                return LocalDate.from(parsed).atTime(EXPIRY_TIME_OF_DAY).atOffset(ZoneOffset.from(parsed));
             } catch (DateTimeParseException exception) {
                 // plugin.getLogger().log(SEVERE, "Failed to parse expiry from persistent data container", exception);
                 // ignored to avoid spamming console on servers that upgraded from pre-3.0.0
@@ -224,7 +235,7 @@ public final class LocalTimeStampService {
                                     .replace(line.substring(0, startIndex), "")
                                     .replace(line.substring(endIndex), ""),
                             dateFormatter()
-                    ).atTime(LocalTime.of(1, 1, 1))
+                    ).atTime(EXPIRY_TIME_OF_DAY)
                     .atZone(ZoneId.systemDefault())
                     .toOffsetDateTime();
         }).orElse(null);
