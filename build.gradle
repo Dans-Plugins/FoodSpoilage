@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'DansPlugins'
-version = '3.0.4-SNAPSHOT'
+version = '3.0.4'
 description = 'FoodSpoilage'
 java.sourceCompatibility = JavaVersion.VERSION_16
 
