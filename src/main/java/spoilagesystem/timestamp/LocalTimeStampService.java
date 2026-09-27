@@ -249,6 +249,11 @@ public final class LocalTimeStampService {
 
         OffsetDateTime now = OffsetDateTime.now();
         Duration duration = Duration.between(now, timestamp);
+        // Integer division truncates toward zero, so an expiry passed less than a day ago would
+        // otherwise fall into the "less than a day" and "less than an hour" branches below.
+        if (duration.isNegative() || duration.isZero()) {
+            return configService.getNoTimeLeftText();
+        }
         double totalSeconds = duration.getSeconds();
         int minutes = (int) totalSeconds / 60;
         int hours = minutes / 60;
