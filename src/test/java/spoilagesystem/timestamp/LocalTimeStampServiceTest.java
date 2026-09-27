@@ -14,6 +14,7 @@ import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.LocalConfigService;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -145,6 +146,27 @@ public class LocalTimeStampServiceTest {
         when(persistentDataContainer.get(any(NamespacedKey.class), eq(STRING))).thenReturn("2026-09-26+02:00");
 
         assertEquals(OffsetDateTime.of(2026, 9, 26, 1, 1, 1, 0, ZoneOffset.ofHours(2)), service.getTimeStamp(item));
+    }
+
+    /**
+     * An item whose expiry passed less than a day ago has expired; it must not be reported as
+     * expiring within the hour or the day.
+     */
+    @Test
+    void anExpiryPassedLessThanADayAgoIsReportedAsExpired() {
+        when(configService.getNoTimeLeftText()).thenReturn("expired");
+        when(configService.getLessThanADay()).thenReturn("less than a day");
+        when(configService.getLessThanAnHour()).thenReturn("less than an hour");
+        when(item.hasItemMeta()).thenReturn(true);
+
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+        LocalDate expiryDate = now.toLocalDate();
+        if (expiryDate.atTime(1, 1, 1).atOffset(ZoneOffset.UTC).isAfter(now)) {
+            expiryDate = expiryDate.minusDays(1);
+        }
+        when(persistentDataContainer.get(any(NamespacedKey.class), eq(STRING))).thenReturn(expiryDate + "Z");
+
+        assertEquals("expired", service.getTimeLeft(item));
     }
 
     /**
