@@ -30,7 +30,7 @@ Configuration file migrations, driven by the `version` key, are one exception: t
 When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
 author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
 plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
-`command`), and either the plugin version or the command name — nothing about players, the world, or
+`command`), the plugin version, and for a command the command name — nothing about players, the world, or
 the server. Sending happens off the main thread, never delays a tick, and is dropped silently if the
 server cannot be reached. The plugin says on the console at every start whether reporting is on.
 

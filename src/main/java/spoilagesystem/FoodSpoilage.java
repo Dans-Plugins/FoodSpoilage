@@ -83,7 +83,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
      * {@code enabled: false}.
      */
     private void handleUsageReporting() {
-        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName())
+        trace = TraceClient.builder(configService.getUsageReportingEndpoint(), getName(), getDescription().getVersion())
                 .key(configService.getUsageReportingKey())
                 .enabled(configService.isUsageReportingEnabled())
                 .serverWideConfig(getDataFolder().getParentFile())
@@ -98,7 +98,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         } else {
             getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
         }
-        trace.report("startup", null, Collections.singletonMap("version", getDescription().getVersion()));
+        trace.report("startup");
     }
 
     /**

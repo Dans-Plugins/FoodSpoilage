@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- The vendored trace client is now 0.4.0 (from 0.2.0). Every usage event now carries the plugin version, `command` events included; before, only `startup` did. `plugins/trace/config.yml` can now also carry a `tags:` block whose entries are added to every usage event (the release gates write `ci: "true"` there so test servers can be left out of the figures); nothing changes for a server whose file has no `tags:` block.
+
 ### Added
 
 - The plugin now reports usage events — `startup` on enable, `command` on each use of `/foodspoilage` — to the author's trace server so it is known which plugins are in use. Events carry the plugin name, the event name, and the plugin version or command name; nothing about players or the server. Reporting runs off the main thread, never delays a tick, drops silently when the server is unreachable, and is turned off with `usage-reporting.enabled: false` in `config.yml`. The default config carries the plugin's key, so reporting is active out of the box unless turned off — including on servers upgraded from a version before the `usage-reporting` block existed, whose `config.yml` is never rewritten: the plugin reads the bundled defaults for any key the file lacks. These three keys are read once at startup rather than on `/fs reload`.
