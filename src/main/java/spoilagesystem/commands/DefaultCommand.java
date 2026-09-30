@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.config.LocalConfigService;
 
 import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.RED;
@@ -15,15 +16,17 @@ import static org.bukkit.ChatColor.RED;
 public final class DefaultCommand implements CommandExecutor {
 
     private final FoodSpoilage plugin;
+    private final LocalConfigService configService;
 
-    public DefaultCommand(FoodSpoilage plugin) {
+    public DefaultCommand(FoodSpoilage plugin, LocalConfigService configService) {
         this.plugin = plugin;
+        this.configService = configService;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("fs.default")) {
-            sender.sendMessage(RED + "In order to use this command, you need one of the following permission: 'fs.default'");
+            sender.sendMessage(RED + configService.getNoPermsDefaultText());
             return true;
         }
         sender.sendMessage(new String[] {

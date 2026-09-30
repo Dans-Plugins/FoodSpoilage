@@ -27,7 +27,7 @@ public final class TimeLeftCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("fs.timeleft")) {
-            sender.sendMessage(RED + "In order to use this command, you need one of the following permission: 'fs.timeleft'");
+            sender.sendMessage(RED + configService.getNoPermsTimeLeftText());
             return true;
         }
         if (!(sender instanceof Player player)) {
