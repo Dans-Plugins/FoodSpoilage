@@ -225,8 +225,8 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
     private void initializeCommands() {
         PluginCommand foodSpoilageCommand = getCommand("foodspoilage");
         if (foodSpoilageCommand != null) {
-            DefaultCommand defaultCommand = new DefaultCommand(this);
-            HelpCommand helpCommand = new HelpCommand();
+            DefaultCommand defaultCommand = new DefaultCommand(this, configService);
+            HelpCommand helpCommand = new HelpCommand(configService);
             ReloadCommand reloadCommand = new ReloadCommand(this, configService);
             TimeLeftCommand timeLeftCommand = new TimeLeftCommand(configService, timeStampService);
             foodSpoilageCommand.setExecutor((sender, cmd, label, args) -> {
@@ -240,7 +240,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                     case "reload": return reloadCommand.onCommand(sender, cmd, label, Arrays.stream(args).skip(1).toArray(String[]::new));
                     case "timeleft": return timeLeftCommand.onCommand(sender, cmd, label, Arrays.stream(args).skip(1).toArray(String[]::new));
                     default: {
-                        sender.sendMessage(RED + "That command wasn't found.");
+                        sender.sendMessage(RED + configService.getCommandNotFoundText());
                         return true;
                     }
                 }

@@ -157,6 +157,22 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-permission-reload"));
     }
 
+    public String getNoPermsDefaultText() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-permission-default"));
+    }
+
+    public String getNoPermsHelpText() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-permission-help"));
+    }
+
+    public String getNoPermsTimeLeftText() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.no-permission-timeleft"));
+    }
+
+    public String getCommandNotFoundText() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.command-not-found"));
+    }
+
     public String getSpoiledFoodName() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.spoiled-food-name"));
     }

@@ -57,6 +57,10 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 | `text.expiry-date-lore` | The lore lines added to items showing the expiry date. Use `${expiry_date}` as a placeholder. | `['', '&fExpiry Date:', '&f${expiry_date}']` |
 | `text.values-loaded` | Message shown when the config is reloaded | `Values loaded!` |
 | `text.no-permission-reload` | Message shown when a player lacks permission to reload | `Sorry! In order to use this command, you need the following permission: 'fs.reload'` |
+| `text.no-permission-default` | Message shown when a player lacks permission to use `/fs` | `In order to use this command, you need the following permission: 'fs.default'` |
+| `text.no-permission-help` | Message shown when a player lacks permission to use `/fs help` | `In order to use this command, you need the following permission: 'fs.help'` |
+| `text.no-permission-timeleft` | Message shown when a player lacks permission to use `/fs timeleft` | `In order to use this command, you need the following permission: 'fs.timeleft'` |
+| `text.command-not-found` | Message shown when `/fs` is given a subcommand it does not recognise | `That command wasn't found.` |
 | `text.spoiled-food-name` | Display name for spoiled food items | `Spoiled Food` |
 | `text.spoiled-food-lore` | Lore text for spoiled food items | `This food has gone bad.` |
 | `text.never-spoil` | Message shown when an item will never spoil | `This item will never spoil.` |

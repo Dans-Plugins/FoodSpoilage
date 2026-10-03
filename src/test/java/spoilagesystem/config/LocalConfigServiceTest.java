@@ -26,7 +26,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link LocalConfigService}, covering how the configured {@code spoiled-food-material}
- * is resolved and how the {@code usage-reporting} block is read.
+ * is resolved, how the {@code usage-reporting} block is read, and how the command replies in the
+ * {@code text} section are read.
  */
 public class LocalConfigServiceTest {
 
@@ -181,6 +182,45 @@ public class LocalConfigServiceTest {
 
         verify(config, never()).set(anyString(), any());
         verify(plugin, never()).saveConfig();
+    }
+
+    /**
+     * A server upgraded from before these keys existed keeps a config.yml without them. They must
+     * read through to the bundled text rather than come back null, which the colour-code
+     * translation would reject.
+     */
+    @Test
+    void commandRepliesReadThroughToTheBundledTextWhenTheFileLacksThem() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("version", "3.0.0");
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals("In order to use this command, you need the following permission: 'fs.default'", service.getNoPermsDefaultText());
+        assertEquals("In order to use this command, you need the following permission: 'fs.help'", service.getNoPermsHelpText());
+        assertEquals("In order to use this command, you need the following permission: 'fs.timeleft'", service.getNoPermsTimeLeftText());
+        assertEquals("That command wasn't found.", service.getCommandNotFoundText());
+    }
+
+    @Test
+    void configuredCommandRepliesReplaceTheBundledText() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("text.no-permission-default", "&cfs.default fehlt");
+        onDisk.set("text.no-permission-help", "&cfs.help fehlt");
+        onDisk.set("text.no-permission-timeleft", "&cfs.timeleft fehlt");
+        onDisk.set("text.command-not-found", "&cUnbekannter Befehl.");
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals("§cfs.default fehlt", service.getNoPermsDefaultText());
+        assertEquals("§cfs.help fehlt", service.getNoPermsHelpText());
+        assertEquals("§cfs.timeleft fehlt", service.getNoPermsTimeLeftText());
+        assertEquals("§cUnbekannter Befehl.", service.getCommandNotFoundText());
+    }
+
+    private YamlConfiguration bundledConfig() {
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(
+                getClass().getResourceAsStream("/config.yml"), StandardCharsets.UTF_8));
     }
 
     private void configure(String materialName) {
