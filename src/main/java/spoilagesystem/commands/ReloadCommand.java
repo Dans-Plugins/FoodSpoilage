@@ -27,7 +27,7 @@ public final class ReloadCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!sender.hasPermission("fs.reload") && !sender.hasPermission("fs.admin")) {
             sender.sendMessage(RED + configService.getNoPermsReloadText());
-            return false;
+            return true;
         }
         plugin.reload();
         sender.sendMessage(GREEN + configService.getValuesLoadedText());

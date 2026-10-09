@@ -11,7 +11,9 @@ import spoilagesystem.config.LocalConfigService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 
 import static org.bukkit.ChatColor.RED;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -70,5 +72,17 @@ public class PermissionDeniedReplyTest {
         new TimeLeftCommand(configService, timeStampService).onCommand(sender, command, "fs", NO_ARGS);
 
         verify(sender).sendMessage(RED + "configured timeleft reply");
+    }
+
+    @Test
+    void theReloadCommandSendsTheConfiguredReplyWithoutTheUsageLine() {
+        when(configService.getNoPermsReloadText()).thenReturn("configured reload reply");
+
+        boolean handled = new ReloadCommand(plugin, configService).onCommand(sender, command, "fs", NO_ARGS);
+
+        verify(sender).sendMessage(RED + "configured reload reply");
+        verify(plugin, never()).reload();
+        // Bukkit sends the usage line from plugin.yml whenever an executor returns false
+        assertTrue(handled);
     }
 }
