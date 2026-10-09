@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Running `/fs reload` without permission sent the command's usage line, `/fs [help|timeleft|reload]`, after the permission message, as if the command had been mistyped. Only the permission message is sent now, as for the other commands.
 - `/fs reload` reported success without applying `debug`, `expiry-date-format` or `wax-material`, all of which were read once while the plugin was starting up. All three are now applied by the command.
 - Setting `enable-waxing` to `false` and reloading left the waxing recipe registered, so its placeholder result — an item named "Waxed Food (varies)" carrying no waxed marker — became craftable. The recipe is now unregistered and registered again on reload, which also makes switching the feature back on take effect without a restart, and a disabled feature clears the crafting result rather than leaving the placeholder in place.
 - A craft that was only partially spoiled and taken with an ordinary click handed the player just one of the two resulting stacks, silently destroying the other. The unspoiled remainder is now left in the result slot and the spoiled portion is added to the player's inventory, or dropped at their feet when there is no room.
