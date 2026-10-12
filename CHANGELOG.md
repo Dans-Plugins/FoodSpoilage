@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `USER_GUIDE.md` covering prerequisites, first steps, common scenarios and permissions.
 - `COMMANDS.md`, `CONFIG.md` and `CONTRIBUTING.md` documentation, plus a restructured `README.md`.
 - `Build` and `Release` GitHub Actions workflows, and `.github/copilot-instructions.md`.
-- A JUnit 5 and Mockito test source set, covering how `CraftItemListener` delivers craft results, what `WaxingCraftListener` produces while the waxing feature is on and off, and how `LocalTimeStampService` picks up a changed `expiry-date-format`.
+- A JUnit 5 and Mockito test source set, covering how `CraftItemListener` delivers craft results, what `WaxingCraftListener` produces while the waxing feature is on and off, which items `InventoryCloseListener` stamps when a container (a villager's trade window included) is closed, and how `LocalTimeStampService` picks up a changed `expiry-date-format`.
 
 ### Fixed
 
