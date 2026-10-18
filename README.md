@@ -1,5 +1,9 @@
 # Food Spoilage
 
+![/fs timeleft on freshly picked-up bread, and the bread's tooltip showing its expiry date](docs/images/timeleft.png)
+
+*Real in-game output from Food Spoilage 3.0.4 on a local throwaway Paper 1.21.11 test server: the commands were typed by a scripted bot client, and the chat it received is drawn as Minecraft-style chat (typed commands appear in the input bars; grey lines say what happened between commands).*
+
 ## Description
 A minecraft plugin to make food go bad.
 
