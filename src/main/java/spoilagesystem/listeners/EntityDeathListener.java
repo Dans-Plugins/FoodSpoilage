@@ -24,7 +24,7 @@ public final class EntityDeathListener implements Listener {
         List<ItemStack> newDrops = new ArrayList<>();
         for (ItemStack drop : event.getDrops()) {
             if (drop.getType().isEdible() && !timeStampService.isSpoiledFoodMaterial(drop)
-                    && !timeStampService.isWaxed(drop)) {
+                    && !timeStampService.timeStampAssigned(drop) && !timeStampService.isWaxed(drop)) {
                 newDrops.add(timeStampService.assignTimeStamp(drop));
             } else {
                 newDrops.add(drop);

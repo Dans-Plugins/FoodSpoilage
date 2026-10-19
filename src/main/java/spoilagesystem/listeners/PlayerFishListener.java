@@ -24,7 +24,7 @@ public final class PlayerFishListener implements Listener {
         }
         if (caught instanceof Item caughtItem) {
             ItemStack item = caughtItem.getItemStack();
-            if (!item.getType().isEdible()) {
+            if (!item.getType().isEdible() || timeStampService.isSpoiledFoodMaterial(item)) {
                 return;
             }
             if (timeStampService.isWaxed(item)) {

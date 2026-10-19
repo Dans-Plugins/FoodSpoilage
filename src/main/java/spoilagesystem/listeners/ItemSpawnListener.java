@@ -32,7 +32,7 @@ public final class ItemSpawnListener implements Listener {
 
         // if timestamp not already assigned
         if (!time.equals(Duration.ZERO) && !timeStampService.timeStampAssigned(item) && type.isEdible()
-                && !timeStampService.isWaxed(item)) {
+                && !timeStampService.isSpoiledFoodMaterial(item) && !timeStampService.isWaxed(item)) {
             event.getEntity().setItemStack(timeStampService.assignTimeStamp(item, time));
         }
     }
