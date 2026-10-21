@@ -23,8 +23,9 @@ making any changes.
   - `FoodSpoilage.java` – Main plugin class, registers commands and listeners
 - `src/main/resources/` – `plugin.yml` and `config.yml`
 - `src/test/java/spoilagesystem/` – JUnit 5 and Mockito tests, mirroring the main-source packages
+  - `commands/` – `PermissionDeniedReplyTest`, `ReloadCommandTest`, `TimeLeftCommandTest`
   - `config/` – `LocalConfigServiceTest`
-  - `listeners/` – `CraftItemListenerTest`, `WaxingCraftListenerTest`
+  - `listeners/` – one `<Listener>Test` for each class in the main-source `listeners/` package
   - `timestamp/` – `LocalTimeStampServiceTest`
   - `trace/` – `TraceClientTest`
 
