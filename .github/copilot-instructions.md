@@ -27,6 +27,7 @@ making any changes.
   - `config/` – `LocalConfigServiceTest`
   - `factories/` – `SpoiledFoodFactoryTest`
   - `listeners/` – one `<Listener>Test` for each class in the main-source `listeners/` package
+  - `rpkit/` – `FoodSpoilageRpkitExpiryServiceTest`
   - `timestamp/` – `LocalTimeStampServiceTest`
   - `trace/` – `TraceClientTest`
 
