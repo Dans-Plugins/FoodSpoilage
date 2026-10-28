@@ -3,6 +3,7 @@ package spoilagesystem.config;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,6 +12,7 @@ import spoilagesystem.FoodSpoilage;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,15 +21,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link LocalConfigService}, covering how the configured {@code spoiled-food-material}
- * is resolved, how the {@code usage-reporting} block is read, and how the command replies in the
- * {@code text} section are read.
+ * is resolved, how {@code spoil-time} and {@code spoil-chance} are read, how the
+ * {@code usage-reporting} block is read, and how the command replies in the {@code text} section
+ * are read.
  */
 public class LocalConfigServiceTest {
 
@@ -105,6 +110,95 @@ public class LocalConfigServiceTest {
         configure("POISONOUS_POTATO");
 
         assertEquals(Material.POISONOUS_POTATO, service.getSpoiledFoodMaterial());
+    }
+
+    @Test
+    void aMaterialWithItsOwnSpoilTimeUsesIt() {
+        useSpoilTimes("PT24H", "PT72H");
+
+        assertEquals(Duration.ofHours(72), service.getTime(Material.BREAD));
+    }
+
+    @Test
+    void aMaterialWithoutItsOwnSpoilTimeUsesTheDefault() {
+        useSpoilTimes("PT36H", "PT72H");
+
+        assertEquals(Duration.ofHours(36), service.getTime(Material.COOKED_BEEF));
+    }
+
+    /**
+     * "0" makes a single food never spoil while the default still applies. An unparseable value
+     * also comes back as zero, so the absence of the warning is what shows "0" is understood
+     * rather than rejected.
+     */
+    @Test
+    void aSpoilTimeOfZeroMeansTheMaterialNeverSpoils() {
+        Logger logger = mock(Logger.class);
+        when(plugin.getLogger()).thenReturn(logger);
+        useSpoilTimes("PT24H", "0");
+
+        assertEquals(Duration.ZERO, service.getTime(Material.BREAD));
+        verify(logger, never()).warning(anyString());
+    }
+
+    @Test
+    void aZeroDefaultSurroundedByWhitespaceStillMeansNeverSpoil() {
+        Logger logger = mock(Logger.class);
+        when(plugin.getLogger()).thenReturn(logger);
+        useSpoilTimes(" 0 ", null);
+
+        assertEquals(Duration.ZERO, service.getTime(Material.COOKED_BEEF));
+        verify(logger, never()).warning(anyString());
+    }
+
+    @Test
+    void noSpoilTimeAnywhereMeansTheMaterialNeverSpoils() {
+        useSpoilTimes(null, null);
+
+        assertEquals(Duration.ZERO, service.getTime(Material.BREAD));
+    }
+
+    /** An unparseable value must not throw on the stamping path, and the operator has to be told. */
+    @Test
+    void anUnparseableSpoilTimeMeansNeverSpoilAndLogsAWarning() {
+        Logger logger = mock(Logger.class);
+        when(plugin.getLogger()).thenReturn(logger);
+        useSpoilTimes("PT24H", "24 hours");
+
+        assertEquals(Duration.ZERO, service.getTime(Material.BREAD));
+        verify(logger).warning(contains("'24 hours'"));
+    }
+
+    @Test
+    void aMaterialWithNoSpoilChanceNeverSpoilsOnCraft() {
+        useSpoilChance(null);
+
+        assertEquals(0, service.determineSpoiledAmount(Material.BREAD, 64));
+    }
+
+    @Test
+    void aNegativeSpoilChanceIsTreatedAsNone() {
+        useSpoilChance(-1.0);
+
+        assertEquals(0, service.determineSpoiledAmount(Material.BREAD, 64));
+    }
+
+    /** {@code nextDouble()} is always below 1.0, so a chance of 1.0 spoils every item. */
+    @Test
+    void aSpoilChanceOfOneSpoilsTheWholeQuantity() {
+        useSpoilChance(1.0);
+
+        assertEquals(64, service.determineSpoiledAmount(Material.BREAD, 64));
+    }
+
+    @Test
+    void theItemStackOverloadUsesTheStacksTypeAndAmount() {
+        useSpoilChance(1.0);
+        ItemStack stack = mock(ItemStack.class);
+        when(stack.getType()).thenReturn(Material.BREAD);
+        when(stack.getAmount()).thenReturn(5);
+
+        assertEquals(5, service.determineSpoiledAmount(stack));
     }
 
     /**
@@ -221,6 +315,20 @@ public class LocalConfigServiceTest {
     private YamlConfiguration bundledConfig() {
         return YamlConfiguration.loadConfiguration(new InputStreamReader(
                 getClass().getResourceAsStream("/config.yml"), StandardCharsets.UTF_8));
+    }
+
+    /** A null leaves the key out of the file, so it is absent rather than empty. */
+    private void useSpoilTimes(String defaultTime, String breadTime) {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("spoil-time.default", defaultTime);
+        onDisk.set("spoil-time.BREAD", breadTime);
+        when(plugin.getConfig()).thenReturn(onDisk);
+    }
+
+    private void useSpoilChance(Double breadChance) {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("spoil-chance.BREAD", breadChance);
+        when(plugin.getConfig()).thenReturn(onDisk);
     }
 
     private void configure(String materialName) {
