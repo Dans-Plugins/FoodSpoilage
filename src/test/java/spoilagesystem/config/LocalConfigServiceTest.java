@@ -13,10 +13,12 @@ import spoilagesystem.FoodSpoilage;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -31,7 +33,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link LocalConfigService}, covering how the configured {@code spoiled-food-material}
  * is resolved, how {@code spoil-time} and {@code spoil-chance} are read, how the
- * {@code usage-reporting} block is read, and how the command replies in the {@code text} section
+ * {@code usage-reporting} block is read, how the feature settings and {@code wax-material} fall
+ * back when absent, and how the command replies, item text and lore in the {@code text} section
  * are read.
  */
 public class LocalConfigServiceTest {
@@ -310,6 +313,122 @@ public class LocalConfigServiceTest {
         assertEquals("§cfs.help fehlt", service.getNoPermsHelpText());
         assertEquals("§cfs.timeleft fehlt", service.getNoPermsTimeLeftText());
         assertEquals("§cUnbekannter Befehl.", service.getCommandNotFoundText());
+    }
+
+    /**
+     * These getters use the two-argument form, so a key missing from the file on disk returns the
+     * literal fallback in Java rather than reading through to the bundled defaults. An upgraded
+     * server therefore behaves as the shipped config.yml describes only while each literal agrees
+     * with the shipped value, which is what this pins.
+     */
+    @Test
+    void theFallbacksForAbsentSettingsMatchTheShippedConfig() {
+        YamlConfiguration bundled = bundledConfig();
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.setDefaults(bundled);
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals(bundled.getBoolean("enable-waxing"), service.isWaxingEnabled());
+        assertEquals(bundled.getString("wax-material"), service.getWaxMaterialName());
+        assertEquals(bundled.getString("expiry-date-format"), service.getExpiryDateFormat());
+        assertEquals(bundled.getString("expiry-date-format"), LocalConfigService.DEFAULT_EXPIRY_DATE_FORMAT);
+        assertEquals(bundled.getString("spoiled-food-material"), service.getSpoiledFoodMaterialName());
+        assertEquals(bundled.getBoolean("timestamp-furnace-output"), service.isTimestampFurnaceOutput());
+        assertEquals(bundled.getBoolean("debug"), service.isDebugEnabled());
+    }
+
+    @Test
+    void configuredSettingsReplaceTheFallbacks() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("enable-waxing", false);
+        onDisk.set("wax-material", "SLIME_BALL");
+        onDisk.set("expiry-date-format", "dd.MM.yyyy");
+        onDisk.set("timestamp-furnace-output", true);
+        onDisk.set("debug", true);
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertFalse(service.isWaxingEnabled());
+        assertEquals(Material.SLIME_BALL, service.getWaxMaterial());
+        assertEquals("dd.MM.yyyy", service.getExpiryDateFormat());
+        assertTrue(service.isTimestampFurnaceOutput());
+        assertTrue(service.isDebugEnabled());
+    }
+
+    /** Both callers treat a null wax material as "waxing is unavailable", so no fallback is substituted. */
+    @Test
+    void aWaxMaterialThatMatchesNothingResolvesToNull() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("wax-material", "NOT_A_MATERIAL");
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertNull(service.getWaxMaterial());
+    }
+
+    /** Each lore line is colour-translated on its own, and placeholders are left for the caller to fill. */
+    @Test
+    void loreLinesAreReadInOrderAndColourTranslated() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals(List.of("", "§fExpiry Date:", "§f${expiry_date}"), service.getExpiryDateText());
+        assertEquals(List.of("", "§fWaxed", "§7This item will not spoil but cannot be eaten."), service.getWaxedFoodLore());
+    }
+
+    @Test
+    void absentLoreReadsAsNoLinesRatherThanNull() {
+        when(plugin.getConfig()).thenReturn(new YamlConfiguration());
+
+        assertEquals(List.of(), service.getExpiryDateText());
+        assertEquals(List.of(), service.getWaxedFoodLore());
+    }
+
+    /**
+     * The item and reload text, like the command replies above, has to read through to the bundled
+     * text on a server whose config.yml predates a key.
+     */
+    @Test
+    void itemAndReloadTextReadsThroughToTheBundledTextWhenTheFileLacksIt() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("version", "3.0.0");
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals("Values loaded!", service.getValuesLoadedText());
+        assertEquals("Sorry! In order to use this command, you need the following permission: 'fs.reload'", service.getNoPermsReloadText());
+        assertEquals("Spoiled Food", service.getSpoiledFoodName());
+        assertEquals("This food has gone bad.", service.getSpoiledFoodLore());
+        assertEquals("This item will never spoil.", service.getNeverSpoilText());
+        assertEquals("This item will expire in ${time}.", service.getTimeLeftText());
+        assertEquals("This item will expire in less than an hour.", service.getLessThanAnHour());
+        assertEquals("This item will expire in less than a day.", service.getLessThanADay());
+        assertEquals("This item has expired.", service.getNoTimeLeftText());
+    }
+
+    @Test
+    void configuredItemAndReloadTextIsColourTranslated() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("text.values-loaded", "&aNeu geladen!");
+        onDisk.set("text.no-permission-reload", "&cfs.reload fehlt");
+        onDisk.set("text.spoiled-food-name", "&2Verdorben");
+        onDisk.set("text.spoiled-food-lore", "&7Schlecht geworden.");
+        onDisk.set("text.never-spoil", "&bHaltbar.");
+        onDisk.set("text.time-left", "&eNoch ${time}.");
+        onDisk.set("text.less-than-an-hour", "&eUnter einer Stunde.");
+        onDisk.set("text.less-than-a-day", "&eUnter einem Tag.");
+        onDisk.set("text.no-time-left", "&4Abgelaufen.");
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals("§aNeu geladen!", service.getValuesLoadedText());
+        assertEquals("§cfs.reload fehlt", service.getNoPermsReloadText());
+        assertEquals("§2Verdorben", service.getSpoiledFoodName());
+        assertEquals("§7Schlecht geworden.", service.getSpoiledFoodLore());
+        assertEquals("§bHaltbar.", service.getNeverSpoilText());
+        assertEquals("§eNoch ${time}.", service.getTimeLeftText());
+        assertEquals("§eUnter einer Stunde.", service.getLessThanAnHour());
+        assertEquals("§eUnter einem Tag.", service.getLessThanADay());
+        assertEquals("§4Abgelaufen.", service.getNoTimeLeftText());
     }
 
     private YamlConfiguration bundledConfig() {
