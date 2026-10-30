@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link LocalTimeStampService}, covering how the configured {@code expiry-date-format}
- * is picked up, how an expiry is read back from persistent data or from lore alone, what
+ * is picked up, which items are eligible to be stamped, how an expiry is read back from persistent data or from lore alone, what
  * {@code /fs timeleft} is told about the time left, and what waxing does to an item.
  */
 public class LocalTimeStampServiceTest {
@@ -130,6 +130,93 @@ public class LocalTimeStampServiceTest {
         when(item.getType()).thenReturn(Material.ROTTEN_FLESH);
 
         assertTrue(service.isStampable(item));
+    }
+
+    /**
+     * Every spoilage path is gated on edibility, so an inedible material is never stamped, even
+     * when it is given a {@code spoil-time} entry.
+     */
+    @Test
+    void anInedibleItemIsNotStampable() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.ROTTEN_FLESH);
+        when(item.getType()).thenReturn(Material.WHEAT);
+
+        assertFalse(service.isStampable(item));
+    }
+
+    /**
+     * Restamping would push an item's expiry date forward each time it passed through a stamping
+     * path, so food that already carries an expiry date is not stampable.
+     */
+    @Test
+    void anAlreadyStampedItemIsNotStampable() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.ROTTEN_FLESH);
+        when(item.getType()).thenReturn(Material.BREAD);
+        storeExpiryAt(OffsetDateTime.now().plusDays(2));
+
+        assertFalse(service.isStampable(item));
+    }
+
+    /**
+     * Waxing removes an item's expiry date, so a waxed item reads as unstamped; it must still not
+     * be given a new one.
+     */
+    @Test
+    void aWaxedItemIsNotStampable() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.ROTTEN_FLESH);
+        when(item.getType()).thenReturn(Material.BREAD);
+        when(item.hasItemMeta()).thenReturn(true);
+        when(persistentDataContainer.has(argThat(key -> key.getKey().equals("waxed")), eq(STRING))).thenReturn(true);
+
+        assertFalse(service.isStampable(item));
+    }
+
+    /**
+     * Callers pass slot contents straight through, and an empty slot can be null.
+     */
+    @Test
+    void nothingIsNotStampableOrSpoiledFood() {
+        assertFalse(service.isStampable(null));
+        assertFalse(service.isSpoiledFoodMaterial(null));
+    }
+
+    @Test
+    void anItemOfTheConfiguredSpoiledFoodMaterialIsSpoiledFood() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.POISONOUS_POTATO);
+        when(item.getType()).thenReturn(Material.POISONOUS_POTATO);
+
+        assertTrue(service.isSpoiledFoodMaterial(item));
+
+        when(item.getType()).thenReturn(Material.ROTTEN_FLESH);
+
+        assertFalse(service.isSpoiledFoodMaterial(item));
+    }
+
+    @Test
+    void anEligibleItemIsStampedWithItsConfiguredSpoilTime() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.ROTTEN_FLESH);
+        when(configService.getTime(Material.BREAD)).thenReturn(ONE_DAY);
+        when(item.getType()).thenReturn(Material.BREAD);
+
+        service.stampIfEligible(item);
+
+        verify(persistentDataContainer).set(argThat(key -> key.getKey().equals("expiry")), eq(STRING),
+                eq(ISO_OFFSET_DATE.format(OffsetDateTime.now().plus(ONE_DAY))));
+        verify(item).setItemMeta(meta);
+    }
+
+    @Test
+    void anIneligibleItemIsLeftAsItWas() {
+        when(configService.getSpoiledFoodMaterial()).thenReturn(Material.ROTTEN_FLESH);
+        when(configService.getTime(Material.BREAD)).thenReturn(ONE_DAY);
+        when(item.getType()).thenReturn(Material.BREAD);
+        storeExpiryAt(OffsetDateTime.now().plusDays(2));
+
+        service.stampIfEligible(item);
+        service.stampIfEligible(null);
+
+        verify(item, never()).setItemMeta(any());
+        verify(persistentDataContainer, never()).set(any(NamespacedKey.class), eq(STRING), anyString());
     }
 
     /**
