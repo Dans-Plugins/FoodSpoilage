@@ -44,8 +44,17 @@ public final class LocalConfigService {
     private final List<ConfigMigration> migrations;
 
     public LocalConfigService(FoodSpoilage plugin) {
+        this(plugin, List.of());
+    }
+
+    /**
+     * Creates the service with an explicit list of config migrations, run in list order before the
+     * bundled defaults are saved. The plugin ships none; this constructor exists so the migration
+     * mechanism can be exercised.
+     */
+    LocalConfigService(FoodSpoilage plugin, List<ConfigMigration> migrations) {
         this.plugin = plugin;
-        this.migrations = List.of();
+        this.migrations = List.copyOf(migrations);
         this.random = new Random();
         runMigrations();
         plugin.saveDefaultConfig();

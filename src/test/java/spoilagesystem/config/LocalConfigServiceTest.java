@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import spoilagesystem.FoodSpoilage;
+import spoilagesystem.config.migration.ConfigMigration;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +26,8 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -34,8 +37,8 @@ import static org.mockito.Mockito.when;
  * Tests for {@link LocalConfigService}, covering how the configured {@code spoiled-food-material}
  * is resolved, how {@code spoil-time} and {@code spoil-chance} are read, how the
  * {@code usage-reporting} block is read, how the feature settings and {@code wax-material} fall
- * back when absent, and how the command replies, item text and lore in the {@code text} section
- * are read.
+ * back when absent, how the command replies, item text and lore in the {@code text} section
+ * are read, and which config migrations run on construction.
  */
 public class LocalConfigServiceTest {
 
@@ -429,6 +432,118 @@ public class LocalConfigServiceTest {
         assertEquals("§eUnter einer Stunde.", service.getLessThanAnHour());
         assertEquals("§eUnter einem Tag.", service.getLessThanADay());
         assertEquals("§4Abgelaufen.", service.getNoTimeLeftText());
+    }
+
+    @Test
+    void aMigrationFromTheConfiguredVersionRunsAndRecordsItsNewVersion() {
+        YamlConfiguration onDisk = configAtVersion("1");
+        RecordingMigration migration = new RecordingMigration("1", "2");
+
+        new LocalConfigService(plugin, List.of(migration));
+
+        assertEquals(1, migration.runs);
+        assertEquals("2", onDisk.getString("version"));
+        verify(plugin).saveConfig();
+    }
+
+    @Test
+    void aMigrationFromAnotherVersionIsSkipped() {
+        YamlConfiguration onDisk = configAtVersion("3");
+        RecordingMigration migration = new RecordingMigration("1", "2");
+
+        new LocalConfigService(plugin, List.of(migration));
+
+        assertEquals(0, migration.runs);
+        assertEquals("3", onDisk.getString("version"));
+        verify(plugin, never()).saveConfig();
+    }
+
+    @Test
+    void consecutiveMigrationsChainWithinOnePass() {
+        YamlConfiguration onDisk = configAtVersion("1");
+        RecordingMigration first = new RecordingMigration("1", "2");
+        RecordingMigration second = new RecordingMigration("2", "3");
+
+        new LocalConfigService(plugin, List.of(first, second));
+
+        assertEquals(1, first.runs);
+        assertEquals(1, second.runs);
+        assertEquals("3", onDisk.getString("version"));
+    }
+
+    @Test
+    void migrationsListedOutOfOrderDoNotChainBackwards() {
+        YamlConfiguration onDisk = configAtVersion("1");
+        RecordingMigration later = new RecordingMigration("2", "3");
+        RecordingMigration earlier = new RecordingMigration("1", "2");
+
+        new LocalConfigService(plugin, List.of(later, earlier));
+
+        assertEquals(0, later.runs);
+        assertEquals(1, earlier.runs);
+        assertEquals("2", onDisk.getString("version"));
+    }
+
+    @Test
+    void migrationsRunBeforeTheBundledDefaultsAreSaved() {
+        configAtVersion("1");
+        RecordingMigration migration = new RecordingMigration("1", "2");
+        doAnswer(invocation -> {
+            assertEquals(1, migration.runs, "saveDefaultConfig ran before the migration");
+            return null;
+        }).when(plugin).saveDefaultConfig();
+
+        new LocalConfigService(plugin, List.of(migration));
+
+        verify(plugin).saveDefaultConfig();
+    }
+
+    @Test
+    void theShippedServiceRunsNoMigrations() {
+        YamlConfiguration onDisk = configAtVersion("1");
+
+        new LocalConfigService(plugin);
+
+        assertEquals("1", onDisk.getString("version"));
+        verify(plugin, never()).saveConfig();
+    }
+
+    /**
+     * A config holding only {@code version}, with no bundled defaults, so that the usage-reporting
+     * write on construction is skipped and any {@code saveConfig} call comes from a migration.
+     */
+    private YamlConfiguration configAtVersion(String version) {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("version", version);
+        when(plugin.getConfig()).thenReturn(onDisk);
+        clearInvocations(plugin); // forget the calls made by the service built in setUp
+        return onDisk;
+    }
+
+    private static final class RecordingMigration implements ConfigMigration {
+        private final String previousVersion;
+        private final String newVersion;
+        private int runs;
+
+        RecordingMigration(String previousVersion, String newVersion) {
+            this.previousVersion = previousVersion;
+            this.newVersion = newVersion;
+        }
+
+        @Override
+        public String getPreviousVersion() {
+            return previousVersion;
+        }
+
+        @Override
+        public String getNewVersion() {
+            return newVersion;
+        }
+
+        @Override
+        public void run() {
+            runs++;
+        }
     }
 
     private YamlConfiguration bundledConfig() {
