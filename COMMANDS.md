@@ -18,7 +18,7 @@ Running `/foodspoilage` without any arguments will display plugin information, i
 
 The command reports on the item in the player's main hand. It can only be used by a player; from the console it prints the command's usage line.
 
-| Reply | When it is sent | Config key |
+| Default reply | When it is sent | Config key |
 |-------|-----------------|------------|
 | This item will expire in *N* days. | At least a day is left, counted in whole days | `text.time-left` |
 | This item will expire in less than a day. | Between one hour and one day is left | `text.less-than-a-day` |

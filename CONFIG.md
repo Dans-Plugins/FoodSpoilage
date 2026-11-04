@@ -90,7 +90,7 @@ An expiry is recorded as a date only, so that the same food stamped on the same 
 
 ### When food gets an expiry date
 
-Food is stamped with an expiry date when it is crafted, dropped by a mob, fished up, picked up, or spawned as an item on the ground. Anything in a player's inventory is stamped when they join the server and when they open or close a container, which also stamps the contents of a container being opened. Food that arrives by any other route, such as `/give` or a villager trade, has no expiry date until one of those happens.
+Food is stamped with an expiry date when it is crafted, dropped by a mob, fished up, picked up, or spawned as an item on the ground. Anything in a player's inventory is stamped when they join the server and when they open or close a container, which also stamps the contents of a container being opened, apart from a furnace's result slot while `timestamp-furnace-output` is off. Food that arrives by any other route, such as `/give` or a villager trade, has no expiry date until one of those happens.
 
 ### Only edible materials can spoil
 
