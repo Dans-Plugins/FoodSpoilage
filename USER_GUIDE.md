@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- A Spigot or Paper Minecraft server (API version 1.13 or later).
+- A Spigot or Paper Minecraft server, on at least Minecraft 1.14 and Java 16. The plugin is compiled for Java 16 and stores expiry dates through the persistent data API added in 1.14, even though `plugin.yml` declares `api-version: 1.13`.
 - The FoodSpoilage plugin jar placed in the `plugins/` folder and the server restarted.
 - *(Optional)* rpk-food-lib-bukkit – provides extended food definitions via RPKit integration.
 
@@ -11,7 +11,7 @@
 1. Start your server with the plugin installed. FoodSpoilage will generate a default `plugins/FoodSpoilage/config.yml`.
 2. Review the configuration file and adjust spoil times and other settings to suit your server. See [CONFIG.md](CONFIG.md) for a full reference.
 3. Reload the configuration without restarting: `/fs reload`
-4. Give the food item you want to test to yourself and check its remaining time with `/fs timeleft`.
+4. Give the food item you want to test to yourself, open and close a chest or other container so that it is stamped with an expiry date, then check its remaining time with `/fs timeleft`. Food received through `/give` has no expiry date until then, so `/fs timeleft` reports that it will never spoil.
 
 ## Common Scenarios
 
@@ -19,7 +19,7 @@
 
 1. Hold a food item in your main hand.
 2. Run `/fs timeleft`.
-3. The plugin will display the remaining time before the item spoils.
+3. The plugin will display the remaining time before the item spoils, in whole days, or as less than a day or less than an hour once it is that close.
 
 ### Preserving a food item so it never spoils
 
@@ -45,7 +45,7 @@ After editing `plugins/FoodSpoilage/config.yml`:
 /fs reload
 ```
 
-Every configuration key is applied by this command except the `usage-reporting` block, which is read once at startup. See [Applying Changes](CONFIG.md#applying-changes) for that and for the one caveat concerning the waxing recipe and players who are already online.
+Every configuration key is applied by this command except the `usage-reporting` block, which is read once at startup, and migrations driven by the `version` key, which run only at startup. See [Applying Changes](CONFIG.md#applying-changes) for that and for the one caveat concerning the waxing recipe and players who are already online.
 
 ## Permissions
 
