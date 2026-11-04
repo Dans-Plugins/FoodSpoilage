@@ -68,7 +68,7 @@ For development purposes, a Docker-based test server is available with integrate
 #### Setup
 1. Copy `sample.env` to `.env` and configure as needed
 2. Build the plugin: `./gradlew build`
-3. Start the test server: `./up.sh`
+3. Start the test server: `sh up.sh`
 
 #### Plugin Hot-Reloading
 After making changes to the plugin code, you can quickly reload it without restarting the server:
@@ -91,7 +91,7 @@ This significantly speeds up the development cycle by eliminating the need for f
 
 #### Stopping the Test Server
 ```bash
-./down.sh
+sh down.sh
 ```
 
 ## Authors and Acknowledgement
@@ -130,7 +130,7 @@ You can view the bStats page for the plugin [here](https://bstats.org/plugin/buk
 
 ## Usage reporting
 
-Usage reporting is on by default: when the plugin is enabled, and each time one of its commands is used, it sends its name, version and the command name to the author's [trace](https://trace.danielstephenson.dev) server so it is known which plugins are actually in use. Nothing about players, worlds or IPs is sent, and nothing typed after a command. The plugin says on the console at every start whether reporting is on. Each event also carries a random server ID (the `server-id` line in `plugins/trace/config.yml`) so
+Usage reporting is on by default: when the plugin is enabled, and each time one of its commands is used, it sends its name, version and the command name to the author's [trace](https://trace.danielstephenson.dev) server so it is known which plugins are actually in use. Repeats of a command event within 60 seconds are sent as one event carrying a count. Nothing about players, worlds or IPs is sent, and nothing typed after a command. The plugin says on the console at every start whether reporting is on. Each event also carries a random server ID (the `server-id` line in `plugins/trace/config.yml`) so
 servers can be counted rather than events. It identifies no person, account or IP address; delete
 the line to get a new one.
 

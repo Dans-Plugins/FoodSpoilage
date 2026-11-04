@@ -16,9 +16,9 @@ Configuration file migrations, driven by the `version` key, are one exception: t
 |-----|-------------|---------|
 | `version` | The version of the configuration file | `3.0.0` |
 | `debug` | Enable debug logging | `false` |
-| `expiry-date-format` | The date format used for expiry dates displayed in item lore | `MM/dd/yyyy` |
+| `expiry-date-format` | The [date pattern](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html) used for expiry dates displayed in item lore. A pattern that cannot be parsed is reported in a console warning and the default is used. | `MM/dd/yyyy` |
 | `enable-waxing` | Enable the waxing feature, allowing players to craft food with a wax material to make it non-perishable but inedible | `true` |
-| `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient | `HONEYCOMB` |
+| `wax-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name used as the waxing ingredient. A name that matches no material disables waxing, with a console warning. | `HONEYCOMB` |
 | `spoiled-food-material` | The [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name food turns into once it spoils. See [What food spoils into](#what-food-spoils-into). | `ROTTEN_FLESH` |
 | `timestamp-furnace-output` | Stamp items in the furnace output slot with an expiry date immediately when cooked. This works correctly on older versions of Minecraft, but on 1.20.5+ it causes furnaces to stall after cooking one item, since Minecraft will not continue cooking while custom data is present on the output slot. When left at the default, items are instead stamped lazily the next time they reach a player (inventory close/open, pickup, item spawn, or player join). | `false` |
 | `usage-reporting.enabled` | Whether the plugin reports usage events (see [Usage reporting](#usage-reporting)). Set to `false` to turn it off. | `true` |
@@ -29,10 +29,14 @@ Configuration file migrations, driven by the `version` key, are one exception: t
 
 When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
 author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
-plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
+plugins are actually in use. Repeats of the same command event within 60 seconds are counted rather
+than sent one by one: the first goes out at once, the rest as a single event carrying how many there
+were. An event carries the plugin's name, the event name (`startup` or
 `command`), the plugin version, and for a command the command name, plus a random server ID (the
 `server-id` line in `plugins/trace/config.yml`, which identifies no person, account or IP address;
-deleting the line gets a new one) — nothing about players or the world. Sending happens off the main
+deleting the line gets a new one) — nothing about players or the world. Any entries in a `tags:` block
+that the server owner adds to `plugins/trace/config.yml` are added to every event; the file is created
+with that block commented out. Sending happens off the main
 thread, never delays a tick, and is dropped silently if the
 server cannot be reached. The plugin says on the console at every start whether reporting is on.
 
@@ -65,8 +69,8 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 | `text.command-not-found` | Message shown when `/fs` is given a subcommand it does not recognise | `That command wasn't found.` |
 | `text.spoiled-food-name` | Display name for spoiled food items | `Spoiled Food` |
 | `text.spoiled-food-lore` | Lore text for spoiled food items | `This food has gone bad.` |
-| `text.never-spoil` | Message shown when an item will never spoil | `This item will never spoil.` |
-| `text.time-left` | Message template for time remaining. Use `${time}` as a placeholder. | `This item will expire in ${time}.` |
+| `text.never-spoil` | Message shown when an item has no expiry date, which includes food not yet stamped (see [When food gets an expiry date](#when-food-gets-an-expiry-date)) | `This item will never spoil.` |
+| `text.time-left` | Message template for time remaining. `${time}` is replaced with a whole number of days, such as `3 days`. | `This item will expire in ${time}.` |
 | `text.less-than-an-hour` | Message shown when an item expires in less than an hour | `This item will expire in less than an hour.` |
 | `text.less-than-a-day` | Message shown when an item expires in less than a day | `This item will expire in less than a day.` |
 | `text.no-time-left` | Message shown when an item has already expired | `This item has expired.` |
@@ -83,6 +87,10 @@ An expiry is recorded as a date only, so that the same food stamped on the same 
 | Key | Description | Default |
 |-----|-------------|---------|
 | `spoil-time.default` | Default spoil time for unlisted food items | `PT24H` (24 hours) |
+
+### When food gets an expiry date
+
+Food is stamped with an expiry date when it is crafted, dropped by a mob, fished up, picked up, or spawned as an item on the ground. Anything in a player's inventory is stamped when they join the server and when they open or close a container, which also stamps the contents of a container being opened, apart from a furnace's result slot while `timestamp-furnace-output` is off. Food that arrives by any other route, such as `/give` or a villager trade, has no expiry date until one of those happens.
 
 ### Only edible materials can spoil
 
@@ -166,6 +174,8 @@ Because the roll happens on the crafting path, it is subject to the same edibili
 ## What food spoils into
 
 When an item's expiry date is reached — or when a crafted unit loses its `spoil-chance` roll — it is replaced with a stack of `spoiled-food-material`, named and described by `text.spoiled-food-name` and `text.spoiled-food-lore`. The default is `ROTTEN_FLESH`.
+
+Expired food is not replaced on a timer. The check runs when a player clicks with the item in their hand, and when they drag it around an inventory on the cursor, so food left in a chest or a pack looks unchanged until it is next used this way. Clicking with expired food replaces it instead of eating it.
 
 Any obtainable [Bukkit Material](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) name may be used. A name that matches no material, or that names a block which cannot be held as an item, is rejected: a warning is written to the console and `ROTTEN_FLESH` is used instead.
 

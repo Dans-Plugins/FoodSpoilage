@@ -52,11 +52,14 @@ Windows: `.\gradlew.bat clean build`
 
 The automated tests live in `src/test/java` and are executed as part of that build; they can also be run on their own with `./gradlew test`.
 
-For manual testing, start a local Spigot server:
+For manual testing, start a local Spigot server. It reads its settings from `.env`, so copy `sample.env` first:
 
 ```bash
-docker compose up
+cp sample.env .env
+sh up.sh
 ```
+
+See the [Development section of the README](README.md#development) for hot-reloading and for stopping the server.
 
 ## Questions
 If you have any questions about contributing to the project, feel free to ask in the Discord server. You can join the Discord server [here](https://discord.gg/xXtuAQ2). This is the best place to ask questions.
