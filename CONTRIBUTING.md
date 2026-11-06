@@ -56,7 +56,7 @@ For manual testing, start a local Spigot server. It reads its settings from `.en
 
 ```bash
 cp sample.env .env
-sh up.sh
+./up.sh
 ```
 
 See the [Development section of the README](README.md#development) for hot-reloading and for stopping the server.
