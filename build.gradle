@@ -25,6 +25,15 @@ dependencies {
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.rpkit:rpk-core-bukkit:2.3.0:all'
     implementation 'com.rpkit:rpk-food-lib-bukkit:2.3.0:all'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    // Mockito 5 defaults to the inline mock maker, which the plugin's final service classes need.
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 group = 'DansPlugins'
