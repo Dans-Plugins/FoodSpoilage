@@ -68,7 +68,7 @@ For development purposes, a Docker-based test server is available with integrate
 #### Setup
 1. Copy `sample.env` to `.env` and configure as needed
 2. Build the plugin: `./gradlew build`
-3. Start the test server: `sh up.sh`
+3. Start the test server: `./up.sh`
 
 #### Plugin Hot-Reloading
 After making changes to the plugin code, you can quickly reload it without restarting the server:
@@ -91,7 +91,7 @@ This significantly speeds up the development cycle by eliminating the need for f
 
 #### Stopping the Test Server
 ```bash
-sh down.sh
+./down.sh
 ```
 
 ## Authors and Acknowledgement
