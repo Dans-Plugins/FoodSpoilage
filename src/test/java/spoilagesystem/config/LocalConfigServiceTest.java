@@ -403,6 +403,8 @@ public class LocalConfigServiceTest {
         assertEquals("This food has gone bad.", service.getSpoiledFoodLore());
         assertEquals("This item will never spoil.", service.getNeverSpoilText());
         assertEquals("This item will expire in ${time}.", service.getTimeLeftText());
+        assertEquals("day", service.getTimeUnitDay());
+        assertEquals("days", service.getTimeUnitDays());
         assertEquals("This item will expire in less than an hour.", service.getLessThanAnHour());
         assertEquals("This item will expire in less than a day.", service.getLessThanADay());
         assertEquals("This item has expired.", service.getNoTimeLeftText());
@@ -417,6 +419,8 @@ public class LocalConfigServiceTest {
         onDisk.set("text.spoiled-food-lore", "&7Schlecht geworden.");
         onDisk.set("text.never-spoil", "&bHaltbar.");
         onDisk.set("text.time-left", "&eNoch ${time}.");
+        onDisk.set("text.time-unit-day", "&eTag");
+        onDisk.set("text.time-unit-days", "&eTage");
         onDisk.set("text.less-than-an-hour", "&eUnter einer Stunde.");
         onDisk.set("text.less-than-a-day", "&eUnter einem Tag.");
         onDisk.set("text.no-time-left", "&4Abgelaufen.");
@@ -429,6 +433,8 @@ public class LocalConfigServiceTest {
         assertEquals("§7Schlecht geworden.", service.getSpoiledFoodLore());
         assertEquals("§bHaltbar.", service.getNeverSpoilText());
         assertEquals("§eNoch ${time}.", service.getTimeLeftText());
+        assertEquals("§eTag", service.getTimeUnitDay());
+        assertEquals("§eTage", service.getTimeUnitDays());
         assertEquals("§eUnter einer Stunde.", service.getLessThanAnHour());
         assertEquals("§eUnter einem Tag.", service.getLessThanADay());
         assertEquals("§4Abgelaufen.", service.getNoTimeLeftText());

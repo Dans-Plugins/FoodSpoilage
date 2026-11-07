@@ -198,6 +198,14 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.time-left"));
     }
 
+    public String getTimeUnitDay() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.time-unit-day"));
+    }
+
+    public String getTimeUnitDays() {
+        return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.time-unit-days"));
+    }
+
     public String getLessThanAnHour() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.less-than-an-hour"));
     }

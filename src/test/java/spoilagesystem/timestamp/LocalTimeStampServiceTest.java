@@ -270,9 +270,32 @@ public class LocalTimeStampServiceTest {
     @Test
     void anExpiryMoreThanADayAwayIsReportedInWholeDays() {
         when(configService.getTimeLeftText()).thenReturn("This item will expire in ${time}.");
+        when(configService.getTimeUnitDay()).thenReturn("day");
+        when(configService.getTimeUnitDays()).thenReturn("days");
         storeExpiryAt(OffsetDateTime.now().plusDays(3).plusHours(12));
 
         assertEquals("This item will expire in 3 days.", service.getTimeLeft(item));
+    }
+
+    @Test
+    void anExpiryOneWholeDayAwayIsReportedInTheSingular() {
+        when(configService.getTimeLeftText()).thenReturn("This item will expire in ${time}.");
+        when(configService.getTimeUnitDay()).thenReturn("day");
+        when(configService.getTimeUnitDays()).thenReturn("days");
+        storeExpiryAt(OffsetDateTime.now().plusDays(1).plusHours(12));
+
+        assertEquals("This item will expire in 1 day.", service.getTimeLeft(item));
+    }
+
+    /** A server that translates the reply must not be left with an English word in the middle of it. */
+    @Test
+    void theDayUnitComesFromTheConfig() {
+        when(configService.getTimeLeftText()).thenReturn("Noch ${time}.");
+        when(configService.getTimeUnitDay()).thenReturn("Tag");
+        when(configService.getTimeUnitDays()).thenReturn("Tage");
+        storeExpiryAt(OffsetDateTime.now().plusDays(3).plusHours(12));
+
+        assertEquals("Noch 3 Tage.", service.getTimeLeft(item));
     }
 
     @Test
