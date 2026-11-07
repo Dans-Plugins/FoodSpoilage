@@ -70,7 +70,9 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 | `text.spoiled-food-name` | Display name for spoiled food items | `Spoiled Food` |
 | `text.spoiled-food-lore` | Lore text for spoiled food items | `This food has gone bad.` |
 | `text.never-spoil` | Message shown when an item has no expiry date, which includes food not yet stamped (see [When food gets an expiry date](#when-food-gets-an-expiry-date)) | `This item will never spoil.` |
-| `text.time-left` | Message template for time remaining. `${time}` is replaced with a whole number of days, such as `3 days`. | `This item will expire in ${time}.` |
+| `text.time-left` | Message template for time remaining. `${time}` is replaced with a whole number of days and its unit, such as `3 days`. | `This item will expire in ${time}.` |
+| `text.time-unit-day` | Unit placed after the number in `${time}` when exactly one day is left | `day` |
+| `text.time-unit-days` | Unit placed after the number in `${time}` when more than one day is left | `days` |
 | `text.less-than-an-hour` | Message shown when an item expires in less than an hour | `This item will expire in less than an hour.` |
 | `text.less-than-a-day` | Message shown when an item expires in less than a day | `This item will expire in less than a day.` |
 | `text.no-time-left` | Message shown when an item has already expired | `This item has expired.` |

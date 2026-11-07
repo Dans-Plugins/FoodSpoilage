@@ -14,6 +14,8 @@ text:
   spoiled-food-lore: 'This food has gone bad.'
   never-spoil: 'This item will never spoil.'
   time-left: 'This item will expire in ${time}.'
+  time-unit-day: 'day'
+  time-unit-days: 'days'
   less-than-an-hour: 'This item will expire in less than an hour.'
   less-than-a-day: 'This item will expire in less than a day.'
   no-time-left: 'This item has expired.'

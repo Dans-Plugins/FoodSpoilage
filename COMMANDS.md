@@ -20,7 +20,7 @@ The command reports on the item in the player's main hand. It can only be used b
 
 | Default reply | When it is sent | Config key |
 |-------|-----------------|------------|
-| This item will expire in *N* days. | At least a day is left, counted in whole days | `text.time-left` |
+| This item will expire in *N* days. | At least a day is left, counted in whole days. With exactly one whole day left it reads "1 day". | `text.time-left`, with the unit from `text.time-unit-days` or `text.time-unit-day` |
 | This item will expire in less than a day. | Between one hour and one day is left | `text.less-than-a-day` |
 | This item will expire in less than an hour. | Less than an hour is left | `text.less-than-an-hour` |
 | This item has expired. | The expiry has passed | `text.no-time-left` |

@@ -266,7 +266,8 @@ public final class LocalTimeStampService {
                 return configService.getLessThanADay();
             }
         } else if (days > 0) {
-            return configService.getTimeLeftText().replace("${time}", days + " days");
+            String unit = days == 1 ? configService.getTimeUnitDay() : configService.getTimeUnitDays();
+            return configService.getTimeLeftText().replace("${time}", days + " " + unit);
         } else {
             return configService.getNoTimeLeftText();
         }
