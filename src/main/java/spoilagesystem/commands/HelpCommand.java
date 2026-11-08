@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import spoilagesystem.config.LocalConfigService;
 
-import static org.bukkit.ChatColor.AQUA;
 import static org.bukkit.ChatColor.RED;
 
 /**
@@ -26,12 +25,7 @@ public final class HelpCommand implements CommandExecutor {
             sender.sendMessage(RED + configService.getNoPermsHelpText());
             return true;
         }
-        sender.sendMessage(new String[] {
-                AQUA + "=== FoodSpoilage Commands ===",
-                AQUA + "/fs help - View a list of helpful commands.",
-                AQUA + "/fs timeleft - View how much time is left before an item expires.",
-                AQUA + "/fs reload - Reload the plugin's configuration/save files."
-        });
+        sender.sendMessage(configService.getHelpText().toArray(new String[0]));
         return true;
     }
 }

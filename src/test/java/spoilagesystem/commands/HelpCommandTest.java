@@ -8,7 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import spoilagesystem.config.LocalConfigService;
 
-import static org.bukkit.ChatColor.AQUA;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -36,15 +37,16 @@ public class HelpCommandTest {
         when(sender.hasPermission("fs.help")).thenReturn(true);
     }
 
+    /** The listing is whatever {@code text.help} holds, so a translated config replaces every line. */
     @Test
-    void listsEverySubcommand() {
+    void sendsTheConfiguredHelpLinesInOrder() {
+        when(configService.getHelpText()).thenReturn(List.of("§b=== FoodSpoilage-Befehle ===", "§b/fs help - Befehle anzeigen."));
+
         boolean handled = new HelpCommand(configService).onCommand(sender, command, "fs", NO_ARGS);
 
         verify(sender).sendMessage(new String[] {
-                AQUA + "=== FoodSpoilage Commands ===",
-                AQUA + "/fs help - View a list of helpful commands.",
-                AQUA + "/fs timeleft - View how much time is left before an item expires.",
-                AQUA + "/fs reload - Reload the plugin's configuration/save files."
+                "§b=== FoodSpoilage-Befehle ===",
+                "§b/fs help - Befehle anzeigen."
         });
         assertTrue(handled);
     }

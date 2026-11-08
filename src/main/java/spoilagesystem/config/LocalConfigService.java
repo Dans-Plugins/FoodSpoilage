@@ -182,6 +182,12 @@ public final class LocalConfigService {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.command-not-found"));
     }
 
+    public List<String> getHelpText() {
+        return plugin.getConfig().getStringList("text.help").stream()
+                .map(line -> ChatColor.translateAlternateColorCodes('&', line))
+                .toList();
+    }
+
     public String getSpoiledFoodName() {
         return ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("text.spoiled-food-name"));
     }

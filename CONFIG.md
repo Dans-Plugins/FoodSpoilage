@@ -67,6 +67,7 @@ All text values support Minecraft color codes using the `&` prefix (e.g., `&f` f
 | `text.no-permission-help` | Message shown when a player lacks permission to use `/fs help` | `In order to use this command, you need the following permission: 'fs.help'` |
 | `text.no-permission-timeleft` | Message shown when a player lacks permission to use `/fs timeleft` | `In order to use this command, you need the following permission: 'fs.timeleft'` |
 | `text.command-not-found` | Message shown when `/fs` is given a subcommand it does not recognise | `That command wasn't found.` |
+| `text.help` | The lines `/fs help` sends, one chat line per entry | `['&b=== FoodSpoilage Commands ===', '&b/fs help - View a list of helpful commands.', '&b/fs timeleft - View how much time is left before an item expires.', '&b/fs reload - Reload the plugin''s configuration/save files.']` |
 | `text.spoiled-food-name` | Display name for spoiled food items | `Spoiled Food` |
 | `text.spoiled-food-lore` | Lore text for spoiled food items | `This food has gone bad.` |
 | `text.never-spoil` | Message shown when an item has no expiry date, which includes food not yet stamped (see [When food gets an expiry date](#when-food-gets-an-expiry-date)) | `This item will never spoil.` |

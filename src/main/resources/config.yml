@@ -10,6 +10,11 @@ text:
   no-permission-help: 'In order to use this command, you need the following permission: ''fs.help'''
   no-permission-timeleft: 'In order to use this command, you need the following permission: ''fs.timeleft'''
   command-not-found: 'That command wasn''t found.'
+  help:
+  - '&b=== FoodSpoilage Commands ==='
+  - '&b/fs help - View a list of helpful commands.'
+  - '&b/fs timeleft - View how much time is left before an item expires.'
+  - '&b/fs reload - Reload the plugin''s configuration/save files.'
   spoiled-food-name: 'Spoiled Food'
   spoiled-food-lore: 'This food has gone bad.'
   never-spoil: 'This item will never spoil.'
