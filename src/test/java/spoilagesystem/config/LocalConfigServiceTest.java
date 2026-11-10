@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static org.bukkit.ChatColor.AQUA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -384,6 +385,36 @@ public class LocalConfigServiceTest {
 
         assertEquals(List.of(), service.getExpiryDateText());
         assertEquals(List.of(), service.getWaxedFoodLore());
+        assertEquals(List.of(), service.getHelpText());
+    }
+
+    /**
+     * The bundled help listing reproduces, byte for byte, the aqua lines that were once written into
+     * HelpCommand, and a config.yml that predates the key reads through to it.
+     */
+    @Test
+    void helpTextReadsThroughToTheBundledListingWhenTheFileLacksIt() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("version", "3.0.0");
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals(List.of(
+                AQUA + "=== FoodSpoilage Commands ===",
+                AQUA + "/fs help - View a list of helpful commands.",
+                AQUA + "/fs timeleft - View how much time is left before an item expires.",
+                AQUA + "/fs reload - Reload the plugin's configuration/save files."
+        ), service.getHelpText());
+    }
+
+    @Test
+    void configuredHelpTextReplacesTheBundledListingAndIsColourTranslated() {
+        YamlConfiguration onDisk = new YamlConfiguration();
+        onDisk.set("text.help", List.of("&6Befehle:", "&e/fs timeleft - Restzeit anzeigen."));
+        onDisk.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(onDisk);
+
+        assertEquals(List.of("§6Befehle:", "§e/fs timeleft - Restzeit anzeigen."), service.getHelpText());
     }
 
     /**

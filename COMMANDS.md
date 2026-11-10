@@ -10,7 +10,7 @@ Running `/foodspoilage` without any arguments will display plugin information, i
 | Command | Description | Permission |
 |---------|-------------|------------|
 | `/fs` | Display plugin information | `fs.default` |
-| `/fs help` | View a list of available commands | `fs.help` |
+| `/fs help` | View a list of available commands, read from `text.help` | `fs.help` |
 | `/fs timeleft` | View how much time is left before the item in your hand expires | `fs.timeleft` |
 | `/fs reload` | Reload the plugin's configuration files | `fs.reload` |
 
