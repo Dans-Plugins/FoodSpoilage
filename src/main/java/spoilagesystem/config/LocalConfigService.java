@@ -7,7 +7,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.migration.ConfigMigration;
+import spoilagesystem.trace.UsageReportingSetting;
 
+import java.io.File;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -132,6 +134,9 @@ public final class LocalConfigService {
      * answers only for the file on disk.</p>
      */
     void ensureUsageReportingBlockOnDisk() {
+        // Bukkit loads a config.yml it cannot parse as empty, so the block looks missing even when
+        // the operator wrote enabled: false in it; saving the defaults would replace the whole file.
+        if (UsageReportingSetting.isUnparseable(getConfigFile())) return;
         FileConfiguration config = plugin.getConfig();
         if (config.isSet("usage-reporting")) return;
         Configuration defaults = config.getDefaults();
@@ -306,8 +311,18 @@ public final class LocalConfigService {
     // fall-through only matters if that write failed. Verified against
     // YamlConfiguration, not assumed.
 
+    /**
+     * Fails closed: only true, on or yes turns reporting on, so a quoted "false" or a typo turns
+     * it off (getBoolean() would return the bundled true for them), and an opt-out in config.yml on
+     * disk wins over the copy loaded at startup.
+     */
     public boolean isUsageReportingEnabled() {
-        return plugin.getConfig().getBoolean(USAGE_REPORTING_ENABLED_KEY);
+        return UsageReportingSetting.isEnabled(plugin.getConfig(), getConfigFile());
+    }
+
+    /** The plugin's config.yml, which may not exist yet. */
+    public File getConfigFile() {
+        return new File(plugin.getDataFolder(), "config.yml");
     }
 
     public String getUsageReportingEndpoint() {
