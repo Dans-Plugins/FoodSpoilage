@@ -52,7 +52,7 @@ To turn it off, in order of precedence:
 A server upgraded from a version before the block existed keeps a `config.yml` without it; the plugin
 writes the block with the bundled values on the next start so the switch is visible, and until then
 reads the bundled defaults for any key the file lacks. Details:
-https://github.com/Stephenson-Software/trace#usage-reporting
+https://danielstephenson.dev/usage-reporting
 
 ## Text Customization
 
