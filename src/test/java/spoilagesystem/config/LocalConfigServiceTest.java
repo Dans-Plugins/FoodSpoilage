@@ -6,13 +6,16 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import spoilagesystem.FoodSpoilage;
 import spoilagesystem.config.migration.ConfigMigration;
 
+import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.List;
 import java.util.logging.Logger;
@@ -53,11 +56,15 @@ public class LocalConfigServiceTest {
 
     private LocalConfigService service;
 
+    @TempDir
+    File dataFolder;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         when(plugin.getConfig()).thenReturn(config);
+        when(plugin.getDataFolder()).thenReturn(dataFolder);
         when(plugin.getLogger()).thenReturn(Logger.getLogger(LocalConfigServiceTest.class.getName()));
         configure(LocalConfigService.DEFAULT_SPOILED_FOOD_MATERIAL.name());
 
@@ -216,7 +223,7 @@ public class LocalConfigServiceTest {
      */
     @Test
     void usageReportingReadsThroughToTheBundledDefaultsWhenTheFileHasNoBlock() {
-        when(config.getBoolean("usage-reporting.enabled")).thenReturn(true);
+        when(config.get("usage-reporting.enabled")).thenReturn(true);
         when(config.getString("usage-reporting.endpoint")).thenReturn("https://trace.danielstephenson.dev");
         when(config.getString("usage-reporting.key")).thenReturn("bundled-key");
 
@@ -239,7 +246,7 @@ public class LocalConfigServiceTest {
 
     @Test
     void usageReportingReadsTheConfiguredValues() {
-        when(config.getBoolean("usage-reporting.enabled")).thenReturn(false);
+        when(config.get("usage-reporting.enabled")).thenReturn(false);
         when(config.getString("usage-reporting.endpoint")).thenReturn("http://localhost:8080");
         when(config.getString("usage-reporting.key")).thenReturn("abc");
 
@@ -604,5 +611,42 @@ public class LocalConfigServiceTest {
 
     private void configure(String materialName) {
         when(config.getString(eq(KEY), anyString())).thenReturn(materialName);
+    }
+
+    @Test
+    void usageReportingAQuotedFalseTurnsReportingOff() {
+        // getBoolean() would return the bundled default, true, for the string "false".
+        when(config.get("usage-reporting.enabled")).thenReturn("false");
+
+        assertFalse(service.isUsageReportingEnabled());
+    }
+
+    @Test
+    void usageReportingAnOptOutOnDiskWinsOverTheLoadedConfig() throws Exception {
+        // The operator turned reporting off by hand after the config was loaded.
+        writeConfigFile("usage-reporting:\n  enabled: false\n");
+        when(config.get("usage-reporting.enabled")).thenReturn(true);
+
+        assertFalse(service.isUsageReportingEnabled());
+    }
+
+    @Test
+    void theUsageReportingBlockIsNeverWrittenOverAFileBukkitCannotParse() throws Exception {
+        // Bukkit loads such a file as empty, so the block looks missing.
+        writeConfigFile("usage-reporting:\n  enabled: false\n\tbroken: [\n");
+        YamlConfiguration loadedAsEmpty = new YamlConfiguration();
+        loadedAsEmpty.setDefaults(bundledConfig());
+        when(plugin.getConfig()).thenReturn(loadedAsEmpty);
+        clearInvocations(plugin);
+
+        new LocalConfigService(plugin);
+
+        verify(plugin, never()).saveConfig();
+        assertFalse(loadedAsEmpty.isSet("usage-reporting"));
+        assertFalse(service.isUsageReportingEnabled(), "a file that cannot be read must keep reporting off");
+    }
+
+    private void writeConfigFile(String contents) throws Exception {
+        Files.write(new File(dataFolder, "config.yml").toPath(), contents.getBytes(StandardCharsets.UTF_8));
     }
 }

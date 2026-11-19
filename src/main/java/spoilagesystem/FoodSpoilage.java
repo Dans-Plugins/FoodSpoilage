@@ -23,7 +23,9 @@ import spoilagesystem.listeners.*;
 import spoilagesystem.rpkit.FoodSpoilageRpkitExpiryService;
 import spoilagesystem.timestamp.LocalTimeStampService;
 import spoilagesystem.trace.TraceClient;
+import spoilagesystem.trace.UsageReportingSetting;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -94,7 +96,7 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
                     + " https://trace.danielstephenson.dev, plus a random server ID (server-id in plugins/trace/config.yml) - nothing about players. Turn it off with"
                     + " usage-reporting.enabled: false in this plugin's config.yml, or for every plugin with"
                     + " enabled: false in plugins/trace/config.yml."
-                    + " Details: https://github.com/Stephenson-Software/trace#usage-reporting");
+                    + " Details: https://danielstephenson.dev/usage-reporting");
         } else {
             getLogger().info("Usage reporting is off (" + trace.disabledReason() + ").");
         }
@@ -109,6 +111,40 @@ public final class FoodSpoilage extends PonderBukkitPlugin {
         reloadConfig();
         applyLogLevel();
         refreshWaxingRecipe();
+        // Turning usage reporting off takes effect at once; turning it on waits for a restart.
+        if (trace.isEnabled() && !configService.isUsageReportingEnabled()) {
+            stopUsageReporting();
+        }
+    }
+
+    /**
+     * Stops usage reporting at once, for an operator who has just turned it off and reloaded. Nothing
+     * is reported from here on; the old client is closed off the main thread, since closing waits
+     * for any report already in flight (the reload command's own among them).
+     */
+    void stopUsageReporting() {
+        TraceClient previous = trace;
+        trace = TraceClient.disabled();
+        getServer().getScheduler().runTaskAsynchronously(this, previous::close);
+        getLogger().info("Usage reporting is off (config.yml).");
+    }
+
+    /**
+     * Every save of config.yml goes through here. A file Bukkit could not parse was loaded as
+     * empty, so saving would replace it with the bundled defaults, usage reporting switched on
+     * included; it is left alone instead. An opt-out written into the file by hand while the
+     * server runs is carried into the loaded copy first, so a save cannot turn reporting back on.
+     */
+    @Override
+    public void saveConfig() {
+        File configFile = new File(getDataFolder(), "config.yml");
+        if (UsageReportingSetting.isUnparseable(configFile)) {
+            getLogger().severe("config.yml could not be read, so it was not overwritten. Fix the YAML error in it and restart; "
+                    + "until then the defaults are used, and usage reporting is off.");
+            return;
+        }
+        UsageReportingSetting.keepOptOutFromDisk(getConfig(), configFile);
+        super.saveConfig();
     }
 
     private void applyLogLevel() {
