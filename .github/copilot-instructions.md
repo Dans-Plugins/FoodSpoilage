@@ -19,7 +19,7 @@ making any changes.
   - `listeners/` – Bukkit event listeners (crafting, inventory, player interactions)
   - `rpkit/` – Optional RPKit integration (`FoodSpoilageRpkitExpiryService`)
   - `timestamp/` – Timestamp assignment and lookup service
-  - `trace/` – Vendored usage-reporting client (`TraceClient`)
+  - `trace/` – Vendored usage-reporting client (`TraceClient`), and `UsageReportingSetting`, which reads `usage-reporting.enabled` from `config.yml` on disk and keeps an opt-out from being turned back on
   - `FoodSpoilage.java` – Main plugin class, registers commands and listeners
 - `src/main/resources/` – `plugin.yml` and `config.yml`
 - `src/test/java/spoilagesystem/` – JUnit 5 and Mockito tests, mirroring the main-source packages
@@ -29,7 +29,7 @@ making any changes.
   - `listeners/` – one `<Listener>Test` for each class in the main-source `listeners/` package
   - `rpkit/` – `FoodSpoilageRpkitExpiryServiceTest`
   - `timestamp/` – `LocalTimeStampServiceTest`
-  - `trace/` – `TraceClientTest`
+  - `trace/` – `TraceClientTest`, `UsageReportingSettingTest`
 
 ## Coding Conventions
 
